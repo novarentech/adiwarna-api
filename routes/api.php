@@ -2,9 +2,11 @@
 
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CustomerController;
+use App\Http\Controllers\Api\V1\DailyActivityController;
 use App\Http\Controllers\Api\V1\EmployeeController;
 use App\Http\Controllers\Api\V1\PurchaseOrderController;
 use App\Http\Controllers\Api\V1\QuotationController;
+use App\Http\Controllers\Api\V1\WorkAssignmentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -50,5 +52,19 @@ Route::prefix('v1')->group(function () {
         Route::get('/purchase-orders/{purchase_order}', [PurchaseOrderController::class, 'show']);
         Route::put('/purchase-orders/{purchase_order}', [PurchaseOrderController::class, 'update']);
         Route::delete('/purchase-orders/{purchase_order}', [PurchaseOrderController::class, 'destroy']);
+
+        // Work Assignments
+        Route::get('/work-assignments', [WorkAssignmentController::class, 'index']);
+        Route::post('/work-assignments', [WorkAssignmentController::class, 'store']);
+        Route::get('/work-assignments/{work_assignment}', [WorkAssignmentController::class, 'show']);
+        Route::put('/work-assignments/{work_assignment}', [WorkAssignmentController::class, 'update']);
+        Route::delete('/work-assignments/{work_assignment}', [WorkAssignmentController::class, 'destroy']);
+
+        // Daily Activities
+        Route::get('/daily-activities', [DailyActivityController::class, 'index']);
+        Route::post('/daily-activities', [DailyActivityController::class, 'store']);
+        Route::get('/daily-activities/{daily_activity}', [DailyActivityController::class, 'show']);
+        Route::put('/daily-activities/{daily_activity}', [DailyActivityController::class, 'update']);
+        Route::delete('/daily-activities/{daily_activity}', [DailyActivityController::class, 'destroy']);
     });
 });
