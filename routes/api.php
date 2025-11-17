@@ -4,6 +4,10 @@ use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\DailyActivityController;
 use App\Http\Controllers\Api\V1\EmployeeController;
+use App\Http\Controllers\Api\V1\PayrollEmployeeController;
+use App\Http\Controllers\Api\V1\PayrollPeriodController;
+use App\Http\Controllers\Api\V1\PayrollProjectController;
+use App\Http\Controllers\Api\V1\PayrollTimesheetController;
 use App\Http\Controllers\Api\V1\PurchaseOrderController;
 use App\Http\Controllers\Api\V1\QuotationController;
 use App\Http\Controllers\Api\V1\WorkAssignmentController;
@@ -66,5 +70,34 @@ Route::prefix('v1')->group(function () {
         Route::get('/daily-activities/{daily_activity}', [DailyActivityController::class, 'show']);
         Route::put('/daily-activities/{daily_activity}', [DailyActivityController::class, 'update']);
         Route::delete('/daily-activities/{daily_activity}', [DailyActivityController::class, 'destroy']);
+
+        // Payroll Projects
+        Route::get('/payroll/projects', [PayrollProjectController::class, 'index']);
+        Route::post('/payroll/projects', [PayrollProjectController::class, 'store']);
+        Route::get('/payroll/projects/{payroll_project}', [PayrollProjectController::class, 'show']);
+        Route::put('/payroll/projects/{payroll_project}', [PayrollProjectController::class, 'update']);
+        Route::delete('/payroll/projects/{payroll_project}', [PayrollProjectController::class, 'destroy']);
+
+        // Payroll Periods (nested under projects)
+        Route::get('/payroll/projects/{projectId}/periods', [PayrollPeriodController::class, 'index']);
+        Route::post('/payroll/projects/{projectId}/periods', [PayrollPeriodController::class, 'store']);
+        Route::get('/payroll/projects/{projectId}/periods/{payroll_period}', [PayrollPeriodController::class, 'show']);
+        Route::put('/payroll/projects/{projectId}/periods/{payroll_period}', [PayrollPeriodController::class, 'update']);
+        Route::delete('/payroll/projects/{projectId}/periods/{payroll_period}', [PayrollPeriodController::class, 'destroy']);
+
+        // Payroll Employees (nested under periods)
+        Route::get('/payroll/periods/{periodId}/employees', [PayrollEmployeeController::class, 'index']);
+        Route::post('/payroll/periods/{periodId}/employees', [PayrollEmployeeController::class, 'store']);
+        Route::get('/payroll/periods/{periodId}/employees/{payroll_employee}', [PayrollEmployeeController::class, 'show']);
+        Route::put('/payroll/periods/{periodId}/employees/{payroll_employee}', [PayrollEmployeeController::class, 'update']);
+        Route::delete('/payroll/periods/{periodId}/employees/{payroll_employee}', [PayrollEmployeeController::class, 'destroy']);
+        Route::post('/payroll/periods/{periodId}/employees/{payroll_employee}/recalculate', [PayrollEmployeeController::class, 'recalculate']);
+
+        // Payroll Timesheets (nested under employees)
+        Route::get('/payroll/employees/{employeeId}/timesheets', [PayrollTimesheetController::class, 'index']);
+        Route::post('/payroll/employees/{employeeId}/timesheets', [PayrollTimesheetController::class, 'store']);
+        Route::put('/payroll/employees/{employeeId}/timesheets/{date}', [PayrollTimesheetController::class, 'update']);
+        Route::delete('/payroll/employees/{employeeId}/timesheets/{date}', [PayrollTimesheetController::class, 'destroy']);
+        Route::post('/payroll/employees/{employeeId}/timesheets/bulk', [PayrollTimesheetController::class, 'bulkUpdate']);
     });
 });
