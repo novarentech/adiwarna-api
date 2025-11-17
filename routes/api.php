@@ -3,6 +3,8 @@
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\EmployeeController;
+use App\Http\Controllers\Api\V1\PurchaseOrderController;
+use App\Http\Controllers\Api\V1\QuotationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -34,5 +36,19 @@ Route::prefix('v1')->group(function () {
         Route::get('/employees/{employee}', [EmployeeController::class, 'show']);
         Route::put('/employees/{employee}', [EmployeeController::class, 'update']);
         Route::delete('/employees/{employee}', [EmployeeController::class, 'destroy']);
+
+        // Quotations
+        Route::get('/quotations', [QuotationController::class, 'index']);
+        Route::post('/quotations', [QuotationController::class, 'store']);
+        Route::get('/quotations/{quotation}', [QuotationController::class, 'show']);
+        Route::put('/quotations/{quotation}', [QuotationController::class, 'update']);
+        Route::delete('/quotations/{quotation}', [QuotationController::class, 'destroy']);
+
+        // Purchase Orders
+        Route::get('/purchase-orders', [PurchaseOrderController::class, 'index']);
+        Route::post('/purchase-orders', [PurchaseOrderController::class, 'store']);
+        Route::get('/purchase-orders/{purchase_order}', [PurchaseOrderController::class, 'show']);
+        Route::put('/purchase-orders/{purchase_order}', [PurchaseOrderController::class, 'update']);
+        Route::delete('/purchase-orders/{purchase_order}', [PurchaseOrderController::class, 'destroy']);
     });
 });
