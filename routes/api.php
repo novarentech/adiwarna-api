@@ -1,16 +1,27 @@
 <?php
 
+use App\Http\Controllers\Api\V1\AboutController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\DailyActivityController;
+use App\Http\Controllers\Api\V1\DocumentTransmittalController;
 use App\Http\Controllers\Api\V1\EmployeeController;
+use App\Http\Controllers\Api\V1\EquipmentGeneralController;
+use App\Http\Controllers\Api\V1\EquipmentProjectController;
+use App\Http\Controllers\Api\V1\MaterialReceivingReportController;
+use App\Http\Controllers\Api\V1\OperationalController;
 use App\Http\Controllers\Api\V1\PayrollEmployeeController;
 use App\Http\Controllers\Api\V1\PayrollPeriodController;
 use App\Http\Controllers\Api\V1\PayrollProjectController;
+use App\Http\Controllers\Api\V1\PayrollSlipController;
 use App\Http\Controllers\Api\V1\PayrollTimesheetController;
 use App\Http\Controllers\Api\V1\PurchaseOrderController;
+use App\Http\Controllers\Api\V1\PurchaseRequisitionController;
 use App\Http\Controllers\Api\V1\QuotationController;
+use App\Http\Controllers\Api\V1\ScheduleController;
+use App\Http\Controllers\Api\V1\TrackRecordController;
 use App\Http\Controllers\Api\V1\WorkAssignmentController;
+use App\Http\Controllers\Api\V1\WorkOrderController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -99,5 +110,82 @@ Route::prefix('v1')->middleware('throttle:api')->group(function () {
         Route::put('/payroll/employees/{employeeId}/timesheets/{date}', [PayrollTimesheetController::class, 'update']);
         Route::delete('/payroll/employees/{employeeId}/timesheets/{date}', [PayrollTimesheetController::class, 'destroy']);
         Route::post('/payroll/employees/{employeeId}/timesheets/bulk', [PayrollTimesheetController::class, 'bulkUpdate']);
+
+        // Payroll Slips (nested under periods)
+        Route::post('/payroll/periods/{periodId}/slips/generate', [PayrollSlipController::class, 'generate']);
+        Route::get('/payroll/periods/{periodId}/slips', [PayrollSlipController::class, 'index']);
+        Route::get('/payroll/slips/{id}', [PayrollSlipController::class, 'show']);
+        Route::delete('/payroll/slips/{id}', [PayrollSlipController::class, 'destroy']);
+
+        // Schedules
+        Route::get('/schedules', [ScheduleController::class, 'index']);
+        Route::post('/schedules', [ScheduleController::class, 'store']);
+        Route::get('/schedules/{schedule}', [ScheduleController::class, 'show']);
+        Route::put('/schedules/{schedule}', [ScheduleController::class, 'update']);
+        Route::delete('/schedules/{schedule}', [ScheduleController::class, 'destroy']);
+
+        // Work Orders
+        Route::get('/work-orders', [WorkOrderController::class, 'index']);
+        Route::post('/work-orders', [WorkOrderController::class, 'store']);
+        Route::get('/work-orders/{work_order}', [WorkOrderController::class, 'show']);
+        Route::put('/work-orders/{work_order}', [WorkOrderController::class, 'update']);
+        Route::delete('/work-orders/{work_order}', [WorkOrderController::class, 'destroy']);
+
+        // Document Transmittals
+        Route::get('/document-transmittals', [DocumentTransmittalController::class, 'index']);
+        Route::post('/document-transmittals', [DocumentTransmittalController::class, 'store']);
+        Route::get('/document-transmittals/{document_transmittal}', [DocumentTransmittalController::class, 'show']);
+        Route::put('/document-transmittals/{document_transmittal}', [DocumentTransmittalController::class, 'update']);
+        Route::delete('/document-transmittals/{document_transmittal}', [DocumentTransmittalController::class, 'destroy']);
+
+        // Purchase Requisitions
+        Route::get('/purchase-requisitions', [PurchaseRequisitionController::class, 'index']);
+        Route::post('/purchase-requisitions', [PurchaseRequisitionController::class, 'store']);
+        Route::get('/purchase-requisitions/{purchase_requisition}', [PurchaseRequisitionController::class, 'show']);
+        Route::put('/purchase-requisitions/{purchase_requisition}', [PurchaseRequisitionController::class, 'update']);
+        Route::delete('/purchase-requisitions/{purchase_requisition}', [PurchaseRequisitionController::class, 'destroy']);
+
+        // Material Receiving Reports
+        Route::get('/material-receiving-reports', [MaterialReceivingReportController::class, 'index']);
+        Route::post('/material-receiving-reports', [MaterialReceivingReportController::class, 'store']);
+        Route::get('/material-receiving-reports/{material_receiving_report}', [MaterialReceivingReportController::class, 'show']);
+        Route::put('/material-receiving-reports/{material_receiving_report}', [MaterialReceivingReportController::class, 'update']);
+        Route::delete('/material-receiving-reports/{material_receiving_report}', [MaterialReceivingReportController::class, 'destroy']);
+
+        // Equipment General
+        Route::get('/equipment/general', [EquipmentGeneralController::class, 'index']);
+        Route::post('/equipment/general', [EquipmentGeneralController::class, 'store']);
+        Route::get('/equipment/general/{equipment_general}', [EquipmentGeneralController::class, 'show']);
+        Route::put('/equipment/general/{equipment_general}', [EquipmentGeneralController::class, 'update']);
+        Route::delete('/equipment/general/{equipment_general}', [EquipmentGeneralController::class, 'destroy']);
+
+        // Equipment Project
+        Route::get('/equipment/project', [EquipmentProjectController::class, 'index']);
+        Route::post('/equipment/project', [EquipmentProjectController::class, 'store']);
+        Route::get('/equipment/project/{equipment_project}', [EquipmentProjectController::class, 'show']);
+        Route::put('/equipment/project/{equipment_project}', [EquipmentProjectController::class, 'update']);
+        Route::delete('/equipment/project/{equipment_project}', [EquipmentProjectController::class, 'destroy']);
+
+        // Track Records
+        Route::get('/track-records', [TrackRecordController::class, 'index']);
+        Route::post('/track-records', [TrackRecordController::class, 'store']);
+        Route::get('/track-records/{track_record}', [TrackRecordController::class, 'show']);
+        Route::put('/track-records/{track_record}', [TrackRecordController::class, 'update']);
+        Route::delete('/track-records/{track_record}', [TrackRecordController::class, 'destroy']);
+
+        // Operational
+        Route::get('/operational', [OperationalController::class, 'index']);
+        Route::post('/operational', [OperationalController::class, 'store']);
+        Route::get('/operational/{operational}', [OperationalController::class, 'show']);
+        Route::put('/operational/{operational}', [OperationalController::class, 'update']);
+        Route::delete('/operational/{operational}', [OperationalController::class, 'destroy']);
+
+        // About (Company Information)
+        Route::get('/about', [AboutController::class, 'index']);
+        Route::post('/about', [AboutController::class, 'store']);
+        Route::get('/about/active', [AboutController::class, 'active']);
+        Route::get('/about/{about}', [AboutController::class, 'show']);
+        Route::put('/about/{about}', [AboutController::class, 'update']);
+        Route::delete('/about/{about}', [AboutController::class, 'destroy']);
     });
 });
