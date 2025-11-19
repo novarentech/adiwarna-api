@@ -17,7 +17,7 @@ class QuotationClientFactory extends Factory
     {
         return [
             'quotation_id' => Quotation::factory(),
-            'client_description' => fake()->paragraph(),
+            'client_description' => fake()->sentence(10), // Max 255 chars for string column
         ];
     }
 }

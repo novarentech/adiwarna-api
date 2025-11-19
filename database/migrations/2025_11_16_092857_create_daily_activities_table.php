@@ -20,8 +20,8 @@ return new class extends Migration
             $table->time('time_to');
             $table->string('prepared_name', 100);
             $table->string('prepared_pos', 100);
-            $table->string('acknowlege_name', 100)->nullable();
-            $table->string('acknowlege_pos', 100)->nullable();
+            $table->string('acknowledge_name', 100)->nullable();
+            $table->string('acknowledge_pos', 100)->nullable();
             $table->timestamps();
 
             // Indexes

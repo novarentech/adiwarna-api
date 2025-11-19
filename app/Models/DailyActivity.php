@@ -22,8 +22,8 @@ class DailyActivity extends Model
         'time_to',
         'prepared_name',
         'prepared_pos',
-        'acknowlege_name',
-        'acknowlege_pos',
+        'acknowledge_name',
+        'acknowledge_pos',
     ];
 
     protected function casts(): array

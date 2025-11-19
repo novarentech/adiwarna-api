@@ -31,7 +31,7 @@ class DailyActivitySeeder extends Seeder
                     for ($i = 0; $i < rand(2, 4); $i++) {
                         DailyActivityMember::create([
                             'daily_activity_id' => $activity->id,
-                            'name' => $users->random()->name,
+                            'member_name' => $users->random()->name,
                         ]);
                     }
 

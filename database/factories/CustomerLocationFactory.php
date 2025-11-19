@@ -22,7 +22,13 @@ class CustomerLocationFactory extends Factory
     {
         return [
             'customer_id' => Customer::factory(),
-            'location' => fake()->city() . ' Office - ' . fake()->streetAddress(),
+            'location_name' => fake()->city() . ' Office',
+            'address' => fake()->streetAddress(),
+            'city' => fake()->city(),
+            'province' => fake()->state(),
+            'postal_code' => fake()->postcode(),
+            'contact_person' => fake()->name(),
+            'contact_phone' => fake()->numerify('08##########'),
         ];
     }
 }

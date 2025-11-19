@@ -17,7 +17,7 @@ class QuotationAdiwarnaFactory extends Factory
     {
         return [
             'quotation_id' => Quotation::factory(),
-            'adiwarna_description' => fake()->paragraph(),
+            'adiwarna_description' => fake()->sentence(10), // Max 255 chars for string column
         ];
     }
 }
