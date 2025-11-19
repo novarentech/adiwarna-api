@@ -18,6 +18,10 @@ class AuthService extends BaseService
             ]);
         }
 
+        // Delete old tokens
+        $user->tokens()->delete();
+
+        // Create new token
         $token = $user->createToken('api-token')->plainTextToken;
 
         return [
