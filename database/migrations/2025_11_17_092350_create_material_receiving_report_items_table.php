@@ -13,7 +13,10 @@ return new class extends Migration
     {
         Schema::create('material_receiving_report_items', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('material_receiving_report_id')->constrained()->onDelete('cascade');
+            $table->foreignId('material_receiving_report_id')
+                ->constrained('material_receiving_reports')
+                ->onDelete('cascade')
+                ->name('mrr_items_mrr_id_fk'); // Shortened foreign key name
             $table->text('description');
             $table->decimal('order_qty', 10, 2);
             $table->decimal('received_qty', 10, 2);
