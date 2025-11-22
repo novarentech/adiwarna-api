@@ -18,6 +18,26 @@ class QuotationRepository extends BaseRepository implements QuotationRepositoryI
         return $this;
     }
 
+    public function withCustomerOnly(): self
+    {
+        $this->query->with(['customer']);
+        return $this;
+    }
+
+    public function search(?string $search): self
+    {
+        if ($search) {
+            $this->query->where(function ($query) use ($search) {
+                $query->where('pic_name', 'like', "%{$search}%")
+                    ->orWhere('subject', 'like', "%{$search}%")
+                    ->orWhereHas('customer', function ($q) use ($search) {
+                        $q->where('name', 'like', "%{$search}%");
+                    });
+            });
+        }
+        return $this;
+    }
+
     public function filterByCustomer(int $customerId): self
     {
         $this->query->where('customer_id', $customerId);

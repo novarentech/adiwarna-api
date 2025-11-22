@@ -5,7 +5,6 @@ namespace App\Services;
 use App\Contracts\Repositories\QuotationRepositoryInterface;
 use App\Models\Quotation;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Exception;
 
 class QuotationService extends BaseService
 {
@@ -13,12 +12,12 @@ class QuotationService extends BaseService
         protected QuotationRepositoryInterface $quotationRepository
     ) {}
 
-    public function getPaginatedQuotations(int $perPage = 15, ?int $customerId = null): LengthAwarePaginator
+    public function getPaginatedQuotations(int $perPage = 15, ?string $search = null): LengthAwarePaginator
     {
-        $query = $this->quotationRepository->withRelations();
+        $query = $this->quotationRepository->withCustomerOnly();
 
-        if ($customerId) {
-            $query->filterByCustomer($customerId);
+        if ($search) {
+            $query->search($search);
         }
 
         return $query->paginate($perPage);
@@ -60,9 +59,17 @@ class QuotationService extends BaseService
     public function updateQuotation(int $id, array $data): Quotation
     {
         return $this->executeInTransaction(function () use ($id, $data) {
+            // Separate quotation data from nested relations
             $quotationData = array_diff_key($data, array_flip(['items', 'adiwarnas', 'clients']));
-            $quotation = $this->quotationRepository->update($id, $quotationData);
 
+            // Update quotation only if there's data to update
+            if (!empty($quotationData)) {
+                $quotation = $this->quotationRepository->update($id, $quotationData);
+            } else {
+                $quotation = $this->quotationRepository->find($id);
+            }
+
+            // Update items only if provided
             if (isset($data['items'])) {
                 $quotation->items()->delete();
                 foreach ($data['items'] as $item) {
@@ -70,6 +77,7 @@ class QuotationService extends BaseService
                 }
             }
 
+            // Update adiwarnas only if provided
             if (isset($data['adiwarnas'])) {
                 $quotation->adiwarnas()->delete();
                 foreach ($data['adiwarnas'] as $adiwarna) {
@@ -77,6 +85,7 @@ class QuotationService extends BaseService
                 }
             }
 
+            // Update clients only if provided
             if (isset($data['clients'])) {
                 $quotation->clients()->delete();
                 foreach ($data['clients'] as $client) {

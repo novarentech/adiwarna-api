@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\StoreQuotationRequest;
 use App\Http\Requests\Api\V1\UpdateQuotationRequest;
-use App\Http\Resources\V1\QuotationCollection;
+use App\Http\Resources\V1\QuotationListResource;
 use App\Http\Resources\V1\QuotationResource;
 use App\Models\Quotation;
 use App\Services\QuotationService;
@@ -23,12 +23,12 @@ class QuotationController extends Controller
     {
         $quotations = $this->quotationService->getPaginatedQuotations(
             perPage: request('per_page', 15),
-            customerId: request('customer_id')
+            search: request('search')
         );
 
         return response()->json([
             'success' => true,
-            'data' => new QuotationCollection($quotations),
+            'data' => QuotationListResource::collection($quotations),
             'meta' => [
                 'current_page' => $quotations->currentPage(),
                 'last_page' => $quotations->lastPage(),
@@ -51,7 +51,7 @@ class QuotationController extends Controller
 
     public function show(Quotation $quotation): JsonResponse
     {
-        $quotation->load(['customer', 'items']);
+        $quotation->load(['customer', 'items', 'adiwarnas', 'clients']);
 
         return response()->json([
             'success' => true,

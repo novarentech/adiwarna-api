@@ -33,6 +33,10 @@ class StoreQuotationRequest extends FormRequest
             'items.*.quantity' => 'required|numeric|min:0',
             'items.*.unit' => 'required|string|max:50',
             'items.*.rate' => 'required|numeric|min:0',
+            'adiwarnas' => 'nullable|array',
+            'adiwarnas.*.adiwarna_description' => 'required|string',
+            'clients' => 'nullable|array',
+            'clients.*.client_description' => 'required|string',
         ];
     }
 
