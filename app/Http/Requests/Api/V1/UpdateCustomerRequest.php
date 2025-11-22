@@ -16,14 +16,18 @@ class UpdateCustomerRequest extends FormRequest
     {
         return [
             'customer_no' => [
+                'sometimes',
                 'required',
                 'string',
                 'max:50',
                 Rule::unique('customers')->ignore($this->route('customer'))
             ],
-            'name' => 'required|string|max:255',
-            'phone_number' => 'required|string|max:20',
-            'address' => 'required|string',
+            'name' => 'sometimes|required|string|max:255',
+            'phone_number' => 'sometimes|required|string|max:20',
+            'address' => 'sometimes|required|string',
+            'customer_locations' => 'sometimes|array',
+            'customer_locations.*.id' => 'nullable|exists:customer_locations,id',
+            'customer_locations.*.location_name' => 'required_with:customer_locations|string|max:255',
         ];
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\StoreCustomerRequest;
 use App\Http\Requests\Api\V1\UpdateCustomerRequest;
-use App\Http\Resources\V1\CustomerCollection;
+use App\Http\Resources\V1\CustomerListResource;
 use App\Http\Resources\V1\CustomerResource;
 use App\Models\Customer;
 use App\Services\CustomerService;
@@ -25,12 +25,13 @@ class CustomerController extends Controller
     public function index(): JsonResponse
     {
         $customers = $this->customerService->getPaginatedCustomers(
-            perPage: request('per_page', 15)
+            perPage: request('per_page', 15),
+            search: request('search')
         );
 
         return response()->json([
             'success' => true,
-            'data' => new CustomerCollection($customers),
+            'data' => CustomerListResource::collection($customers),
             'meta' => [
                 'current_page' => $customers->currentPage(),
                 'last_page' => $customers->lastPage(),
@@ -59,6 +60,8 @@ class CustomerController extends Controller
      */
     public function show(Customer $customer): JsonResponse
     {
+        $customer->load('locations');
+
         return response()->json([
             'success' => true,
             'data' => new CustomerResource($customer),

@@ -18,6 +18,8 @@ class StoreCustomerRequest extends FormRequest
             'name' => 'required|string|max:255',
             'phone_number' => 'required|string|max:20',
             'address' => 'required|string',
+            'customer_locations' => 'nullable|array',
+            'customer_locations.*.location_name' => 'required_with:customer_locations|string|max:255',
         ];
     }
 
