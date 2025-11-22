@@ -12,12 +12,12 @@ class PurchaseOrderService extends BaseService
         protected PurchaseOrderRepositoryInterface $purchaseOrderRepository
     ) {}
 
-    public function getPaginatedPurchaseOrders(int $perPage = 15, ?int $customerId = null): LengthAwarePaginator
+    public function getPaginatedPurchaseOrders(int $perPage = 15, ?string $search = null): LengthAwarePaginator
     {
-        $query = $this->purchaseOrderRepository->withRelations();
+        $query = $this->purchaseOrderRepository->withCustomerOnly();
 
-        if ($customerId) {
-            $query->filterByCustomer($customerId);
+        if ($search) {
+            $query->search($search);
         }
 
         return $query->paginate($perPage);
@@ -51,10 +51,25 @@ class PurchaseOrderService extends BaseService
             $purchaseOrder = $this->purchaseOrderRepository->update($id, $poData);
 
             if (isset($data['items'])) {
-                $purchaseOrder->items()->delete();
-                foreach ($data['items'] as $item) {
-                    $purchaseOrder->items()->create($item);
+                $existingItemIds = [];
+
+                foreach ($data['items'] as $itemData) {
+                    if (isset($itemData['id']) && $itemData['id']) {
+                        // Update existing item
+                        $item = $purchaseOrder->items()->find($itemData['id']);
+                        if ($item) {
+                            $item->update($itemData);
+                            $existingItemIds[] = $itemData['id'];
+                        }
+                    } else {
+                        // Create new item
+                        $newItem = $purchaseOrder->items()->create($itemData);
+                        $existingItemIds[] = $newItem->id;
+                    }
                 }
+
+                // Delete items that are not in the request
+                $purchaseOrder->items()->whereNotIn('id', $existingItemIds)->delete();
             }
 
             return $purchaseOrder->load('items');

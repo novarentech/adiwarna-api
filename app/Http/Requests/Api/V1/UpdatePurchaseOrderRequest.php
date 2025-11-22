@@ -14,10 +14,10 @@ class UpdatePurchaseOrderRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'po_no' => 'required|string|max:50',
-            'po_year' => 'required|integer|min:2000|max:2100',
-            'date' => 'required|date',
-            'customer_id' => 'required|exists:customers,id',
+            'po_no' => 'sometimes|required|string|max:50',
+            'po_year' => 'sometimes|required|integer|min:2000|max:2100',
+            'date' => 'sometimes|required|date',
+            'customer_id' => 'sometimes|required|exists:customers,id',
             'pic_name' => 'nullable|string|max:255',
             'pic_phone' => 'nullable|string|max:20',
             'required_date' => 'nullable|date',
@@ -33,12 +33,12 @@ class UpdatePurchaseOrderRequest extends FormRequest
             'app_pos' => 'nullable|string|max:255',
             'auth_name' => 'nullable|string|max:255',
             'auth_pos' => 'nullable|string|max:255',
-            'items' => 'required|array|min:1',
+            'items' => 'sometimes|required|array|min:1',
             'items.*.id' => 'nullable|exists:purchase_order_items,id',
-            'items.*.description' => 'required|string',
-            'items.*.quantity' => 'required|numeric|min:0',
-            'items.*.unit' => 'required|string|max:50',
-            'items.*.rate' => 'required|numeric|min:0',
+            'items.*.description' => 'required_with:items|string',
+            'items.*.quantity' => 'required_with:items|numeric|min:0',
+            'items.*.unit' => 'required_with:items|string|max:50',
+            'items.*.rate' => 'required_with:items|numeric|min:0',
         ];
     }
 }

@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\StorePurchaseOrderRequest;
 use App\Http\Requests\Api\V1\UpdatePurchaseOrderRequest;
-use App\Http\Resources\V1\PurchaseOrderCollection;
+use App\Http\Resources\V1\PurchaseOrderListResource;
 use App\Http\Resources\V1\PurchaseOrderResource;
 use App\Models\PurchaseOrder;
 use App\Services\PurchaseOrderService;
@@ -22,12 +22,13 @@ class PurchaseOrderController extends Controller
     public function index(): JsonResponse
     {
         $purchaseOrders = $this->purchaseOrderService->getPaginatedPurchaseOrders(
-            perPage: request('per_page', 15)
+            perPage: request('per_page', 15),
+            search: request('search')
         );
 
         return response()->json([
             'success' => true,
-            'data' => new PurchaseOrderCollection($purchaseOrders),
+            'data' => PurchaseOrderListResource::collection($purchaseOrders),
             'meta' => [
                 'current_page' => $purchaseOrders->currentPage(),
                 'last_page' => $purchaseOrders->lastPage(),
