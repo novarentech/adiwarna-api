@@ -11,4 +11,13 @@ class EmployeeRepository extends BaseRepository implements EmployeeRepositoryInt
     {
         return Employee::class;
     }
+
+    public function search(string $keyword): self
+    {
+        $this->query->where(function ($query) use ($keyword) {
+            $query->where('name', 'like', "%{$keyword}%")
+                ->orWhere('position', 'like', "%{$keyword}%");
+        });
+        return $this;
+    }
 }

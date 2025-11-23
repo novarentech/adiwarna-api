@@ -16,15 +16,13 @@ return new class extends Migration
             $table->string('employee_no', 50)->unique();
             $table->string('name');
             $table->string('position')->nullable();
-            $table->string('phone', 20)->nullable();
-            $table->string('email')->nullable();
-            $table->text('address')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
             // Indexes
             $table->index('employee_no');
             $table->index('name');
+            $table->index('position');
         });
     }
 

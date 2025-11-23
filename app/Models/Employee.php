@@ -15,9 +15,6 @@ class Employee extends Model
         'employee_no',
         'name',
         'position',
-        'phone',
-        'email',
-        'address',
     ];
 
     /**

@@ -25,7 +25,8 @@ class EmployeeController extends Controller
     public function index(): JsonResponse
     {
         $employees = $this->employeeService->getPaginatedEmployees(
-            perPage: request('per_page', 15)
+            perPage: request('per_page', 15),
+            search: request('search')
         );
 
         return response()->json([

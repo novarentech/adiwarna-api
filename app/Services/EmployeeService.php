@@ -12,9 +12,15 @@ class EmployeeService extends BaseService
         protected EmployeeRepositoryInterface $employeeRepository
     ) {}
 
-    public function getPaginatedEmployees(int $perPage = 15): LengthAwarePaginator
+    public function getPaginatedEmployees(int $perPage = 15, ?string $search = null): LengthAwarePaginator
     {
-        return $this->employeeRepository->paginate($perPage);
+        $query = $this->employeeRepository;
+
+        if ($search) {
+            $query->search($search);
+        }
+
+        return $query->paginate($perPage);
     }
 
     public function getEmployeeById(int $id): ?Employee
