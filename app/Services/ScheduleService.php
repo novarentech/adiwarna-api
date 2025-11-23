@@ -3,20 +3,24 @@
 namespace App\Services;
 
 use App\Contracts\Repositories\ScheduleRepositoryInterface;
-use App\Contracts\Repositories\ScheduleItemRepositoryInterface;
 use App\Models\Schedule;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
 
 class ScheduleService extends BaseService
 {
     public function __construct(
-        protected ScheduleRepositoryInterface $scheduleRepository,
-        protected ScheduleItemRepositoryInterface $scheduleItemRepository
+        protected ScheduleRepositoryInterface $scheduleRepository
     ) {}
 
-    public function getPaginatedSchedules(int $perPage = 15): LengthAwarePaginator
+    public function getPaginatedSchedules(int $perPage = 15, ?string $search = null): LengthAwarePaginator
     {
-        return $this->scheduleRepository->withRelations()->paginate($perPage);
+        $query = $this->scheduleRepository->withCustomerOnly();
+
+        if ($search) {
+            $query->search($search);
+        }
+
+        return $query->paginate($perPage);
     }
 
     public function getScheduleById(int $id): ?Schedule
@@ -24,36 +28,61 @@ class ScheduleService extends BaseService
         return $this->scheduleRepository->withRelations()->find($id);
     }
 
-    public function createScheduleWithItems(array $data): Schedule
+    public function createScheduleWithWorkOrders(array $data): Schedule
     {
         return $this->executeInTransaction(function () use ($data) {
-            $scheduleData = array_diff_key($data, array_flip(['items']));
+            $scheduleData = array_diff_key($data, array_flip(['work_orders']));
             $schedule = $this->scheduleRepository->create($scheduleData);
 
-            if (isset($data['items'])) {
-                foreach ($data['items'] as $item) {
-                    $schedule->items()->create($item);
+            if (isset($data['work_orders'])) {
+                foreach ($data['work_orders'] as $workOrder) {
+                    $schedule->workOrders()->create($workOrder);
                 }
             }
 
-            return $schedule->load('items', 'customer');
+            return $schedule->load('workOrders', 'customer');
         });
     }
 
-    public function updateScheduleWithItems(int $id, array $data): Schedule
+    public function updateScheduleWithWorkOrders(int $id, array $data): Schedule
     {
         return $this->executeInTransaction(function () use ($id, $data) {
-            $scheduleData = array_diff_key($data, array_flip(['items']));
-            $schedule = $this->scheduleRepository->update($id, $scheduleData);
+            $scheduleData = array_diff_key($data, array_flip(['work_orders']));
 
-            if (isset($data['items'])) {
-                $schedule->items()->delete();
-                foreach ($data['items'] as $item) {
-                    $schedule->items()->create($item);
+            // Only update schedule fields if there are any
+            if (!empty($scheduleData)) {
+                $schedule = $this->scheduleRepository->update($id, $scheduleData);
+            } else {
+                $schedule = $this->scheduleRepository->find($id);
+            }
+
+            if (isset($data['work_orders'])) {
+                // Get existing work order IDs from request
+                $requestWorkOrderIds = collect($data['work_orders'])
+                    ->pluck('id')
+                    ->filter()
+                    ->toArray();
+
+                // Delete work orders that are not in the request
+                $schedule->workOrders()
+                    ->whereNotIn('id', $requestWorkOrderIds)
+                    ->delete();
+
+                // Update or create work orders
+                foreach ($data['work_orders'] as $workOrderData) {
+                    if (isset($workOrderData['id'])) {
+                        // Update existing work order
+                        $schedule->workOrders()
+                            ->where('id', $workOrderData['id'])
+                            ->update(array_diff_key($workOrderData, array_flip(['id'])));
+                    } else {
+                        // Create new work order
+                        $schedule->workOrders()->create($workOrderData);
+                    }
                 }
             }
 
-            return $schedule->load('items', 'customer');
+            return $schedule->load('workOrders', 'customer');
         });
     }
 

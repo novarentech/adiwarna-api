@@ -4,32 +4,34 @@ namespace Database\Seeders;
 
 use App\Models\Customer;
 use App\Models\Schedule;
-use App\Models\ScheduleItem;
+use App\Models\ScheduleWorkOrder;
 use Illuminate\Database\Seeder;
 
 class ScheduleSeeder extends Seeder
 {
+    /**
+     * Run the database seeds.
+     */
     public function run(): void
     {
-        $customers = Customer::all();
+        // Get existing customers or create some
+        $customers = Customer::limit(5)->get();
 
         if ($customers->isEmpty()) {
-            $this->command->warn('No customers found. Please run CustomerSeeder first.');
-            return;
+            $customers = Customer::factory(5)->create();
         }
 
-        $customers->random(min(5, $customers->count()))->each(function ($customer) {
-            Schedule::factory()
-                ->count(rand(1, 2))
+        // Create 15 schedules with work orders
+        foreach ($customers as $customer) {
+            Schedule::factory(3)
                 ->for($customer)
                 ->create()
-                ->each(function ($schedule) {
-                    ScheduleItem::create([
-                        'schedule_id' => $schedule->id,
-                        'description' => fake()->sentence(),
-                        'time' => fake()->time(),
-                    ]);
+                ->each(function (Schedule $schedule) {
+                    // Create 1-5 work orders for each schedule
+                    ScheduleWorkOrder::factory(rand(1, 5))
+                        ->for($schedule)
+                        ->create();
                 });
-        });
+        }
     }
 }

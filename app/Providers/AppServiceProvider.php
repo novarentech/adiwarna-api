@@ -2,6 +2,7 @@
 
 namespace App\Providers;
 
+use App\Contracts\Repositories\OperationalRepositoryInterface;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -40,6 +41,11 @@ class AppServiceProvider extends ServiceProvider
         $this->app->bind(
             \App\Contracts\Repositories\DailyActivityRepositoryInterface::class,
             \App\Repositories\DailyActivityRepository::class
+        );
+    
+        $this->app->bind(
+            \App\Contracts\Repositories\ScheduleRepositoryInterface::class,
+            \App\Repositories\ScheduleRepository::class
         );
 
         $this->app->bind(

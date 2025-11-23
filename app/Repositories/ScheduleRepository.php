@@ -15,7 +15,24 @@ class ScheduleRepository extends BaseRepository implements ScheduleRepositoryInt
 
     public function withRelations(): self
     {
-        $this->query->with(['items', 'customer']);
+        $this->query->with(['workOrders', 'customer']);
+        return $this;
+    }
+
+    public function withCustomerOnly(): self
+    {
+        $this->query->with(['customer']);
+        return $this;
+    }
+
+    public function search(string $keyword): self
+    {
+        $this->query->where(function ($query) use ($keyword) {
+            $query->whereHas('customer', function ($q) use ($keyword) {
+                $q->where('name', 'like', "%{$keyword}%");
+            })
+                ->orWhere('pic_name', 'like', "%{$keyword}%");
+        });
         return $this;
     }
 

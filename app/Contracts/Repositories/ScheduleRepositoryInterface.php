@@ -8,9 +8,19 @@ use Illuminate\Database\Eloquent\Collection;
 interface ScheduleRepositoryInterface extends RepositoryInterface
 {
     /**
-     * Get schedules with items and customer
+     * Get schedules with work orders and customer
      */
     public function withRelations(): self;
+
+    /**
+     * Get schedules with customer only (for list view)
+     */
+    public function withCustomerOnly(): self;
+
+    /**
+     * Search schedules by customer name or PIC name
+     */
+    public function search(string $keyword): self;
 
     /**
      * Get schedules by customer

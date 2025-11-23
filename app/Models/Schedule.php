@@ -13,9 +13,14 @@ class Schedule extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'customer_id',
+        'name',
+        'ta_no',
         'date',
-        'notes',
+        'customer_id',
+        'pic_name',
+        'pic_phone',
+        'pic_district',
+        'report_type',
     ];
 
     protected function casts(): array
@@ -30,8 +35,14 @@ class Schedule extends Model
         return $this->belongsTo(Customer::class);
     }
 
+    public function workOrders(): HasMany
+    {
+        return $this->hasMany(ScheduleWorkOrder::class);
+    }
+
+    // Keep backward compatibility alias
     public function items(): HasMany
     {
-        return $this->hasMany(ScheduleItem::class);
+        return $this->workOrders();
     }
 }

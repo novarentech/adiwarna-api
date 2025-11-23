@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('schedule_items', function (Blueprint $table) {
+        Schema::create('schedule_work_orders', function (Blueprint $table) {
             $table->id();
             $table->foreignId('schedule_id')->constrained()->onDelete('cascade');
-            $table->text('description');
-            $table->string('time', 50)->nullable();
+            $table->string('wo_number');
+            $table->integer('wo_year');
+            $table->text('location');
             $table->timestamps();
 
             // Indexes
@@ -28,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('schedule_items');
+        Schema::dropIfExists('schedule_work_orders');
     }
 };

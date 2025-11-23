@@ -13,15 +13,21 @@ return new class extends Migration
     {
         Schema::create('schedules', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('customer_id')->constrained()->onDelete('restrict');
+            $table->string('name');
+            $table->string('ta_no');
             $table->date('date');
-            $table->text('notes')->nullable();
+            $table->foreignId('customer_id')->constrained()->onDelete('restrict');
+            $table->string('pic_name');
+            $table->string('pic_phone', 20);
+            $table->string('pic_district')->nullable();
+            $table->string('report_type');
             $table->timestamps();
             $table->softDeletes();
 
             // Indexes
             $table->index('customer_id');
             $table->index('date');
+            $table->index('ta_no');
         });
     }
 
