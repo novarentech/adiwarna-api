@@ -19,13 +19,20 @@ class WorkAssignmentResource extends JsonResource
             'customer' => new CustomerResource($this->whenLoaded('customer')),
             'customer_location' => $this->whenLoaded('customerLocation'),
             'ref_po_no_instruction' => $this->ref_po_no_instruction,
-            'location' => $this->location,
             'scope' => $this->scope,
             'estimation' => $this->estimation,
             'mobilization' => $this->mobilization,
             'auth_name' => $this->auth_name,
             'auth_pos' => $this->auth_pos,
-            'employees' => EmployeeResource::collection($this->whenLoaded('employees')),
+            'workers' => $this->whenLoaded('workers', function () {
+                return $this->workers->map(function ($worker) {
+                    return [
+                        'id' => $worker->id,
+                        'worker_name' => $worker->worker_name,
+                        'position' => $worker->position,
+                    ];
+                });
+            }),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

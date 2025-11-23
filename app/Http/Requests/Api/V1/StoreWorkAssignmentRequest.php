@@ -20,17 +20,16 @@ class StoreWorkAssignmentRequest extends FormRequest
             'ref_no' => 'nullable|string|max:50',
             'ref_year' => 'nullable|integer',
             'customer_id' => 'required|exists:customers,id',
-            'customer_location_id' => 'nullable|exists:customer_locations,id',
+            'customer_location_id' => 'required|exists:customer_locations,id',
             'ref_po_no_instruction' => 'nullable|string|max:255',
-            'location' => 'nullable|string',
             'scope' => 'nullable|string',
             'estimation' => 'nullable|string|max:255',
             'mobilization' => 'nullable|date',
             'auth_name' => 'nullable|string|max:255',
             'auth_pos' => 'nullable|string|max:255',
-            'employees' => 'nullable|array',
-            'employees.*.employee_id' => 'required|exists:employees,id',
-            'employees.*.detail' => 'nullable|string',
+            'workers' => 'nullable|array',
+            'workers.*.worker_name' => 'required_with:workers|string|max:255',
+            'workers.*.position' => 'required_with:workers|string|max:255',
         ];
     }
 

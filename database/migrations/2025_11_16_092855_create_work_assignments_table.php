@@ -16,9 +16,8 @@ return new class extends Migration
             $table->string('ref_no', 20);
             $table->string('ref_year', 20);
             $table->foreignId('customer_id')->constrained()->onDelete('restrict');
-            $table->foreignId('customer_location_id')->nullable()->constrained()->onDelete('restrict');
+            $table->foreignId('customer_location_id')->constrained()->onDelete('restrict');
             $table->string('ref_po_no_instruction')->nullable();
-            $table->string('location');
             $table->text('scope');
             $table->string('estimation')->nullable();
             $table->string('mobilization')->nullable();

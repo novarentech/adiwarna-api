@@ -27,7 +27,6 @@ class WorkAssignmentFactory extends Factory
             'customer_id' => $customer->id,
             'customer_location_id' => CustomerLocation::factory()->create(['customer_id' => $customer->id])->id,
             'ref_po_no_instruction' => fake()->optional()->bothify('PO-####'),
-            'location' => fake()->city(),
             'scope' => fake()->paragraph(),
             'estimation' => fake()->optional()->randomElement(['1 week', '2 weeks', '1 month', '2 months']),
             'mobilization' => fake()->optional()->date(),

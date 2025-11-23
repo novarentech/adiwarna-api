@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\StoreWorkAssignmentRequest;
 use App\Http\Requests\Api\V1\UpdateWorkAssignmentRequest;
-use App\Http\Resources\V1\WorkAssignmentCollection;
+use App\Http\Resources\V1\WorkAssignmentListResource;
 use App\Http\Resources\V1\WorkAssignmentResource;
 use App\Models\WorkAssignment;
 use App\Services\WorkAssignmentService;
@@ -22,12 +22,13 @@ class WorkAssignmentController extends Controller
     public function index(): JsonResponse
     {
         $workAssignments = $this->workAssignmentService->getPaginatedWorkAssignments(
-            perPage: request('per_page', 15)
+            perPage: request('per_page', 15),
+            search: request('search')
         );
 
         return response()->json([
             'success' => true,
-            'data' => new WorkAssignmentCollection($workAssignments),
+            'data' => WorkAssignmentListResource::collection($workAssignments),
             'meta' => [
                 'current_page' => $workAssignments->currentPage(),
                 'last_page' => $workAssignments->lastPage(),
@@ -50,7 +51,7 @@ class WorkAssignmentController extends Controller
 
     public function show(WorkAssignment $workAssignment): JsonResponse
     {
-        $workAssignment->load(['customer', 'employees']);
+        $workAssignment->load(['customer', 'workers']);
 
         return response()->json([
             'success' => true,

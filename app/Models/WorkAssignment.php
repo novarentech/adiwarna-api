@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-use Illuminate\Database\Eloquent\Relations\BelongsToMany;
+use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class WorkAssignment extends Model
@@ -21,7 +21,6 @@ class WorkAssignment extends Model
         'customer_id',
         'customer_location_id',
         'ref_po_no_instruction',
-        'location',
         'scope',
         'estimation',
         'mobilization',
@@ -44,10 +43,8 @@ class WorkAssignment extends Model
         return $this->belongsTo(CustomerLocation::class);
     }
 
-    public function employees(): BelongsToMany
+    public function workers(): HasMany
     {
-        return $this->belongsToMany(Employee::class, 'work_assignment_employees')
-            ->withPivot('detail')
-            ->withTimestamps();
+        return $this->hasMany(WorkAssignmentWorker::class);
     }
 }
