@@ -69,28 +69,73 @@ class QuotationService extends BaseService
                 $quotation = $this->quotationRepository->find($id);
             }
 
-            // Update items only if provided
+            // Update items with partial update support
             if (isset($data['items'])) {
-                $quotation->items()->delete();
-                foreach ($data['items'] as $item) {
-                    $quotation->items()->create($item);
+                $existingItemIds = [];
+
+                foreach ($data['items'] as $itemData) {
+                    if (isset($itemData['id']) && $itemData['id']) {
+                        // Update existing item
+                        $item = $quotation->items()->find($itemData['id']);
+                        if ($item) {
+                            $item->update($itemData);
+                            $existingItemIds[] = $itemData['id'];
+                        }
+                    } else {
+                        // Create new item
+                        $newItem = $quotation->items()->create($itemData);
+                        $existingItemIds[] = $newItem->id;
+                    }
                 }
+
+                // Delete items that are not in the request
+                $quotation->items()->whereNotIn('id', $existingItemIds)->delete();
             }
 
-            // Update adiwarnas only if provided
+            // Update adiwarnas with partial update support
             if (isset($data['adiwarnas'])) {
-                $quotation->adiwarnas()->delete();
-                foreach ($data['adiwarnas'] as $adiwarna) {
-                    $quotation->adiwarnas()->create($adiwarna);
+                $existingAdiwarnaIds = [];
+
+                foreach ($data['adiwarnas'] as $adiwarnaData) {
+                    if (isset($adiwarnaData['id']) && $adiwarnaData['id']) {
+                        // Update existing adiwarna
+                        $adiwarna = $quotation->adiwarnas()->find($adiwarnaData['id']);
+                        if ($adiwarna) {
+                            $adiwarna->update($adiwarnaData);
+                            $existingAdiwarnaIds[] = $adiwarnaData['id'];
+                        }
+                    } else {
+                        // Create new adiwarna
+                        $newAdiwarna = $quotation->adiwarnas()->create($adiwarnaData);
+                        $existingAdiwarnaIds[] = $newAdiwarna->id;
+                    }
                 }
+
+                // Delete adiwarnas that are not in the request
+                $quotation->adiwarnas()->whereNotIn('id', $existingAdiwarnaIds)->delete();
             }
 
-            // Update clients only if provided
+            // Update clients with partial update support
             if (isset($data['clients'])) {
-                $quotation->clients()->delete();
-                foreach ($data['clients'] as $client) {
-                    $quotation->clients()->create($client);
+                $existingClientIds = [];
+
+                foreach ($data['clients'] as $clientData) {
+                    if (isset($clientData['id']) && $clientData['id']) {
+                        // Update existing client
+                        $client = $quotation->clients()->find($clientData['id']);
+                        if ($client) {
+                            $client->update($clientData);
+                            $existingClientIds[] = $clientData['id'];
+                        }
+                    } else {
+                        // Create new client
+                        $newClient = $quotation->clients()->create($clientData);
+                        $existingClientIds[] = $newClient->id;
+                    }
                 }
+
+                // Delete clients that are not in the request
+                $quotation->clients()->whereNotIn('id', $existingClientIds)->delete();
             }
 
             return $quotation->load(['items', 'adiwarnas', 'clients']);
