@@ -12,6 +12,16 @@ interface WorkOrderRepositoryInterface extends RepositoryInterface
     public function withRelations(): self;
 
     /**
+     * Get work orders with customer and location only (for list view)
+     */
+    public function withCustomerAndLocation(): self;
+
+    /**
+     * Search work orders by workers, scope of work, customer, or work location
+     */
+    public function search(string $keyword): self;
+
+    /**
      * Get work orders by customer
      */
     public function byCustomer(int $customerId): Collection;

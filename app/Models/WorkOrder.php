@@ -17,14 +17,16 @@ class WorkOrder extends Model
         'work_order_year',
         'date',
         'customer_id',
-        'description',
-        'status',
+        'customer_location_id',
+        'scope_of_work',
     ];
 
     protected function casts(): array
     {
         return [
             'date' => 'date',
+            'work_order_year' => 'integer',
+            'scope_of_work' => 'array',
         ];
     }
 
@@ -33,10 +35,15 @@ class WorkOrder extends Model
         return $this->belongsTo(Customer::class);
     }
 
+    public function customerLocation(): BelongsTo
+    {
+        return $this->belongsTo(CustomerLocation::class);
+    }
+
     public function employees(): BelongsToMany
     {
         return $this->belongsToMany(Employee::class, 'work_order_employees')
-            ->withPivot('detail')
+            ->withPivot('id')
             ->withTimestamps();
     }
 }

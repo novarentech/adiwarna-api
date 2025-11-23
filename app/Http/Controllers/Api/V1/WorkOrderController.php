@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\StoreWorkOrderRequest;
 use App\Http\Requests\Api\V1\UpdateWorkOrderRequest;
-use App\Http\Resources\V1\WorkOrderCollection;
+use App\Http\Resources\V1\WorkOrderListResource;
 use App\Http\Resources\V1\WorkOrderResource;
 use App\Models\WorkOrder;
 use App\Services\WorkOrderService;
@@ -25,12 +25,13 @@ class WorkOrderController extends Controller
     public function index(): JsonResponse
     {
         $workOrders = $this->workOrderService->getPaginatedWorkOrders(
-            perPage: request('per_page', 15)
+            perPage: request('per_page', 15),
+            search: request('search')
         );
 
         return response()->json([
             'success' => true,
-            'data' => new WorkOrderCollection($workOrders),
+            'data' => WorkOrderListResource::collection($workOrders),
             'meta' => [
                 'current_page' => $workOrders->currentPage(),
                 'last_page' => $workOrders->lastPage(),
@@ -59,7 +60,7 @@ class WorkOrderController extends Controller
      */
     public function show(WorkOrder $workOrder): JsonResponse
     {
-        $workOrder->load(['customer', 'employees']);
+        $workOrder->load(['customer', 'customerLocation', 'employees']);
 
         return response()->json([
             'success' => true,

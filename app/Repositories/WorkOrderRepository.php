@@ -15,7 +15,30 @@ class WorkOrderRepository extends BaseRepository implements WorkOrderRepositoryI
 
     public function withRelations(): self
     {
-        $this->query->with(['employees', 'customer']);
+        $this->query->with(['employees', 'customer', 'customerLocation']);
+        return $this;
+    }
+
+    public function withCustomerAndLocation(): self
+    {
+        $this->query->with(['employees', 'customer', 'customerLocation']);
+        return $this;
+    }
+
+    public function search(string $keyword): self
+    {
+        $this->query->where(function ($query) use ($keyword) {
+            $query->whereHas('employees', function ($q) use ($keyword) {
+                $q->where('name', 'like', "%{$keyword}%");
+            })
+                ->orWhereHas('customer', function ($q) use ($keyword) {
+                    $q->where('name', 'like', "%{$keyword}%");
+                })
+                ->orWhereHas('customerLocation', function ($q) use ($keyword) {
+                    $q->where('location_name', 'like', "%{$keyword}%");
+                })
+                ->orWhereRaw('JSON_SEARCH(scope_of_work, "one", ?) IS NOT NULL', ["%{$keyword}%"]);
+        });
         return $this;
     }
 

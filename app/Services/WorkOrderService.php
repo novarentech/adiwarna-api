@@ -12,9 +12,15 @@ class WorkOrderService extends BaseService
         protected WorkOrderRepositoryInterface $workOrderRepository
     ) {}
 
-    public function getPaginatedWorkOrders(int $perPage = 15): LengthAwarePaginator
+    public function getPaginatedWorkOrders(int $perPage = 15, ?string $search = null): LengthAwarePaginator
     {
-        return $this->workOrderRepository->withRelations()->paginate($perPage);
+        $query = $this->workOrderRepository->withCustomerAndLocation();
+
+        if ($search) {
+            $query->search($search);
+        }
+
+        return $query->paginate($perPage);
     }
 
     public function getWorkOrderById(int $id): ?WorkOrder
@@ -29,16 +35,11 @@ class WorkOrderService extends BaseService
             $workOrder = $this->workOrderRepository->create($workOrderData);
 
             if (isset($data['employees'])) {
-                $employees = [];
-                foreach ($data['employees'] as $employee) {
-                    $employees[$employee['employee_id']] = [
-                        'detail' => $employee['detail'] ?? null
-                    ];
-                }
-                $workOrder->employees()->attach($employees);
+                $employeeIds = collect($data['employees'])->pluck('employee_id')->toArray();
+                $workOrder->employees()->attach($employeeIds);
             }
 
-            return $workOrder->load('employees', 'customer');
+            return $workOrder->load('employees', 'customer', 'customerLocation');
         });
     }
 
@@ -49,16 +50,30 @@ class WorkOrderService extends BaseService
             $workOrder = $this->workOrderRepository->update($id, $workOrderData);
 
             if (isset($data['employees'])) {
-                $employees = [];
-                foreach ($data['employees'] as $employee) {
-                    $employees[$employee['employee_id']] = [
-                        'detail' => $employee['detail'] ?? null
-                    ];
+                // Get existing employee pivot IDs from request
+                $requestEmployeeIds = collect($data['employees'])
+                    ->pluck('id')
+                    ->filter()
+                    ->toArray();
+
+                // Delete employees that are not in the request
+                $workOrder->employees()
+                    ->wherePivotNotIn('id', $requestEmployeeIds)
+                    ->detach();
+
+                // Update or create employees
+                foreach ($data['employees'] as $employeeData) {
+                    if (isset($employeeData['id'])) {
+                        // Employee already exists, no need to update pivot (no additional data)
+                        continue;
+                    } else {
+                        // Create new employee
+                        $workOrder->employees()->attach($employeeData['employee_id']);
+                    }
                 }
-                $workOrder->employees()->sync($employees);
             }
 
-            return $workOrder->load('employees', 'customer');
+            return $workOrder->load('employees', 'customer', 'customerLocation');
         });
     }
 

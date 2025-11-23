@@ -11,7 +11,7 @@ class WorkOrderSeeder extends Seeder
 {
     public function run(): void
     {
-        $customers = Customer::all();
+        $customers = Customer::with('locations')->get();
         $employees = Employee::all();
 
         if ($customers->isEmpty() || $employees->isEmpty()) {
@@ -21,16 +21,20 @@ class WorkOrderSeeder extends Seeder
 
         $customers->random(min(5, $customers->count()))->each(function ($customer) use ($employees) {
             WorkOrder::factory()
-                ->count(rand(1, 2))
+                ->count(rand(2, 3))
                 ->for($customer)
                 ->create()
-                ->each(function ($workOrder) use ($employees) {
-                    $selectedEmployees = $employees->random(rand(2, 4));
-                    foreach ($selectedEmployees as $employee) {
-                        $workOrder->employees()->attach($employee->id, [
-                            'detail' => fake()->sentence(),
+                ->each(function ($workOrder) use ($customer, $employees) {
+                    // Set customer location if available
+                    if ($customer->locations->isNotEmpty()) {
+                        $workOrder->update([
+                            'customer_location_id' => $customer->locations->random()->id,
                         ]);
                     }
+
+                    // Attach employees (position will be retrieved from employees table)
+                    $selectedEmployees = $employees->random(rand(2, 4));
+                    $workOrder->employees()->attach($selectedEmployees->pluck('id')->toArray());
                 });
         });
     }

@@ -49,6 +49,11 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
+            \App\Contracts\Repositories\WorkOrderRepositoryInterface::class,
+            \App\Repositories\WorkOrderRepository::class
+        );
+
+        $this->app->bind(
             \App\Contracts\Repositories\PayrollProjectRepositoryInterface::class,
             \App\Repositories\PayrollProjectRepository::class
         );

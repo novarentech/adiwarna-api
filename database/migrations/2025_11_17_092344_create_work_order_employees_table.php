@@ -15,13 +15,11 @@ return new class extends Migration
             $table->id();
             $table->foreignId('work_order_id')->constrained()->onDelete('cascade');
             $table->foreignId('employee_id')->constrained()->onDelete('cascade');
-            $table->text('detail')->nullable();
             $table->timestamps();
 
             // Indexes
             $table->index('work_order_id');
             $table->index('employee_id');
-            $table->unique(['work_order_id', 'employee_id']);
         });
     }
 

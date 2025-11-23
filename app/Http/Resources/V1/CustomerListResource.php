@@ -17,6 +17,7 @@ class CustomerListResource extends JsonResource
             'address' => $this->address,
             'customer_locations' => $this->locations->map(function ($location) {
                 return [
+                    'id' => $location->id,
                     'location_name' => $location->location_name,
                 ];
             }),
