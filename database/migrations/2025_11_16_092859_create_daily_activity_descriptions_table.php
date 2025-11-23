@@ -12,6 +12,7 @@ return new class extends Migration
             $table->id();
             $table->foreignId('daily_activity_id')->constrained()->onDelete('cascade');
             $table->text('description');
+            $table->string('equipment_no')->nullable();
             $table->timestamps();
 
             // Indexes

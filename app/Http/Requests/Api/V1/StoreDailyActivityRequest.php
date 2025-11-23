@@ -27,10 +27,10 @@ class StoreDailyActivityRequest extends FormRequest
             'acknowledge_name' => 'nullable|string|max:255',
             'acknowledge_pos' => 'nullable|string|max:255',
             'members' => 'nullable|array',
-            'members.*.name' => 'required|string|max:255',
-            'members.*.position' => 'nullable|string|max:255',
+            'members.*' => 'required|exists:employees,id',
             'descriptions' => 'nullable|array',
             'descriptions.*.description' => 'required|string',
+            'descriptions.*.equipment_no' => 'nullable|string|max:255',
         ];
     }
 

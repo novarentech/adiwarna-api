@@ -7,10 +7,15 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class DailyActivityMember extends Model
 {
-    protected $fillable = ['daily_activity_id', 'member_name'];
+    protected $fillable = ['daily_activity_id', 'employee_id'];
 
     public function dailyActivity(): BelongsTo
     {
         return $this->belongsTo(DailyActivity::class);
+    }
+
+    public function employee(): BelongsTo
+    {
+        return $this->belongsTo(Employee::class);
     }
 }

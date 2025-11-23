@@ -11,11 +11,12 @@ return new class extends Migration
         Schema::create('daily_activity_members', function (Blueprint $table) {
             $table->id();
             $table->foreignId('daily_activity_id')->constrained()->onDelete('cascade');
-            $table->string('member_name');
+            $table->foreignId('employee_id')->constrained()->onDelete('cascade');
             $table->timestamps();
 
             // Indexes
             $table->index('daily_activity_id');
+            $table->index('employee_id');
         });
     }
 

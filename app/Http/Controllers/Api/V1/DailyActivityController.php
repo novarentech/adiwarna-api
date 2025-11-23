@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\StoreDailyActivityRequest;
 use App\Http\Requests\Api\V1\UpdateDailyActivityRequest;
-use App\Http\Resources\V1\DailyActivityCollection;
+use App\Http\Resources\V1\DailyActivityListResource;
 use App\Http\Resources\V1\DailyActivityResource;
 use App\Models\DailyActivity;
 use App\Services\DailyActivityService;
@@ -23,12 +23,13 @@ class DailyActivityController extends Controller
     {
         $dailyActivities = $this->dailyActivityService->getPaginatedDailyActivities(
             perPage: request('per_page', 15),
-            userId: request()->user()->id
+            userId: request()->user()->id,
+            search: request('search')
         );
 
         return response()->json([
             'success' => true,
-            'data' => new DailyActivityCollection($dailyActivities),
+            'data' => DailyActivityListResource::collection($dailyActivities),
             'meta' => [
                 'current_page' => $dailyActivities->currentPage(),
                 'last_page' => $dailyActivities->lastPage(),

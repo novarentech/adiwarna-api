@@ -7,7 +7,7 @@ use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class DailyActivityDescription extends Model
 {
-    protected $fillable = ['daily_activity_id', 'description'];
+    protected $fillable = ['daily_activity_id', 'description', 'equipment_no'];
 
     public function dailyActivity(): BelongsTo
     {

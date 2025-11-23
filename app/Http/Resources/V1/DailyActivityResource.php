@@ -23,8 +23,24 @@ class DailyActivityResource extends JsonResource
             'prepared_pos' => $this->prepared_pos,
             'acknowledge_name' => $this->acknowledge_name,
             'acknowledge_pos' => $this->acknowledge_pos,
-            'members' => $this->whenLoaded('members'),
-            'descriptions' => $this->whenLoaded('descriptions'),
+            'members' => $this->whenLoaded('members', function () {
+                return $this->members->map(function ($member) {
+                    return [
+                        'id' => $member->id,
+                        'employee_id' => $member->employee_id,
+                        'employee_name' => $member->employee ? $member->employee->name : null,
+                    ];
+                });
+            }),
+            'descriptions' => $this->whenLoaded('descriptions', function () {
+                return $this->descriptions->map(function ($description) {
+                    return [
+                        'id' => $description->id,
+                        'description' => $description->description,
+                        'equipment_no' => $description->equipment_no,
+                    ];
+                });
+            }),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

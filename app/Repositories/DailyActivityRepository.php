@@ -14,7 +14,13 @@ class DailyActivityRepository extends BaseRepository implements DailyActivityRep
 
     public function withRelations(): self
     {
-        $this->query->with(['customer', 'members', 'descriptions']);
+        $this->query->with(['customer', 'members.employee', 'descriptions']);
+        return $this;
+    }
+
+    public function withCustomerOnly(): self
+    {
+        $this->query->with(['customer']);
         return $this;
     }
 
@@ -22,6 +28,18 @@ class DailyActivityRepository extends BaseRepository implements DailyActivityRep
     {
         // Implement role-based filtering if needed
         // For now, just return self
+        return $this;
+    }
+
+    public function search(string $keyword): self
+    {
+        $this->query->where(function ($query) use ($keyword) {
+            $query->whereHas('customer', function ($q) use ($keyword) {
+                $q->where('name', 'like', "%{$keyword}%");
+            })
+                ->orWhere('location', 'like', "%{$keyword}%")
+                ->orWhere('prepared_name', 'like', "%{$keyword}%");
+        });
         return $this;
     }
 }
