@@ -13,13 +13,25 @@ class EquipmentGeneralRepository extends BaseRepository implements EquipmentGene
         return EquipmentGeneral::class;
     }
 
-    public function byType(string $type): Collection
+    public function search(string $keyword): self
     {
-        return $this->model->where('equipment_type', $type)->get();
+        $this->query->where(function ($query) use ($keyword) {
+            $query->where('description', 'like', "%{$keyword}%")
+                ->orWhere('merk_type', 'like', "%{$keyword}%")
+                ->orWhere('serial_number', 'like', "%{$keyword}%")
+                ->orWhere('calibration_agency', 'like', "%{$keyword}%")
+                ->orWhere('condition', 'like', "%{$keyword}%");
+        });
+        return $this;
     }
 
     public function byCondition(string $condition): Collection
     {
         return $this->model->where('condition', $condition)->get();
+    }
+
+    public function byCalibrationAgency(string $agency): Collection
+    {
+        return $this->model->where('calibration_agency', $agency)->get();
     }
 }

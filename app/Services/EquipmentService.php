@@ -22,9 +22,15 @@ class EquipmentService extends BaseService
         return $this->equipmentGeneralRepository->all();
     }
 
-    public function getPaginatedGeneral(int $perPage = 15): LengthAwarePaginator
+    public function getPaginatedGeneral(int $perPage = 15, ?string $search = null): LengthAwarePaginator
     {
-        return $this->equipmentGeneralRepository->paginate($perPage);
+        $query = $this->equipmentGeneralRepository;
+
+        if ($search) {
+            $query->search($search);
+        }
+
+        return $query->paginate($perPage);
     }
 
     public function getGeneralById(int $id): ?EquipmentGeneral

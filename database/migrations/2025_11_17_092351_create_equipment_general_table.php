@@ -13,19 +13,22 @@ return new class extends Migration
     {
         Schema::create('equipment_general', function (Blueprint $table) {
             $table->id();
-            $table->string('equipment_name', 255);
-            $table->string('equipment_type', 100);
-            $table->integer('quantity')->default(1);
-            $table->string('condition', 50);
-            $table->json('specifications')->nullable();
-            $table->date('purchase_date')->nullable();
-            $table->text('notes')->nullable();
+            $table->string('description', 255);
+            $table->string('merk_type', 255);
+            $table->string('serial_number', 100)->unique();
+            $table->date('calibration_date');
+            $table->integer('duration_months'); // 6 or 12
+            $table->date('expired_date');
+            $table->enum('calibration_agency', ['internal', 'external']);
+            $table->enum('condition', ['ok', 'repair', 'reject']);
             $table->timestamps();
             $table->softDeletes();
 
             // Indexes
-            $table->index('equipment_type');
+            $table->index('serial_number');
             $table->index('condition');
+            $table->index('calibration_agency');
+            $table->index('expired_date');
         });
     }
 

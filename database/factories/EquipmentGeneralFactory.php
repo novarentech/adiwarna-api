@@ -2,7 +2,11 @@
 
 namespace Database\Factories;
 
+use App\Enums\CalibrationAgency;
+use App\Enums\CalibrationDuration;
+use App\Enums\EquipmentCondition;
 use App\Models\EquipmentGeneral;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 class EquipmentGeneralFactory extends Factory
@@ -11,17 +15,20 @@ class EquipmentGeneralFactory extends Factory
 
     public function definition(): array
     {
-        $equipmentTypes = ['Compressor', 'Generator', 'Welding Machine', 'Crane', 'Forklift', 'Excavator'];
-        $conditions = ['Good', 'Fair', 'Need Maintenance', 'Under Repair'];
+        $descriptions = ['Profile Gauge', 'Thickness Gauge', 'Pressure Gauge', 'Temperature Gauge', 'Flow Meter'];
+        $merks = ['Gagemaker', 'Lonestar', 'Mitutoyo', 'Starrett', 'Testo'];
+        $calibrationDate = fake()->dateTimeBetween('-1 year', 'now');
+        $duration = fake()->randomElement([CalibrationDuration::SIX_MONTHS, CalibrationDuration::TWELVE_MONTHS]);
 
         return [
-            'equipment_name' => fake()->randomElement($equipmentTypes) . ' ' . fake()->bothify('##??'),
-            'equipment_type' => fake()->randomElement($equipmentTypes),
-            'quantity' => fake()->numberBetween(1, 10),
-            'condition' => fake()->randomElement($conditions),
-            'specifications' => fake()->optional()->paragraph(),
-            'purchase_date' => fake()->optional()->dateTimeBetween('-5 years', 'now'),
-            'notes' => fake()->optional()->sentence(),
+            'description' => fake()->randomElement($descriptions),
+            'merk_type' => fake()->randomElement($merks) . ' - ' . fake()->bothify('??###'),
+            'serial_number' => fake()->unique()->bothify('??###-TC#-#'),
+            'calibration_date' => $calibrationDate,
+            'duration_months' => $duration,
+            'expired_date' => Carbon::parse($calibrationDate)->addMonths($duration->value),
+            'calibration_agency' => fake()->randomElement([CalibrationAgency::INTERNAL, CalibrationAgency::EXTERNAL]),
+            'condition' => fake()->randomElement([EquipmentCondition::OK, EquipmentCondition::REPAIR, EquipmentCondition::REJECT]),
         ];
     }
 }

@@ -19,13 +19,15 @@ class EquipmentGeneralController extends Controller
 
     /**
      * Display a listing of general equipment.
+     * Supports search by description, merk/type, serial number, agency, or condition.
      */
     public function index(): JsonResponse
     {
         $this->authorize('viewAny', EquipmentGeneral::class);
 
         $equipment = $this->equipmentService->getPaginatedGeneral(
-            perPage: request('per_page', 15)
+            perPage: request('per_page', 15),
+            search: request('search')
         );
 
         return response()->json([

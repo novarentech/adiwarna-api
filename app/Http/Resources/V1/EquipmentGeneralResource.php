@@ -11,15 +11,14 @@ class EquipmentGeneralResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'equipment_name' => $this->equipment_name,
-            'equipment_type' => $this->equipment_type,
-            'quantity' => $this->quantity,
-            'condition' => $this->condition,
-            'specifications' => $this->specifications,
-            'purchase_date' => $this->purchase_date,
-            'notes' => $this->notes,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'description' => $this->description,
+            'merk_type' => $this->merk_type,
+            'serial_number' => $this->serial_number,
+            'duration' => $this->duration_months->value . ' Months',
+            'calibration_date' => $this->calibration_date->format('Y-m-d'),
+            'expired_date' => $this->expired_date->format('Y-m-d'),
+            'calibration_agency' => $this->calibration_agency->value,
+            'condition' => $this->condition->value,
         ];
     }
 }
