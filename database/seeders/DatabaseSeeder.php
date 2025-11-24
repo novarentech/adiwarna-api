@@ -42,7 +42,6 @@ class DatabaseSeeder extends Seeder
 
             // 7. Equipment & System Modules
             EquipmentSeeder::class,
-            TrackRecordSeeder::class,
             OperationalSeeder::class,
         ]);
 

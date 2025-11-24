@@ -3,6 +3,7 @@
 Dokumentasi ini berisi informasi tentang Postman collections yang tersedia untuk testing Adiwarna API.
 
 ## Collections yang Tersedia
+
 1. **Authentication** - Login, Logout, Get Current User
 2. **User Management** - CRUD Users dengan role-based access
 3. **Customers** - CRUD Customers dengan locations
@@ -15,16 +16,16 @@ Dokumentasi ini berisi informasi tentang Postman collections yang tersedia untuk
 10. **Work Orders** - CRUD Work Orders dengan employees
 11. **Document Transmittals** - CRUD Document Transmittals dengan documents
 12. **Purchase Requisitions** - CRUD Purchase Requisitions dengan items
-13. **Material Receiving Reports** - CRUD Material Receiving Reports dengan items 
-14. **Equipment General** - CRUD General Equipment management 
-15. **Equipment Project** - CRUD Project Equipment management 
-16. **Track Records** - CRUD Track Records untuk project history 
-17. **Operational** - CRUD Operational data management 
+13. **Material Receiving Reports** - CRUD Material Receiving Reports dengan items
+14. **Equipment General** - CRUD General Equipment management
+15. **Equipment Project** - CRUD Project Equipment management
+16. **Track Records** - Read-only view of work orders history
+17. **Operational** - CRUD Operational data management
 18. **About/Company Info** - CRUD Company information dengan active status
-19. **Payroll Projects** - CRUD Payroll Projects 
-20. **Payroll Periods** - CRUD Payroll Periods (nested under projects) 
-21. **Payroll Employees** - CRUD Payroll Employees (nested under periods) dengan recalculate 
-22. **Payroll Timesheets** - CRUD Payroll Timesheets (nested under employees) dengan bulk update 
+19. **Payroll Projects** - CRUD Payroll Projects
+20. **Payroll Periods** - CRUD Payroll Periods (nested under projects)
+21. **Payroll Employees** - CRUD Payroll Employees (nested under periods) dengan recalculate
+22. **Payroll Timesheets** - CRUD Payroll Timesheets (nested under employees) dengan bulk update
 23. **Payroll Slips** - Generate dan manage Payroll Slips (nested under periods)
 
 ## Cara Menggunakan

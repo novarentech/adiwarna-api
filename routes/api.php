@@ -174,12 +174,8 @@ Route::prefix('v1')->middleware('throttle:api')->group(function () {
         Route::put('/equipment/project/{equipment_project}', [EquipmentProjectController::class, 'update']);
         Route::delete('/equipment/project/{equipment_project}', [EquipmentProjectController::class, 'destroy']);
 
-        // Track Records
+        // Track Records (Read-only - displays work orders history)
         Route::get('/track-records', [TrackRecordController::class, 'index']);
-        Route::post('/track-records', [TrackRecordController::class, 'store']);
-        Route::get('/track-records/{track_record}', [TrackRecordController::class, 'show']);
-        Route::put('/track-records/{track_record}', [TrackRecordController::class, 'update']);
-        Route::delete('/track-records/{track_record}', [TrackRecordController::class, 'destroy']);
 
         // Operational
         Route::get('/operational', [OperationalController::class, 'index']);

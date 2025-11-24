@@ -30,4 +30,9 @@ interface WorkOrderRepositoryInterface extends RepositoryInterface
      * Get work orders by status
      */
     public function byStatus(string $status): Collection;
+
+    /**
+     * Filter work orders by date range
+     */
+    public function byDateRange(string $startDate, string $endDate): self;
 }

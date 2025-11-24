@@ -16,7 +16,7 @@
 
 Adiwarna API adalah RESTful API untuk sistem ERP PT Adiwarna Alam Raya.
 
-**Total Endpoints:** 114 endpoints
+**Total Endpoints:** 110 endpoints
 **API Version:** v1
 **Authentication:** Bearer Token (Laravel Sanctum)
 
@@ -243,13 +243,9 @@ GET /api/v1/customers?per_page=20&page=2
 -   `PUT /equipment/project/{id}` - Update equipment
 -   `DELETE /equipment/project/{id}` - Delete equipment
 
-### 16. Track Records (5 endpoints)
+### 16. Track Records (1 endpoint) - Read-only
 
--   `GET /track-records` - List track records
--   `POST /track-records` - Create track record
--   `GET /track-records/{id}` - Get track record
--   `PUT /track-records/{id}` - Update track record
--   `DELETE /track-records/{id}` - Delete track record
+-   `GET /track-records` - List work orders history
 
 ### 17. Operational (5 endpoints)
 
@@ -310,7 +306,7 @@ GET /api/v1/customers?per_page=20&page=2
 
 ---
 
-**Total: 114 Endpoints**
+**Total: 110 Endpoints**
 
 For detailed request/response examples for each endpoint, see individual module documentation.
 

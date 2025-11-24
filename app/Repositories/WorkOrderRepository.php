@@ -37,7 +37,7 @@ class WorkOrderRepository extends BaseRepository implements WorkOrderRepositoryI
                 ->orWhereHas('customerLocation', function ($q) use ($keyword) {
                     $q->where('location_name', 'like', "%{$keyword}%");
                 })
-                ->orWhereRaw('JSON_SEARCH(scope_of_work, "one", ?) IS NOT NULL', ["%{$keyword}%"]);
+                ->orWhereRaw('JSON_SEARCH(LOWER(scope_of_work), "one", LOWER(?)) IS NOT NULL', ["%{$keyword}%"]);
         });
         return $this;
     }
@@ -50,5 +50,11 @@ class WorkOrderRepository extends BaseRepository implements WorkOrderRepositoryI
     public function byStatus(string $status): Collection
     {
         return $this->model->where('status', $status)->get();
+    }
+
+    public function byDateRange(string $startDate, string $endDate): self
+    {
+        $this->query->whereBetween('date', [$startDate, $endDate]);
+        return $this;
     }
 }

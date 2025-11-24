@@ -2,59 +2,36 @@
 
 namespace App\Services;
 
-use App\Contracts\Repositories\TrackRecordRepositoryInterface;
-use App\Models\TrackRecord;
+use App\Contracts\Repositories\WorkOrderRepositoryInterface;
 use Illuminate\Contracts\Pagination\LengthAwarePaginator;
-use Illuminate\Database\Eloquent\Collection;
 
 class TrackRecordService extends BaseService
 {
     public function __construct(
-        protected TrackRecordRepositoryInterface $trackRecordRepository
+        protected WorkOrderRepositoryInterface $workOrderRepository
     ) {}
 
-    public function getAllTrackRecords(): Collection
-    {
-        return $this->trackRecordRepository->withCustomer()->all();
-    }
+    /**
+     * Get track records from work orders with filtering and search.
+     */
+    public function getTrackRecords(
+        ?string $startDate = null,
+        ?string $endDate = null,
+        ?string $search = null,
+        int $perPage = 15
+    ): LengthAwarePaginator {
+        $query = $this->workOrderRepository->withRelations();
 
-    public function getPaginatedTrackRecords(int $perPage = 15): LengthAwarePaginator
-    {
-        return $this->trackRecordRepository->withCustomer()->paginate($perPage);
-    }
+        // Filter by date range
+        if ($startDate && $endDate) {
+            $query->byDateRange($startDate, $endDate);
+        }
 
-    public function getTrackRecordById(int $id): ?TrackRecord
-    {
-        return $this->trackRecordRepository->withCustomer()->find($id);
-    }
+        // Search by worker name, scope of work, customer, or work location
+        if ($search) {
+            $query->search($search);
+        }
 
-    public function createTrackRecord(array $data): TrackRecord
-    {
-        return $this->trackRecordRepository->create($data);
-    }
-
-    public function updateTrackRecord(int $id, array $data): TrackRecord
-    {
-        return $this->trackRecordRepository->update($id, $data);
-    }
-
-    public function deleteTrackRecord(int $id): bool
-    {
-        return $this->trackRecordRepository->delete($id);
-    }
-
-    public function getByCustomer(int $customerId): Collection
-    {
-        return $this->trackRecordRepository->byCustomer($customerId);
-    }
-
-    public function getByDateRange(string $startDate, string $endDate): Collection
-    {
-        return $this->trackRecordRepository->byDateRange($startDate, $endDate);
-    }
-
-    public function getByStatus(string $status): Collection
-    {
-        return $this->trackRecordRepository->byStatus($status);
+        return $query->paginate($perPage);
     }
 }
