@@ -19,13 +19,15 @@ class EquipmentProjectController extends Controller
 
     /**
      * Display a listing of project equipment.
+     * Supports search by customer name, location, prepared by, or verified by.
      */
     public function index(): JsonResponse
     {
         $this->authorize('viewAny', EquipmentProject::class);
 
         $equipment = $this->equipmentService->getPaginatedProject(
-            perPage: request('per_page', 15)
+            perPage: request('per_page', 15),
+            search: request('search')
         );
 
         return response()->json([
@@ -63,7 +65,7 @@ class EquipmentProjectController extends Controller
     {
         $this->authorize('viewProject', [EquipmentProject::class, $equipmentProject]);
 
-        $equipmentProject->load('customer');
+        $equipmentProject->load(['customer', 'customerLocation', 'equipments']);
 
         return response()->json([
             'success' => true,

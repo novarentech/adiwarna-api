@@ -14,30 +14,27 @@ class StoreEquipmentProjectRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'project_name' => 'required|string|max:255',
             'customer_id' => 'required|exists:customers,id',
-            'equipment_name' => 'required|string|max:255',
-            'equipment_type' => 'required|string|max:100',
-            'quantity' => 'required|integer|min:1',
-            'condition' => 'required|string|in:good,fair,poor',
-            'assigned_date' => 'required|date',
-            'return_date' => 'nullable|date|after:assigned_date',
-            'notes' => 'nullable|string',
+            'customer_location_id' => 'nullable|exists:customer_locations,id',
+            'project_date' => 'required|date',
+            'prepared_by' => 'required|string|max:255',
+            'verified_by' => 'required|string|max:255',
+            'equipment_ids' => 'required|array|min:1',
+            'equipment_ids.*' => 'required|exists:equipment_general,id',
         ];
     }
 
     public function messages(): array
     {
         return [
-            'project_name.required' => 'Project name is required',
             'customer_id.required' => 'Customer is required',
             'customer_id.exists' => 'Selected customer does not exist',
-            'equipment_name.required' => 'Equipment name is required',
-            'equipment_type.required' => 'Equipment type is required',
-            'quantity.required' => 'Quantity is required',
-            'condition.required' => 'Condition is required',
-            'assigned_date.required' => 'Assigned date is required',
-            'return_date.after' => 'Return date must be after assigned date',
+            'customer_location_id.exists' => 'Selected location does not exist',
+            'project_date.required' => 'Project date is required',
+            'prepared_by.required' => 'Prepared by is required',
+            'verified_by.required' => 'Verified by is required',
+            'equipment_ids.required' => 'At least one equipment is required',
+            'equipment_ids.*.exists' => 'Selected equipment does not exist',
         ];
     }
 }

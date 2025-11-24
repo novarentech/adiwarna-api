@@ -56,27 +56,55 @@ class EquipmentService extends BaseService
     // Equipment Project methods
     public function getAllProject(): Collection
     {
-        return $this->equipmentProjectRepository->withCustomer()->all();
+        return $this->equipmentProjectRepository->withCustomerAndLocation()->all();
     }
 
-    public function getPaginatedProject(int $perPage = 15): LengthAwarePaginator
+    public function getPaginatedProject(int $perPage = 15, ?string $search = null): LengthAwarePaginator
     {
-        return $this->equipmentProjectRepository->withCustomer()->paginate($perPage);
+        $query = $this->equipmentProjectRepository->withCustomerAndLocation();
+
+        if ($search) {
+            $query->search($search);
+        }
+
+        return $query->paginate($perPage);
     }
 
     public function getProjectById(int $id): ?EquipmentProject
     {
-        return $this->equipmentProjectRepository->withCustomer()->find($id);
+        return $this->equipmentProjectRepository->withRelations()->find($id);
     }
 
     public function createProject(array $data): EquipmentProject
     {
-        return $this->equipmentProjectRepository->create($data);
+        return $this->executeInTransaction(function () use ($data) {
+            $equipmentIds = $data['equipment_ids'] ?? [];
+            unset($data['equipment_ids']);
+
+            $project = $this->equipmentProjectRepository->create($data);
+
+            if (!empty($equipmentIds)) {
+                $project->equipments()->attach($equipmentIds);
+            }
+
+            return $project->load(['customer', 'customerLocation', 'equipments']);
+        });
     }
 
     public function updateProject(int $id, array $data): EquipmentProject
     {
-        return $this->equipmentProjectRepository->update($id, $data);
+        return $this->executeInTransaction(function () use ($id, $data) {
+            $equipmentIds = $data['equipment_ids'] ?? null;
+            unset($data['equipment_ids']);
+
+            $project = $this->equipmentProjectRepository->update($id, $data);
+
+            if ($equipmentIds !== null) {
+                $project->equipments()->sync($equipmentIds);
+            }
+
+            return $project->load(['customer', 'customerLocation', 'equipments']);
+        });
     }
 
     public function deleteProject(int $id): bool

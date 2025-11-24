@@ -11,18 +11,22 @@ class EquipmentProjectResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'project_name' => $this->project_name,
-            'customer_id' => $this->customer_id,
-            'customer' => new CustomerResource($this->whenLoaded('customer')),
-            'equipment_name' => $this->equipment_name,
-            'equipment_type' => $this->equipment_type,
-            'quantity' => $this->quantity,
-            'condition' => $this->condition,
-            'assigned_date' => $this->assigned_date,
-            'return_date' => $this->return_date,
-            'notes' => $this->notes,
-            'created_at' => $this->created_at,
-            'updated_at' => $this->updated_at,
+            'project_date' => $this->project_date->format('Y-m-d'),
+            'customer' => $this->customer?->name,
+            'location' => $this->customerLocation?->location_name,
+            'prepared_by' => $this->prepared_by,
+            'verified_by' => $this->verified_by,
+            'equipments' => $this->whenLoaded('equipments', function () {
+                return $this->equipments->map(function ($equipment) {
+                    return [
+                        'id' => $equipment->id,
+                        'description' => $equipment->description,
+                        'merk_type' => $equipment->merk_type,
+                        'serial_number' => $equipment->serial_number,
+                        'calibration_date' => $equipment->calibration_date->format('Y-m-d'),
+                    ];
+                });
+            }),
         ];
     }
 }

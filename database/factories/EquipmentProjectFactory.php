@@ -3,6 +3,7 @@
 namespace Database\Factories;
 
 use App\Models\Customer;
+use App\Models\CustomerLocation;
 use App\Models\EquipmentProject;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -12,19 +13,15 @@ class EquipmentProjectFactory extends Factory
 
     public function definition(): array
     {
-        $equipmentTypes = ['Compressor', 'Generator', 'Welding Machine', 'Crane', 'Forklift', 'Excavator'];
-        $conditions = ['Good', 'Fair', 'Need Maintenance', 'Under Repair'];
+        $preparedBy = ['Smith', 'James', 'Kivy', 'Lena', 'Chairul Anwar'];
+        $verifiedBy = ['Van Gogh', 'Admin', 'Messi', 'Loki', 'Agung Pramudya'];
 
         return [
-            'project_name' => fake()->catchPhrase() . ' Project',
             'customer_id' => Customer::factory(),
-            'equipment_name' => fake()->randomElement($equipmentTypes) . ' ' . fake()->bothify('##??'),
-            'equipment_type' => fake()->randomElement($equipmentTypes),
-            'quantity' => fake()->numberBetween(1, 5),
-            'condition' => fake()->randomElement($conditions),
-            'assigned_date' => fake()->dateTimeBetween('-6 months', 'now'),
-            'return_date' => fake()->optional()->dateTimeBetween('now', '+6 months'),
-            'notes' => fake()->optional()->sentence(),
+            'customer_location_id' => CustomerLocation::factory(),
+            'project_date' => fake()->dateTimeBetween('-6 months', 'now'),
+            'prepared_by' => fake()->randomElement($preparedBy),
+            'verified_by' => fake()->randomElement($verifiedBy),
         ];
     }
 }

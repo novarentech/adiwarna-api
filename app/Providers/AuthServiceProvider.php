@@ -37,7 +37,6 @@ class AuthServiceProvider extends ServiceProvider
         // Equipment & System Modules
         \App\Models\EquipmentGeneral::class => \App\Policies\EquipmentPolicy::class,
         \App\Models\EquipmentProject::class => \App\Policies\EquipmentPolicy::class,
-        \App\Models\TrackRecord::class => \App\Policies\TrackRecordPolicy::class,
         \App\Models\Operational::class => \App\Policies\OperationalPolicy::class,
         \App\Models\About::class => \App\Policies\AboutPolicy::class,
 

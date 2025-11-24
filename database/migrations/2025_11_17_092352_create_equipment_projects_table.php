@@ -13,22 +13,18 @@ return new class extends Migration
     {
         Schema::create('equipment_projects', function (Blueprint $table) {
             $table->id();
-            $table->string('project_name', 255);
             $table->foreignId('customer_id')->constrained()->onDelete('restrict');
-            $table->string('equipment_name', 255);
-            $table->string('equipment_type', 100);
-            $table->integer('quantity')->default(1);
-            $table->string('condition', 50);
-            $table->date('assigned_date');
-            $table->date('return_date')->nullable();
-            $table->text('notes')->nullable();
+            $table->foreignId('customer_location_id')->nullable()->constrained()->onDelete('set null');
+            $table->date('project_date');
+            $table->string('prepared_by', 255);
+            $table->string('verified_by', 255);
             $table->timestamps();
             $table->softDeletes();
 
             // Indexes
             $table->index('customer_id');
-            $table->index('project_name');
-            $table->index('assigned_date');
+            $table->index('customer_location_id');
+            $table->index('project_date');
         });
     }
 

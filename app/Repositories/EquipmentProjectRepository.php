@@ -13,19 +13,35 @@ class EquipmentProjectRepository extends BaseRepository implements EquipmentProj
         return EquipmentProject::class;
     }
 
-    public function withCustomer(): self
+    public function withRelations(): self
     {
-        $this->query->with('customer');
+        $this->query->with(['customer', 'customerLocation', 'equipments']);
+        return $this;
+    }
+
+    public function withCustomerAndLocation(): self
+    {
+        $this->query->with(['customer', 'customerLocation']);
+        return $this;
+    }
+
+    public function search(string $keyword): self
+    {
+        $this->query->where(function ($query) use ($keyword) {
+            $query->whereHas('customer', function ($q) use ($keyword) {
+                $q->where('name', 'like', "%{$keyword}%");
+            })
+                ->orWhereHas('customerLocation', function ($q) use ($keyword) {
+                    $q->where('location_name', 'like', "%{$keyword}%");
+                })
+                ->orWhere('prepared_by', 'like', "%{$keyword}%")
+                ->orWhere('verified_by', 'like', "%{$keyword}%");
+        });
         return $this;
     }
 
     public function byCustomer(int $customerId): Collection
     {
         return $this->model->where('customer_id', $customerId)->get();
-    }
-
-    public function byProjectName(string $projectName): Collection
-    {
-        return $this->model->where('project_name', 'like', "%{$projectName}%")->get();
     }
 }
