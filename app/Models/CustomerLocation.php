@@ -13,12 +13,6 @@ class CustomerLocation extends Model
     protected $fillable = [
         'customer_id',
         'location_name',
-        'address',
-        'city',
-        'province',
-        'postal_code',
-        'contact_person',
-        'contact_phone',
     ];
 
     /**
