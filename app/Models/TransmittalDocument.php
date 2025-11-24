@@ -12,9 +12,9 @@ class TransmittalDocument extends Model
 
     protected $fillable = [
         'transmittal_id',
-        'work_reference',
-        'document_no',
-        'document_year',
+        'wo_number',
+        'wo_year',
+        'location',
     ];
 
     public function transmittal(): BelongsTo

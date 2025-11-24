@@ -12,6 +12,16 @@ interface DocumentTransmittalRepositoryInterface extends RepositoryInterface
     public function withRelations(): self;
 
     /**
+     * Get transmittals with customer only (for list view)
+     */
+    public function withCustomerOnly(): self;
+
+    /**
+     * Search transmittals by customer name or PIC name
+     */
+    public function search(string $keyword): self;
+
+    /**
      * Get transmittals by customer
      */
     public function byCustomer(int $customerId): Collection;

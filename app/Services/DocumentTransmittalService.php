@@ -14,9 +14,15 @@ class DocumentTransmittalService extends BaseService
         protected TransmittalDocumentRepositoryInterface $documentRepository
     ) {}
 
-    public function getPaginatedTransmittals(int $perPage = 15): LengthAwarePaginator
+    public function getPaginatedTransmittals(int $perPage = 15, ?string $search = null): LengthAwarePaginator
     {
-        return $this->transmittalRepository->withRelations()->paginate($perPage);
+        $query = $this->transmittalRepository->withCustomerOnly();
+
+        if ($search) {
+            $query->search($search);
+        }
+
+        return $query->paginate($perPage);
     }
 
     public function getTransmittalById(int $id): ?DocumentTransmittal
@@ -47,9 +53,28 @@ class DocumentTransmittalService extends BaseService
             $transmittal = $this->transmittalRepository->update($id, $transmittalData);
 
             if (isset($data['documents'])) {
-                $transmittal->documents()->delete();
-                foreach ($data['documents'] as $document) {
-                    $transmittal->documents()->create($document);
+                // Get existing document IDs from request
+                $requestDocumentIds = collect($data['documents'])
+                    ->pluck('id')
+                    ->filter()
+                    ->toArray();
+
+                // Delete documents that are not in the request
+                $transmittal->documents()
+                    ->whereNotIn('id', $requestDocumentIds)
+                    ->delete();
+
+                // Update or create documents
+                foreach ($data['documents'] as $documentData) {
+                    if (isset($documentData['id'])) {
+                        // Update existing document
+                        $transmittal->documents()
+                            ->where('id', $documentData['id'])
+                            ->update(array_diff_key($documentData, array_flip(['id'])));
+                    } else {
+                        // Create new document
+                        $transmittal->documents()->create($documentData);
+                    }
                 }
             }
 

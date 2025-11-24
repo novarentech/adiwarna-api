@@ -12,14 +12,19 @@ class DocumentTransmittalFactory extends Factory
 
     public function definition(): array
     {
+        $months = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII', 'IX', 'X', 'XI', 'XII'];
+        $year = fake()->year();
+        $month = fake()->randomElement($months);
+        $number = str_pad(fake()->numberBetween(1, 999), 3, '0', STR_PAD_LEFT);
+
         return [
-            'customer_id' => Customer::factory(),
-            'customer_name' => fake()->company(),
-            'customer_address' => fake()->address(),
-            'pic_name' => fake()->name(),
-            'pic_phone' => fake()->phoneNumber(),
+            'name' => fake()->sentence(3),
+            'ta_no' => "{$number}/{$month}/{$year}",
             'date' => fake()->dateTimeBetween('-6 months', 'now'),
-            'description' => fake()->optional()->paragraph(),
+            'customer_id' => Customer::factory(),
+            'customer_district' => fake()->optional()->city(),
+            'pic_name' => fake()->name(),
+            'report_type' => fake()->randomElement(['Monthly Report', 'Quarterly Report', 'Annual Report', 'Project Report']),
         ];
     }
 }

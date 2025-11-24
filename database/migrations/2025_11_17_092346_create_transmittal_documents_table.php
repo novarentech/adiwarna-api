@@ -14,9 +14,9 @@ return new class extends Migration
         Schema::create('transmittal_documents', function (Blueprint $table) {
             $table->id();
             $table->foreignId('transmittal_id')->constrained('transmittals')->onDelete('cascade');
-            $table->string('work_reference', 255);
-            $table->string('document_no', 50);
-            $table->string('document_year', 4);
+            $table->string('wo_number');
+            $table->integer('wo_year');
+            $table->string('location');
             $table->timestamps();
 
             // Indexes

@@ -5,7 +5,6 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\StoreDocumentTransmittalRequest;
 use App\Http\Requests\Api\V1\UpdateDocumentTransmittalRequest;
-use App\Http\Resources\V1\DocumentTransmittalCollection;
 use App\Http\Resources\V1\DocumentTransmittalResource;
 use App\Models\DocumentTransmittal;
 use App\Services\DocumentTransmittalService;
@@ -21,16 +20,18 @@ class DocumentTransmittalController extends Controller
 
     /**
      * Display a listing of document transmittals.
+     * Supports search by customer name or PIC name via ?search= query parameter.
      */
     public function index(): JsonResponse
     {
         $transmittals = $this->documentTransmittalService->getPaginatedTransmittals(
-            perPage: request('per_page', 15)
+            perPage: request('per_page', 15),
+            search: request('search')
         );
 
         return response()->json([
             'success' => true,
-            'data' => new DocumentTransmittalCollection($transmittals),
+            'data' => DocumentTransmittalResource::collection($transmittals),
             'meta' => [
                 'current_page' => $transmittals->currentPage(),
                 'last_page' => $transmittals->lastPage(),

@@ -15,13 +15,13 @@ class DocumentTransmittal extends Model
     protected $table = 'transmittals';
 
     protected $fillable = [
-        'customer_id',
-        'customer_name',
-        'customer_address',
-        'pic_name',
-        'pic_phone',
+        'name',
+        'ta_no',
         'date',
-        'description',
+        'customer_id',
+        'customer_district',
+        'pic_name',
+        'report_type',
     ];
 
     protected function casts(): array
