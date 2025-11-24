@@ -12,11 +12,12 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
+        // Enable API throttling with custom limits
         $middleware->throttleApi();
 
-        // Custom rate limiters
-        $middleware->alias([
-            'throttle.login' => \Illuminate\Routing\Middleware\ThrottleRequests::class . ':login',
+        // Configure CORS
+        $middleware->validateCsrfTokens(except: [
+            'api/*',
         ]);
     })
     ->withExceptions(function (Exceptions $exceptions): void {
