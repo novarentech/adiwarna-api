@@ -32,7 +32,7 @@ class UserSeeder extends Seeder
             'phone' => '081234567892',
         ]);
 
-        // Create regular users
-        User::factory()->user()->count(3)->create();
+        // Create additional teknisi users
+        User::factory()->teknisi()->count(3)->create();
     }
 }

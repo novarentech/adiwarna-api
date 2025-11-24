@@ -66,12 +66,4 @@ class User extends Authenticatable
     {
         return $this->usertype === UserType::TEKNISI;
     }
-
-    /**
-     * Check if user is regular user
-     */
-    public function isUser(): bool
-    {
-        return $this->usertype === UserType::USER;
-    }
 }

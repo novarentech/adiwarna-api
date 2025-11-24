@@ -6,7 +6,6 @@ enum UserType: string
 {
     case ADMIN = 'admin';
     case TEKNISI = 'teknisi';
-    case USER = 'user';
 
     /**
      * Get all values
@@ -24,7 +23,6 @@ enum UserType: string
         return match ($this) {
             self::ADMIN => 'Administrator',
             self::TEKNISI => 'Teknisi',
-            self::USER => 'User',
         };
     }
 }

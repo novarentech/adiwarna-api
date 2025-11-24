@@ -30,7 +30,7 @@ class UserFactory extends Factory
             'phone' => fake()->numerify('08##########'),
             'email_verified_at' => now(),
             'password' => static::$password ??= Hash::make('password'),
-            'usertype' => UserType::USER,
+            'usertype' => UserType::TEKNISI,
             'remember_token' => Str::random(10),
         ];
     }
@@ -62,16 +62,6 @@ class UserFactory extends Factory
     {
         return $this->state(fn(array $attributes) => [
             'usertype' => UserType::TEKNISI,
-        ]);
-    }
-
-    /**
-     * Indicate that the user is a regular user.
-     */
-    public function user(): static
-    {
-        return $this->state(fn(array $attributes) => [
-            'usertype' => UserType::USER,
         ]);
     }
 }
