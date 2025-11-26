@@ -2,8 +2,6 @@
 
 namespace Database\Seeders;
 
-use App\Models\User;
-// use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -13,11 +11,40 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // User::factory(10)->create();
+        $this->command->info('Starting database seeding...');
 
-        User::factory()->create([
-            'name' => 'Test User',
-            'email' => 'test@example.com',
+        // Seed in proper order to maintain referential integrity
+        $this->call([
+            // 1. Users (independent)
+            UserSeeder::class,
+
+            // 2. Master Data (independent)
+            CustomerSeeder::class,
+            EmployeeSeeder::class,
+
+            // 3. Company Information (independent)
+            AboutSeeder::class,
+
+            // 4. Sales Modules (depends on customers)
+            QuotationSeeder::class,
+            PurchaseOrderSeeder::class,
+
+            // 5. Operations Modules (depends on customers and employees)
+            WorkAssignmentSeeder::class,
+            DailyActivitySeeder::class,
+            ScheduleSeeder::class,
+            WorkOrderSeeder::class,
+
+            // 6. Document Modules (depends on customers)
+            DocumentTransmittalSeeder::class,
+            PurchaseRequisitionSeeder::class,
+            MaterialReceivingReportSeeder::class,
+
+            // 7. Equipment & System Modules
+            EquipmentSeeder::class,
+            OperationalSeeder::class,
         ]);
+
+        $this->command->info('Database seeding completed successfully!');
     }
 }
