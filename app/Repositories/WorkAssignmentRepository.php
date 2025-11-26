@@ -31,9 +31,7 @@ class WorkAssignmentRepository extends BaseRepository implements WorkAssignmentR
                 $q->where('name', 'like', "%{$keyword}%");
             })
                 ->orWhereHas('customerLocation', function ($q) use ($keyword) {
-                    $q->where('location_name', 'like', "%{$keyword}%")
-                        ->orWhere('address', 'like', "%{$keyword}%")
-                        ->orWhere('city', 'like', "%{$keyword}%");
+                    $q->where('location_name', 'like', "%{$keyword}%");
                 });
         });
         return $this;

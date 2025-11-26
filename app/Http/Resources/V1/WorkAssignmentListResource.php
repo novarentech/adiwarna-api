@@ -15,7 +15,7 @@ class WorkAssignmentListResource extends JsonResource
             'assignment_year' => $this->assignment_year,
             'ref_no' => $this->ref_no,
             'ref_year' => $this->ref_year,
-            'date' => $this->date,
+            'date' => $this->date->format('Y-m-d'),
             'customer' => $this->customer ? $this->customer->name : null,
             'work_location' => $this->customerLocation ? $this->customerLocation->location_name : null,
         ];

@@ -15,7 +15,7 @@ class DailyActivityResource extends JsonResource
             'po_year' => $this->po_year,
             'ref_no' => $this->ref_no,
             'customer' => new CustomerResource($this->whenLoaded('customer')),
-            'date' => $this->date,
+            'date' => $this->date->format('Y-m-d'),
             'location' => $this->location,
             'time_from' => $this->time_from,
             'time_to' => $this->time_to,

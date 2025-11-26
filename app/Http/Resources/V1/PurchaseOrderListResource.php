@@ -13,7 +13,7 @@ class PurchaseOrderListResource extends JsonResource
             'id' => $this->id,
             'po_no' => $this->po_no,
             'po_year' => $this->po_year,
-            'date' => $this->date,
+            'date' => $this->date->format('Y-m-d'),
             'customer' => $this->customer ? $this->customer->name : null,
             'pic_name' => $this->pic_name,
             'pic_phone' => $this->pic_phone,

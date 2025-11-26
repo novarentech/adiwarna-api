@@ -13,7 +13,7 @@ class PurchaseRequisitionResource extends JsonResource
             'id' => $this->id,
             'pr_no' => $this->pr_no,
             'pr_year' => $this->pr_year,
-            'date' => $this->date,
+            'date' => $this->date->format('Y-m-d'),
             'supplier' => $this->supplier,
             'delivery_place' => $this->delivery_place,
             'discount' => $this->discount,

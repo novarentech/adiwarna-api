@@ -11,7 +11,7 @@ class QuotationResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'date' => $this->date,
+            'date' => $this->date->format('Y-m-d'),
             'ref_no' => $this->ref_no,
             'ref_year' => $this->ref_year,
             'customer' => new CustomerResource($this->whenLoaded('customer')),

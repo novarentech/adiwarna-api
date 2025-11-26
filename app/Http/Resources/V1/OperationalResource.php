@@ -11,7 +11,7 @@ class OperationalResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'date' => $this->date,
+            'date' => $this->date->format('Y-m-d'),
             'type' => $this->type,
             'description' => $this->description,
             'amount' => $this->amount,

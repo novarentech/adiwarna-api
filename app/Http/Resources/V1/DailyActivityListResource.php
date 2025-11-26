@@ -16,7 +16,7 @@ class DailyActivityListResource extends JsonResource
             'ref_no' => $this->ref_no,
             'customer' => $this->customer ? $this->customer->name : null,
             'location' => $this->location,
-            'date' => $this->date,
+            'date' => $this->date->format('Y-m-d'),
             'prepared_name' => $this->prepared_name,
         ];
     }

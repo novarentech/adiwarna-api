@@ -11,7 +11,7 @@ class PayrollTimesheetResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'date' => $this->date,
+            'date' => $this->date->format('Y-m-d'),
             'attendance_status' => $this->attendance_status->value,
             'regular_hours' => $this->regular_hours,
             'overtime_hours' => $this->overtime_hours,
