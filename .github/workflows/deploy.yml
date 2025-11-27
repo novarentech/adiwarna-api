@@ -57,11 +57,7 @@ jobs:
             # Start new container
             docker compose up -d
 
-            # Run migrations (without fresh/seed for production safety)
-            docker exec adiwarna-api php artisan migrate --force
-
             # Clear and cache config
-            docker exec adiwarna-api php artisan config:cache
             docker exec adiwarna-api php artisan route:cache
             docker exec adiwarna-api php artisan view:cache
 
