@@ -29,6 +29,9 @@ class AuthServiceProvider extends ServiceProvider
         \App\Models\Schedule::class => \App\Policies\SchedulePolicy::class,
         \App\Models\WorkOrder::class => \App\Policies\WorkOrderPolicy::class,
 
+        // Track Records
+        \App\Policies\TrackRecordPolicy::class => \App\Policies\TrackRecordPolicy::class,
+
         // Document Modules
         \App\Models\DocumentTransmittal::class => \App\Policies\DocumentTransmittalPolicy::class,
         \App\Models\PurchaseRequisition::class => \App\Policies\PurchaseRequisitionPolicy::class,
