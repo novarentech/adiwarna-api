@@ -14,7 +14,7 @@ return new class extends Migration
             $table->string('company_name');
             $table->text('description')->nullable();
             $table->date('start_date');
-            $table->date('end_date');
+            $table->date('end_date')->nullable();
             $table->enum('status', ['draft', 'active', 'completed'])->default('draft');
             $table->timestamps();
 

@@ -15,7 +15,7 @@ class PayrollProjectResource extends JsonResource
             'company_name' => $this->company_name,
             'description' => $this->description,
             'start_date' => $this->start_date->format('Y-m-d'),
-            'end_date' => $this->end_date->format('Y-m-d'),
+            'end_date' => $this->end_date?->format('Y-m-d'),
             'status' => $this->status->value,
             'periods' => PayrollPeriodResource::collection($this->whenLoaded('periods')),
             'created_at' => $this->created_at,
