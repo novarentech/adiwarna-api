@@ -17,4 +17,10 @@ class PayrollPeriodRepository extends BaseRepository implements PayrollPeriodRep
         $this->query->with('employees');
         return $this;
     }
+
+    public function withEmployeesCount(): self
+    {
+        $this->query->withCount('employees');
+        return $this;
+    }
 }

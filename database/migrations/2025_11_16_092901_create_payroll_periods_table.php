@@ -13,7 +13,6 @@ return new class extends Migration
             $table->foreignId('payroll_project_id')->constrained()->onDelete('cascade');
             $table->integer('month');
             $table->integer('year');
-            $table->string('name')->nullable();
             $table->date('period_start');
             $table->date('period_end');
             $table->enum('status', ['draft', 'active', 'closed'])->default('draft');

@@ -12,7 +12,6 @@ class PayrollPeriod extends Model
         'payroll_project_id',
         'month',
         'year',
-        'name',
         'period_start',
         'period_end',
         'status',

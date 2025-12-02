@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\StorePayrollPeriodRequest;
 use App\Http\Requests\Api\V1\UpdatePayrollPeriodRequest;
 use App\Http\Resources\V1\PayrollPeriodResource;
+use App\Http\Resources\V1\PayrollPeriodListResource;
 use App\Models\PayrollPeriod;
 use App\Services\PayrollPeriodService;
 use Illuminate\Http\JsonResponse;
@@ -20,11 +21,19 @@ class PayrollPeriodController extends Controller
 
     public function index(int $projectId): JsonResponse
     {
-        $periods = $this->payrollPeriodService->getPaginatedPeriods(perPage: request('per_page', 15));
+        $periods = $this->payrollPeriodService->getPaginatedPeriods(
+            perPage: request('per_page', 15)
+        );
 
         return response()->json([
             'success' => true,
-            'data' => PayrollPeriodResource::collection($periods),
+            'data' => PayrollPeriodListResource::collection($periods),
+            'meta' => [
+                'current_page' => $periods->currentPage(),
+                'last_page' => $periods->lastPage(),
+                'per_page' => $periods->perPage(),
+                'total' => $periods->total(),
+            ],
         ]);
     }
 
