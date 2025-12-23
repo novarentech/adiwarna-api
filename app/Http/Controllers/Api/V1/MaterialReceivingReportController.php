@@ -7,6 +7,7 @@ use App\Http\Requests\Api\V1\StoreMaterialReceivingReportRequest;
 use App\Http\Requests\Api\V1\UpdateMaterialReceivingReportRequest;
 use App\Http\Resources\V1\MaterialReceivingReportCollection;
 use App\Http\Resources\V1\MaterialReceivingReportResource;
+use App\Http\Resources\V1\MaterialReceivingReportListResource;
 use App\Models\MaterialReceivingReport;
 use App\Services\MaterialReceivingReportService;
 use Illuminate\Http\JsonResponse;
@@ -25,12 +26,13 @@ class MaterialReceivingReportController extends Controller
     public function index(): JsonResponse
     {
         $reports = $this->materialReceivingReportService->getPaginatedMRRs(
-            perPage: request('per_page', 15)
+            perPage: request('per_page', 15),
+            search: request('search')
         );
 
         return response()->json([
             'success' => true,
-            'data' => new MaterialReceivingReportCollection($reports),
+            'data' => MaterialReceivingReportListResource::collection($reports),
             'meta' => [
                 'current_page' => $reports->currentPage(),
                 'last_page' => $reports->lastPage(),

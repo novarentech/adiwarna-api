@@ -2,6 +2,8 @@
 
 namespace App\Models;
 
+use App\Enums\MaterialReceivingReportOrderBy;
+use App\Enums\MaterialReceivingReportStatus;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasMany;
@@ -12,21 +14,22 @@ class MaterialReceivingReport extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'rr_no',
-        'rr_year',
-        'date',
-        'ref_pr_no',
-        'ref_po_no',
+        'po_inv_pr_no',
         'supplier',
         'receiving_date',
+        'order_by',
+        'received_by',
+        'acknowledge_by',
+        'status',
         'notes',
     ];
 
     protected function casts(): array
     {
         return [
-            'date' => 'date',
             'receiving_date' => 'date',
+            'order_by' => MaterialReceivingReportOrderBy::class,
+            'status' => MaterialReceivingReportStatus::class,
         ];
     }
 

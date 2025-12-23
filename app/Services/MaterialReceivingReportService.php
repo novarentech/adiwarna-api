@@ -14,9 +14,12 @@ class MaterialReceivingReportService extends BaseService
         protected MaterialReceivingReportItemRepositoryInterface $mrrItemRepository
     ) {}
 
-    public function getPaginatedMRRs(int $perPage = 15): LengthAwarePaginator
+    public function getPaginatedMRRs(int $perPage = 15, ?string $search = null): LengthAwarePaginator
     {
-        return $this->mrrRepository->withItems()->paginate($perPage);
+        return $this->mrrRepository
+            ->withItemsCount()
+            ->search($search)
+            ->paginate($perPage);
     }
 
     public function getMRRById(int $id): ?MaterialReceivingReport
@@ -47,9 +50,29 @@ class MaterialReceivingReportService extends BaseService
             $mrr = $this->mrrRepository->update($id, $mrrData);
 
             if (isset($data['items'])) {
-                $mrr->items()->delete();
-                foreach ($data['items'] as $item) {
-                    $mrr->items()->create($item);
+                // Get existing item IDs BEFORE processing
+                $existingItemIds = $mrr->items()->pluck('id')->toArray();
+                $submittedItemIds = [];
+
+                foreach ($data['items'] as $itemData) {
+                    if (isset($itemData['id']) && $itemData['id']) {
+                        // Update existing item
+                        $submittedItemIds[] = $itemData['id'];
+                        $itemDataWithoutId = $itemData;
+                        unset($itemDataWithoutId['id']);
+                        $this->mrrItemRepository->update($itemData['id'], $itemDataWithoutId);
+                    } else {
+                        // Create new item
+                        $itemDataWithoutId = $itemData;
+                        unset($itemDataWithoutId['id']);
+                        $mrr->items()->create($itemDataWithoutId);
+                    }
+                }
+
+                // Delete items that were not submitted (removed from the request)
+                $itemsToDelete = array_diff($existingItemIds, $submittedItemIds);
+                if (!empty($itemsToDelete)) {
+                    $mrr->items()->whereIn('id', $itemsToDelete)->delete();
                 }
             }
 

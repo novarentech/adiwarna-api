@@ -13,21 +13,20 @@ return new class extends Migration
     {
         Schema::create('material_receiving_reports', function (Blueprint $table) {
             $table->id();
-            $table->string('rr_no', 50);
-            $table->string('rr_year', 4);
-            $table->date('date');
-            $table->string('ref_pr_no', 50)->nullable();
-            $table->string('ref_po_no', 50)->nullable();
+            $table->string('po_inv_pr_no', 50);
             $table->string('supplier', 255);
             $table->date('receiving_date');
+            $table->enum('order_by', ['online', 'offline'])->nullable();
+            $table->string('received_by', 255)->nullable();
+            $table->string('acknowledge_by', 255)->nullable();
+            $table->enum('status', ['complete', 'partial'])->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();
             $table->softDeletes();
 
             // Indexes
-            $table->index('date');
             $table->index('receiving_date');
-            $table->index(['rr_year', 'rr_no']);
+            $table->index('po_inv_pr_no');
         });
     }
 
