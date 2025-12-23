@@ -11,8 +11,6 @@ class EquipmentProjectListResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'customer_id' => $this->customer_id,
-            'customer_location_id' => $this->customer_location_id,
             'project_date' => $this->project_date->format('d/m/Y'),
             'customer' => $this->customer?->name,
             'location' => $this->customerLocation?->location_name,
