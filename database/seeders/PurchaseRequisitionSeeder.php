@@ -15,12 +15,16 @@ class PurchaseRequisitionSeeder extends Seeder
             ->create()
             ->each(function ($pr) {
                 for ($i = 0; $i < rand(2, 5); $i++) {
+                    $qty = fake()->numberBetween(1, 100);
+                    $unitPrice = fake()->randomFloat(2, 100, 10000);
+
                     PurchaseRequisitionItem::create([
                         'purchase_requisition_id' => $pr->id,
-                        'qty' => fake()->numberBetween(1, 100),
+                        'qty' => $qty,
                         'unit' => fake()->randomElement(['pcs', 'unit', 'set', 'lot']),
                         'description' => fake()->sentence(),
-                        'unit_price' => fake()->randomFloat(2, 100, 10000),
+                        'unit_price' => $unitPrice,
+                        'total_price' => $qty * $unitPrice,
                     ]);
                 }
             });

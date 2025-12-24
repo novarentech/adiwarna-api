@@ -19,6 +19,18 @@ class PurchaseRequisitionRepository extends BaseRepository implements PurchaseRe
         return $this;
     }
 
+    public function search(?string $search = null): self
+    {
+        if ($search) {
+            $this->query->where(function ($query) use ($search) {
+                $query->where('pr_no', 'like', "%{$search}%")
+                    ->orWhere('supplier', 'like', "%{$search}%")
+                    ->orWhere('place_of_delivery', 'like', "%{$search}%");
+            });
+        }
+        return $this;
+    }
+
     public function byDateRange(string $startDate, string $endDate): Collection
     {
         return $this->model
