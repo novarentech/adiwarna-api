@@ -39,6 +39,7 @@ class DatabaseSeeder extends Seeder
             DocumentTransmittalSeeder::class,
             PurchaseRequisitionSeeder::class,
             MaterialReceivingReportSeeder::class,
+            DeliveryNoteSeeder::class,
 
             // 7. Equipment & System Modules
             EquipmentSeeder::class,

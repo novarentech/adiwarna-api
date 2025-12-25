@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\V1\AboutController;
 use App\Http\Controllers\Api\V1\AuthController;
 use App\Http\Controllers\Api\V1\CustomerController;
 use App\Http\Controllers\Api\V1\DailyActivityController;
+use App\Http\Controllers\Api\V1\DeliveryNoteController;
 use App\Http\Controllers\Api\V1\DocumentTransmittalController;
 use App\Http\Controllers\Api\V1\EmployeeController;
 use App\Http\Controllers\Api\V1\EquipmentGeneralController;
@@ -159,6 +160,13 @@ Route::prefix('v1')->middleware('throttle:api')->group(function () {
         Route::get('/material-receiving-reports/{material_receiving_report}', [MaterialReceivingReportController::class, 'show']);
         Route::put('/material-receiving-reports/{material_receiving_report}', [MaterialReceivingReportController::class, 'update']);
         Route::delete('/material-receiving-reports/{material_receiving_report}', [MaterialReceivingReportController::class, 'destroy']);
+
+        // Delivery Notes
+        Route::get('/delivery-notes', [DeliveryNoteController::class, 'index']);
+        Route::post('/delivery-notes', [DeliveryNoteController::class, 'store']);
+        Route::get('/delivery-notes/{delivery_note}', [DeliveryNoteController::class, 'show']);
+        Route::put('/delivery-notes/{delivery_note}', [DeliveryNoteController::class, 'update']);
+        Route::delete('/delivery-notes/{delivery_note}', [DeliveryNoteController::class, 'destroy']);
 
         // Equipment General
         Route::get('/equipment/general', [EquipmentGeneralController::class, 'index']);
