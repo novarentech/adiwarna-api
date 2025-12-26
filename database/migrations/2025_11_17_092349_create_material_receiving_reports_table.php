@@ -18,7 +18,9 @@ return new class extends Migration
             $table->date('receiving_date');
             $table->enum('order_by', ['online', 'offline'])->nullable();
             $table->string('received_by', 255)->nullable();
+            $table->string('received_position', 255)->nullable();
             $table->string('acknowledge_by', 255)->nullable();
+            $table->string('acknowledge_position', 255)->nullable();
             $table->enum('status', ['complete', 'partial'])->nullable();
             $table->text('notes')->nullable();
             $table->timestamps();

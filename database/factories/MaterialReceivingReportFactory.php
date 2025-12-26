@@ -21,7 +21,9 @@ class MaterialReceivingReportFactory extends Factory
             'receiving_date' => fake()->dateTimeBetween($year . '-01-01', $year . '-12-31'),
             'order_by' => fake()->randomElement(MaterialReceivingReportOrderBy::cases()),
             'received_by' => fake()->name(),
+            'received_position' => fake()->randomElement(['Manager', 'Supervisor', 'Staff', 'Coordinator', 'Assistant Manager']),
             'acknowledge_by' => fake()->name(),
+            'acknowledge_position' => fake()->randomElement(['Director', 'General Manager', 'Operations Manager', 'Department Head', 'Senior Manager']),
             'status' => fake()->randomElement(MaterialReceivingReportStatus::cases()),
             'notes' => fake()->optional()->paragraph(),
         ];

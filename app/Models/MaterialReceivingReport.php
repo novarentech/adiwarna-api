@@ -19,7 +19,9 @@ class MaterialReceivingReport extends Model
         'receiving_date',
         'order_by',
         'received_by',
+        'received_position',
         'acknowledge_by',
+        'acknowledge_position',
         'status',
         'notes',
     ];
