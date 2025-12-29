@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\StorePayrollProjectRequest;
 use App\Http\Requests\Api\V1\UpdatePayrollProjectRequest;
 use App\Http\Resources\V1\PayrollProjectResource;
+use App\Http\Resources\V1\PayrollProjectListResource;
 use App\Models\PayrollProject;
 use App\Services\PayrollProjectService;
 use Illuminate\Http\JsonResponse;
@@ -20,11 +21,14 @@ class PayrollProjectController extends Controller
 
     public function index(): JsonResponse
     {
-        $projects = $this->payrollProjectService->getPaginatedProjects(perPage: request('per_page', 15));
+        $projects = $this->payrollProjectService->getPaginatedProjects(
+            perPage: request('per_page', 15),
+            search: request('search')
+        );
 
         return response()->json([
             'success' => true,
-            'data' => PayrollProjectResource::collection($projects),
+            'data' => PayrollProjectListResource::collection($projects),
             'meta' => [
                 'current_page' => $projects->currentPage(),
                 'last_page' => $projects->lastPage(),

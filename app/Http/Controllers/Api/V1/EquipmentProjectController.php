@@ -5,8 +5,8 @@ namespace App\Http\Controllers\Api\V1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Api\V1\StoreEquipmentProjectRequest;
 use App\Http\Requests\Api\V1\UpdateEquipmentProjectRequest;
-use App\Http\Resources\V1\EquipmentProjectCollection;
 use App\Http\Resources\V1\EquipmentProjectResource;
+use App\Http\Resources\V1\EquipmentProjectListResource;
 use App\Models\EquipmentProject;
 use App\Services\EquipmentService;
 use Illuminate\Http\JsonResponse;
@@ -32,7 +32,7 @@ class EquipmentProjectController extends Controller
 
         return response()->json([
             'success' => true,
-            'data' => new EquipmentProjectCollection($equipment),
+            'data' => EquipmentProjectListResource::collection($equipment),
             'meta' => [
                 'current_page' => $equipment->currentPage(),
                 'last_page' => $equipment->lastPage(),

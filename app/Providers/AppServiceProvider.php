@@ -73,6 +73,36 @@ class AppServiceProvider extends ServiceProvider
         );
 
         $this->app->bind(
+            \App\Contracts\Repositories\DeliveryNoteRepositoryInterface::class,
+            \App\Repositories\DeliveryNoteRepository::class
+        );
+
+        $this->app->bind(
+            \App\Contracts\Repositories\DeliveryNoteItemRepositoryInterface::class,
+            \App\Repositories\DeliveryNoteItemRepository::class
+        );
+
+        $this->app->bind(
+            \App\Contracts\Repositories\PurchaseRequisitionRepositoryInterface::class,
+            \App\Repositories\PurchaseRequisitionRepository::class
+        );
+
+        $this->app->bind(
+            \App\Contracts\Repositories\PurchaseRequisitionItemRepositoryInterface::class,
+            \App\Repositories\PurchaseRequisitionItemRepository::class
+        );
+
+        $this->app->bind(
+            \App\Contracts\Repositories\MaterialReceivingReportItemRepositoryInterface::class,
+            \App\Repositories\MaterialReceivingReportItemRepository::class
+        );
+
+        $this->app->bind(
+            \App\Contracts\Repositories\MaterialReceivingReportRepositoryInterface::class,
+            \App\Repositories\MaterialReceivingReportRepository::class
+        );
+
+        $this->app->bind(
             \App\Contracts\Repositories\PayrollProjectRepositoryInterface::class,
             \App\Repositories\PayrollProjectRepository::class
         );

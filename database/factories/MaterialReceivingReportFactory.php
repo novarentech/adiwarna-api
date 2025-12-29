@@ -2,6 +2,8 @@
 
 namespace Database\Factories;
 
+use App\Enums\MaterialReceivingReportOrderBy;
+use App\Enums\MaterialReceivingReportStatus;
 use App\Models\MaterialReceivingReport;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -14,13 +16,15 @@ class MaterialReceivingReportFactory extends Factory
         $year = fake()->year();
 
         return [
-            'rr_no' => 'RR-' . fake()->unique()->numberBetween(1000, 9999),
-            'rr_year' => $year,
-            'date' => fake()->dateTimeBetween($year . '-01-01', $year . '-12-31'),
-            'ref_pr_no' => 'PR-' . fake()->numberBetween(1000, 9999),
-            'ref_po_no' => 'PO-' . fake()->numberBetween(1000, 9999),
+            'po_inv_pr_no' => fake()->randomElement(['PO', 'PR', 'INV']) . '-' . fake()->numberBetween(1000, 9999),
             'supplier' => fake()->company(),
             'receiving_date' => fake()->dateTimeBetween($year . '-01-01', $year . '-12-31'),
+            'order_by' => fake()->randomElement(MaterialReceivingReportOrderBy::cases()),
+            'received_by' => fake()->name(),
+            'received_position' => fake()->randomElement(['Manager', 'Supervisor', 'Staff', 'Coordinator', 'Assistant Manager']),
+            'acknowledge_by' => fake()->name(),
+            'acknowledge_position' => fake()->randomElement(['Director', 'General Manager', 'Operations Manager', 'Department Head', 'Senior Manager']),
+            'status' => fake()->randomElement(MaterialReceivingReportStatus::cases()),
             'notes' => fake()->optional()->paragraph(),
         ];
     }

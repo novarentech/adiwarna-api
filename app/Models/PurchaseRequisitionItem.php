@@ -16,6 +16,7 @@ class PurchaseRequisitionItem extends Model
         'unit',
         'description',
         'unit_price',
+        'total_price',
     ];
 
     protected function casts(): array
@@ -23,6 +24,7 @@ class PurchaseRequisitionItem extends Model
         return [
             'qty' => 'decimal:2',
             'unit_price' => 'decimal:2',
+            'total_price' => 'decimal:2',
         ];
     }
 

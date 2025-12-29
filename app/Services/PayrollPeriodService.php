@@ -14,7 +14,9 @@ class PayrollPeriodService extends BaseService
 
     public function getPaginatedPeriods(int $perPage = 15): LengthAwarePaginator
     {
-        return $this->payrollPeriodRepository->paginate($perPage);
+        return $this->payrollPeriodRepository
+            ->withEmployeesCount()
+            ->paginate($perPage);
     }
 
     public function getPeriodById(int $id): ?PayrollPeriod

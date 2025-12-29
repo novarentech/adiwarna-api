@@ -17,4 +17,15 @@ class PayrollProjectRepository extends BaseRepository implements PayrollProjectR
         $this->query->with('periods');
         return $this;
     }
+
+    public function search(?string $search = null): self
+    {
+        if ($search) {
+            $this->query->where(function ($query) use ($search) {
+                $query->where('name', 'like', "%{$search}%")
+                    ->orWhere('company_name', 'like', "%{$search}%");
+            });
+        }
+        return $this;
+    }
 }

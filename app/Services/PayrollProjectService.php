@@ -12,9 +12,12 @@ class PayrollProjectService extends BaseService
         protected PayrollProjectRepositoryInterface $payrollProjectRepository
     ) {}
 
-    public function getPaginatedProjects(int $perPage = 15): LengthAwarePaginator
+    public function getPaginatedProjects(int $perPage = 15, ?string $search = null): LengthAwarePaginator
     {
-        return $this->payrollProjectRepository->paginate($perPage);
+        return $this->payrollProjectRepository
+            ->withPeriods()
+            ->search($search)
+            ->paginate($perPage);
     }
 
     public function getProjectById(int $id): ?PayrollProject

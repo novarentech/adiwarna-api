@@ -14,19 +14,30 @@ return new class extends Migration
         Schema::create('purchase_requisitions', function (Blueprint $table) {
             $table->id();
             $table->string('pr_no', 50);
-            $table->string('pr_year', 4);
+            $table->string('rev_no', 50)->nullable();
             $table->date('date');
+            $table->date('required_delivery');
+            $table->string('po_no_cash', 100)->nullable();
             $table->string('supplier', 255);
-            $table->text('delivery_place');
-            $table->decimal('discount', 10, 2)->nullable()->default(0);
+            $table->string('place_of_delivery', 255);
+            $table->enum('routing', ['online', 'offline'])->nullable();
+            $table->decimal('sub_total', 15, 2)->default(0);
+            $table->decimal('vat_percentage', 5, 2)->default(10);
+            $table->decimal('vat_amount', 15, 2)->default(0);
+            $table->decimal('total_amount', 15, 2)->default(0);
+            $table->string('requested_by', 255)->nullable();
+            $table->string('approved_by', 255)->nullable();
+            $table->string('authorized_by', 255)->nullable();
+            $table->enum('status', ['draft', 'pending', 'approved', 'rejected'])->default('draft');
             $table->text('notes')->nullable();
-            $table->decimal('total_amount', 15, 2)->nullable()->default(0);
             $table->timestamps();
             $table->softDeletes();
 
             // Indexes
             $table->index('date');
-            $table->index(['pr_year', 'pr_no']);
+            $table->index('pr_no');
+            $table->index('supplier');
+            $table->index('place_of_delivery');
         });
     }
 

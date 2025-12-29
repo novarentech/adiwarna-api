@@ -7,6 +7,7 @@ use App\Http\Requests\Api\V1\StorePurchaseRequisitionRequest;
 use App\Http\Requests\Api\V1\UpdatePurchaseRequisitionRequest;
 use App\Http\Resources\V1\PurchaseRequisitionCollection;
 use App\Http\Resources\V1\PurchaseRequisitionResource;
+use App\Http\Resources\V1\PurchaseRequisitionListResource;
 use App\Models\PurchaseRequisition;
 use App\Services\PurchaseRequisitionService;
 use Illuminate\Http\JsonResponse;
@@ -25,12 +26,13 @@ class PurchaseRequisitionController extends Controller
     public function index(): JsonResponse
     {
         $requisitions = $this->purchaseRequisitionService->getPaginatedPRs(
-            perPage: request('per_page', 15)
+            perPage: request('per_page', 15),
+            search: request('search')
         );
 
         return response()->json([
             'success' => true,
-            'data' => new PurchaseRequisitionCollection($requisitions),
+            'data' => PurchaseRequisitionListResource::collection($requisitions),
             'meta' => [
                 'current_page' => $requisitions->currentPage(),
                 'last_page' => $requisitions->lastPage(),

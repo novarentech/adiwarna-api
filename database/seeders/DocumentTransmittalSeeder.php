@@ -44,7 +44,6 @@ class DocumentTransmittalSeeder extends Seeder
             }
         }
 
-        $this->command->info('Document transmittals seeded successfully.');
     }
 
     private function generateTANumber(): string
