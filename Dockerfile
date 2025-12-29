@@ -31,8 +31,10 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 ARG GITHUB_TOKEN
 RUN composer config --global --auth github-oauth.github.com ${GITHUB_TOKEN}
 
-# Copy composer files
+# Copy minimal Laravel runtime files
 COPY composer.json composer.lock artisan ./
+COPY bootstrap ./bootstrap
+COPY config ./config
 
 # Install dependencies
 RUN composer install \
@@ -41,18 +43,16 @@ RUN composer install \
     --no-interaction \
     --prefer-dist
 
-# Copy application source
+# Copy application
 COPY . .
 
 # Set permissions
 RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache \
     && chmod -R 775 /app/storage /app/bootstrap/cache
 
-# Create storage link
-RUN php artisan storage:link || true
-
-# Optimize Laravel
-RUN php artisan route:cache \
+# Optimize Laravel 
+RUN php artisan storage:link || true \
+    && php artisan route:cache \
     && php artisan view:cache
 
 EXPOSE 80
