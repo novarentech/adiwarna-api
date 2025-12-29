@@ -31,8 +31,8 @@ COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 ARG GITHUB_TOKEN
 RUN composer config --global --auth github-oauth.github.com ${GITHUB_TOKEN}
 
-# Copy only composer files first
-COPY composer.json composer.lock ./
+# Copy composer files
+COPY composer.json composer.lock artisan ./
 
 # Install dependencies
 RUN composer install \
