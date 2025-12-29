@@ -24,35 +24,40 @@ RUN echo "upload_max_filesize = 20M" >> /usr/local/etc/php/conf.d/uploads.ini \
     && echo "post_max_size = 20M" >> /usr/local/etc/php/conf.d/uploads.ini \
     && echo "memory_limit = 256M" >> /usr/local/etc/php/conf.d/uploads.ini
 
-# Copy composer binary
+# Copy composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
 # Composer Auth
 ARG GITHUB_TOKEN
 RUN composer config --global --auth github-oauth.github.com ${GITHUB_TOKEN}
 
-# Copy minimal Laravel runtime files
-COPY composer.json composer.lock artisan ./
-COPY bootstrap ./bootstrap
-COPY config ./config
+# Copy composer files
+COPY composer.json composer.lock ./
 
 # Install dependencies
 RUN composer install \
     --no-dev \
     --optimize-autoloader \
     --no-interaction \
-    --prefer-dist
+    --prefer-dist \
+    --no-scripts \
+    --no-autoloader
 
-# Copy application
-COPY . .
+# Copy application files
+COPY . /app
+
+# Generate autoloader and run post-install scripts
+RUN composer dump-autoload --optimize --no-dev
 
 # Set permissions
 RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache \
     && chmod -R 775 /app/storage /app/bootstrap/cache
 
-# Optimize Laravel 
-RUN php artisan storage:link || true \
-    && php artisan route:cache \
+# Create storage link
+RUN php artisan storage:link || true
+
+# Optimize Laravel
+RUN php artisan route:cache \
     && php artisan view:cache
 
 EXPOSE 80
