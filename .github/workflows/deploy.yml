@@ -31,6 +31,8 @@ jobs:
             ${{ secrets.DOCKER_USERNAME }}/adiwarna-api:${{ github.sha }}
           cache-from: type=registry,ref=${{ secrets.DOCKER_USERNAME }}/adiwarna-api:latest
           cache-to: type=inline
+          build-args: |
+            GITHUB_TOKEN=${{ github.token }}
 
   deploy:
     runs-on: ubuntu-latest

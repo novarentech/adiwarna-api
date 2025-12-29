@@ -24,14 +24,25 @@ RUN echo "upload_max_filesize = 20M" >> /usr/local/etc/php/conf.d/uploads.ini \
     && echo "post_max_size = 20M" >> /usr/local/etc/php/conf.d/uploads.ini \
     && echo "memory_limit = 256M" >> /usr/local/etc/php/conf.d/uploads.ini
 
-# Copy composer
+# Copy composer binary
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Copy application files
-COPY . /app
+# Composer Auth
+ARG GITHUB_TOKEN
+RUN composer config --global --auth github-oauth.github.com ${GITHUB_TOKEN}
+
+# Copy only composer files first
+COPY composer.json composer.lock ./
 
 # Install dependencies
-RUN composer install --no-dev --optimize-autoloader --no-interaction
+RUN composer install \
+    --no-dev \
+    --optimize-autoloader \
+    --no-interaction \
+    --prefer-dist
+
+# Copy application source
+COPY . .
 
 # Set permissions
 RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache \
