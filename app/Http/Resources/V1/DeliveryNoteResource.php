@@ -11,10 +11,18 @@ class DeliveryNoteResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'delivery_note_no' => $this->delivery_note_no,
+            'dn_no' => $this->dn_no,
+            'dn_date' => $this->dn_date,
             'date' => $this->date->format('Y-m-d'),
-            'customer' => $this->customer,
-            'customer_address' => $this->customer_address,
+            'customer_id' => $this->customer_id,
+            'customer' => $this->whenLoaded('customer', function () {
+                return [
+                    'id' => $this->customer->id,
+                    'name' => $this->customer->name,
+                    'customer_no' => $this->customer->customer_no,
+                    'address' => $this->customer->address,
+                ];
+            }),
             'wo_no' => $this->wo_no,
             'delivered_with' => $this->delivered_with,
             'vehicle_plate' => $this->vehicle_plate,

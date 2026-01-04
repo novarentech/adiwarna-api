@@ -15,13 +15,13 @@ class DeliveryNoteRepository extends BaseRepository implements DeliveryNoteRepos
 
     public function withItems(): self
     {
-        $this->query->with('items');
+        $this->query->with(['items', 'customer']);
         return $this;
     }
 
     public function withItemsCount(): self
     {
-        $this->query->withCount('items');
+        $this->query->withCount('items')->with(['customer']);
         return $this;
     }
 
@@ -29,10 +29,12 @@ class DeliveryNoteRepository extends BaseRepository implements DeliveryNoteRepos
     {
         if ($search) {
             $this->query->where(function ($query) use ($search) {
-                $query->where('delivery_note_no', 'like', "%{$search}%")
-                    ->orWhere('customer', 'like', "%{$search}%")
+                $query->where('dn_no', 'like', "%{$search}%")
                     ->orWhere('wo_no', 'like', "%{$search}%")
-                    ->orWhere('vehicle_plate', 'like', "%{$search}%");
+                    ->orWhere('vehicle_plate', 'like', "%{$search}%")
+                    ->orWhereHas('customer', function ($customerQuery) use ($search) {
+                        $customerQuery->where('name', 'like', "%{$search}%");
+                    });
             });
         }
         return $this;

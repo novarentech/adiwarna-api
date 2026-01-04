@@ -13,10 +13,9 @@ return new class extends Migration
     {
         Schema::create('delivery_notes', function (Blueprint $table) {
             $table->id();
-            $table->string('delivery_note_no', 50);
+            $table->string('dn_no', 50);
             $table->date('date');
-            $table->string('customer', 255);
-            $table->text('customer_address');
+            $table->foreignId('customer_id')->constrained()->onDelete('cascade');
             $table->string('wo_no', 50);
             $table->string('delivered_with', 255)->nullable();
             $table->string('vehicle_plate', 50);
@@ -28,9 +27,9 @@ return new class extends Migration
             $table->softDeletes();
 
             // Indexes
-            $table->index('delivery_note_no');
+            $table->index('dn_no');
             $table->index('date');
-            $table->index('customer');
+            $table->index('customer_id');
             $table->index('wo_no');
             $table->index('vehicle_plate');
         });

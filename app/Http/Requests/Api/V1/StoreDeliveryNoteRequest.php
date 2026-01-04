@@ -14,10 +14,9 @@ class StoreDeliveryNoteRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'delivery_note_no' => 'required|string|max:50',
+            'dn_no' => 'required|string|max:50',
             'date' => 'required|date',
-            'customer' => 'required|string|max:255',
-            'customer_address' => 'required|string',
+            'customer_id' => 'required|integer|exists:customers,id',
             'wo_no' => 'required|string|max:50',
             'delivered_with' => 'nullable|string|max:255',
             'vehicle_plate' => 'required|string|max:50',
@@ -36,10 +35,10 @@ class StoreDeliveryNoteRequest extends FormRequest
     public function messages(): array
     {
         return [
-            'delivery_note_no.required' => 'Delivery note number is required',
+            'dn_no.required' => 'Delivery note number is required',
             'date.required' => 'Date is required',
-            'customer.required' => 'Customer is required',
-            'customer_address.required' => 'Customer address is required',
+            'customer_id.required' => 'Customer is required',
+            'customer_id.exists' => 'Selected customer does not exist',
             'wo_no.required' => 'Work order number is required',
             'vehicle_plate.required' => 'Vehicle plate is required',
             'items.required' => 'At least one item is required',
