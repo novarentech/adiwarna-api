@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use App\Enums\MaterialReceivingReportRemarks;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 
 class MaterialReceivingReportItem extends Model
@@ -23,6 +24,7 @@ class MaterialReceivingReportItem extends Model
         return [
             'order_qty' => 'decimal:2',
             'received_qty' => 'decimal:2',
+            'remarks' => MaterialReceivingReportRemarks::class,
         ];
     }
 

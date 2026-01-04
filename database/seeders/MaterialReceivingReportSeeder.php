@@ -20,7 +20,7 @@ class MaterialReceivingReportSeeder extends Seeder
                         'description' => fake()->sentence(),
                         'order_qty' => fake()->numberBetween(10, 100),
                         'received_qty' => fake()->numberBetween(10, 100),
-                        'remarks' => fake()->optional()->sentence(),
+                        'remarks' => fake()->randomElement(['good', 'reject']),
                     ]);
                 }
             });

@@ -14,7 +14,8 @@ class MaterialReceivingReport extends Model
     use HasFactory, SoftDeletes;
 
     protected $fillable = [
-        'po_inv_pr_no',
+        'po_no',
+        'po_year',
         'supplier',
         'receiving_date',
         'order_by',
@@ -23,7 +24,6 @@ class MaterialReceivingReport extends Model
         'acknowledge_by',
         'acknowledge_position',
         'status',
-        'notes',
     ];
 
     protected function casts(): array

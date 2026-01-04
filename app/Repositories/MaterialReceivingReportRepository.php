@@ -29,7 +29,8 @@ class MaterialReceivingReportRepository extends BaseRepository implements Materi
     {
         if ($search) {
             $this->query->where(function ($query) use ($search) {
-                $query->where('po_inv_pr_no', 'like', "%{$search}%")
+                $query->where('po_no', 'like', "%{$search}%")
+                    ->orWhere('po_year', 'like', "%{$search}%")
                     ->orWhere('supplier', 'like', "%{$search}%")
                     ->orWhere('received_by', 'like', "%{$search}%");
             });

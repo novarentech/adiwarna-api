@@ -14,7 +14,7 @@ class MaterialReceivingReportItemResource extends JsonResource
             'description' => $this->description,
             'order_qty' => $this->order_qty,
             'received_qty' => $this->received_qty,
-            'remarks' => $this->remarks,
+            'remarks' => $this->remarks?->value,
         ];
     }
 }
