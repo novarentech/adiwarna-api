@@ -24,8 +24,7 @@ class PurchaseRequisitionRepository extends BaseRepository implements PurchaseRe
         if ($search) {
             $this->query->where(function ($query) use ($search) {
                 $query->where('pr_no', 'like', "%{$search}%")
-                    ->orWhere('supplier', 'like', "%{$search}%")
-                    ->orWhere('place_of_delivery', 'like', "%{$search}%");
+                    ->orWhere('supplier', 'like', "%{$search}%");
             });
         }
         return $this;
