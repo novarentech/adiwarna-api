@@ -25,7 +25,7 @@ Adiwarna API adalah backend system untuk mengelola operasional PT Adiwarna Alam 
 -   **Customer & Employee Management** - Master data pelanggan dan karyawan
 -   **Sales Management** - Quotations dan Purchase Orders
 -   **Operations Management** - Work Assignments, Daily Activities, Schedules, Work Orders
--   **Document Management** - Document Transmittals, Purchase Requisitions, Material Receiving Reports
+-   **Document Management** - Document Transmittals, Purchase Requisitions, Material Receiving Reports, Delivery Notes
 -   **Equipment Management** - General Equipment dan Project Equipment
 -   **Project Tracking** - Track Records dan Operational Records
 -   **Payroll System** - Comprehensive payroll management dengan timesheet dan slip generation
@@ -41,7 +41,7 @@ Adiwarna API adalah backend system untuk mengelola operasional PT Adiwarna Alam 
 -   **Authentication**: Laravel Sanctum (Token-based)
 -   **Architecture**: Repository Pattern + Service Layer
 -   **API**: RESTful API with JSON responses
--   **Validation**: Form Request Validation
+-   **Validation**: Form Request Validation with Enum Support
 -   **Authorization**: Policy-based Authorization
 
 ---
@@ -138,19 +138,21 @@ php artisan migrate
 
 Migrations akan membuat tabel untuk:
 
--   Users & Authentication
--   Customers & Customer Locations
--   Employees
--   Quotations (dengan items, adiwarnas, clients)
--   Purchase Orders (dengan items)
--   Work Assignments & Daily Activities
--   Schedules & Work Orders
--   Document Transmittals
--   Purchase Requisitions & Material Receiving Reports
--   Equipment (General & Project)
--   Track Records & Operational Records
--   Payroll System (Projects, Periods, Employees, Timesheets, Slips)
--   Company Information (About)
+-   **Users & Authentication** - User management dengan role-based access
+-   **Customers & Customer Locations** - Master data pelanggan
+-   **Employees** - Master data karyawan
+-   **Quotations** - Penawaran dengan items, adiwarnas, clients
+-   **Purchase Orders** - Purchase order dengan items
+-   **Work Assignments & Daily Activities** - Penugasan kerja dan aktivitas harian
+-   **Schedules & Work Orders** - Jadwal dan work order
+-   **Document Transmittals** - Transmittal dokumen
+-   **Purchase Requisitions** - Permintaan pembelian dengan enum supplier/routing dan position fields
+-   **Material Receiving Reports** - Laporan penerimaan material dengan enum remarks dan separated PO fields
+-   **Delivery Notes** - Surat jalan dengan customer relationships dan enum status
+-   **Equipment** - General & Project equipment
+-   **Track Records & Operational Records** - Tracking dan operational records
+-   **Payroll System** - Projects dan periods untuk payroll
+-   **Company Information** - About/Company profile
 
 ### 3. Seed Database (Optional)
 
@@ -305,6 +307,30 @@ http://localhost:8000/api/v1
 -   `PUT /purchase-orders/{id}` - Update PO
 -   `DELETE /purchase-orders/{id}` - Delete PO
 
+#### Purchase Requisitions
+
+-   `GET /purchase-requisitions` - List purchase requisitions
+-   `POST /purchase-requisitions` - Create PR (with items, supplier/routing validation)
+-   `GET /purchase-requisitions/{id}` - Get PR
+-   `PUT /purchase-requisitions/{id}` - Update PR
+-   `DELETE /purchase-requisitions/{id}` - Delete PR
+
+#### Material Receiving Reports
+
+-   `GET /material-receiving-reports` - List material receiving reports
+-   `POST /material-receiving-reports` - Create MRR (with items, enum remarks)
+-   `GET /material-receiving-reports/{id}` - Get MRR
+-   `PUT /material-receiving-reports/{id}` - Update MRR
+-   `DELETE /material-receiving-reports/{id}` - Delete MRR
+
+#### Delivery Notes
+
+-   `GET /delivery-notes` - List delivery notes
+-   `POST /delivery-notes` - Create delivery note (with items, customer relationships)
+-   `GET /delivery-notes/{id}` - Get delivery note
+-   `PUT /delivery-notes/{id}` - Update delivery note
+-   `DELETE /delivery-notes/{id}` - Delete delivery note
+
 #### Work Assignments
 
 -   `GET /work-assignments` - List work assignments
@@ -324,12 +350,18 @@ http://localhost:8000/api/v1
 #### Payroll System
 
 -   `GET /payroll/projects` - List payroll projects
--   `GET /payroll/projects/{projectId}/periods` - List periods
--   `GET /payroll/periods/{periodId}/employees` - List employees
--   `GET /payroll/employees/{employeeId}/timesheets` - List timesheets
--   `POST /payroll/periods/{periodId}/slips/generate` - Generate slips
+-   `POST /payroll/projects` - Create payroll project
+-   `GET /payroll/projects/{id}` - Get payroll project
+-   `PUT /payroll/projects/{id}` - Update payroll project
+-   `DELETE /payroll/projects/{id}` - Delete payroll project
+-   `GET /payroll/periods` - List payroll periods
+-   `POST /payroll/periods` - Create payroll period
+-   `GET /payroll/periods/{id}` - Get payroll period
+-   `PUT /payroll/periods/{id}` - Update payroll period
+-   `DELETE /payroll/periods/{id}` - Delete payroll period
 
 **Untuk dokumentasi lengkap, lihat [Postman Collection](https://documenter.getpostman.com/view/39730752/2sB3WyJFsd)**
+
 ---
 
 ## 📁 Project Structure
