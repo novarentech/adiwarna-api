@@ -11,7 +11,8 @@ class MaterialReceivingReportResource extends JsonResource
     {
         return [
             'id' => $this->id,
-            'po_inv_pr_no' => $this->po_inv_pr_no,
+            'po_no' => $this->po_no,
+            'po_date' => $this->po_date,
             'supplier' => $this->supplier,
             'receiving_date' => $this->receiving_date->format('Y-m-d'),
             'order_by' => $this->order_by?->value,
@@ -20,7 +21,6 @@ class MaterialReceivingReportResource extends JsonResource
             'acknowledge_by' => $this->acknowledge_by,
             'acknowledge_position' => $this->acknowledge_position,
             'status' => $this->status?->value,
-            'notes' => $this->notes,
             'items' => MaterialReceivingReportItemResource::collection($this->whenLoaded('items')),
         ];
     }

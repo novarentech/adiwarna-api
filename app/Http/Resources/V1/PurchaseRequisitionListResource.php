@@ -12,10 +12,9 @@ class PurchaseRequisitionListResource extends JsonResource
         return [
             'id' => $this->id,
             'pr_no' => $this->pr_no,
-            'rev_no' => $this->rev_no,
-            'required_delivery' => $this->required_delivery->format('d/m/Y'),
-            'supplier' => $this->supplier,
-            'place_of_delivery' => $this->place_of_delivery,
+            'pr_date' => $this->pr_date,
+            'date' => $this->date->format('d/m/Y'),
+            'supplier' => $this->supplier?->label() ?? 'Unknown',
             'total_amount' => 'Rp ' . number_format($this->total_amount, 3, '.', '.'),
             'status' => $this->status?->label() ?? 'Draft',
         ];

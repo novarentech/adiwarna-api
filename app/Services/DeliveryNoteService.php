@@ -39,7 +39,7 @@ class DeliveryNoteService extends BaseService
                 }
             }
 
-            return $deliveryNote->load('items');
+            return $deliveryNote->load(['items', 'customer']);
         });
     }
 
@@ -85,7 +85,7 @@ class DeliveryNoteService extends BaseService
             }
 
             $deliveryNote = $this->deliveryNoteRepository->update($id, $deliveryNoteData);
-            return $deliveryNote->load('items');
+            return $deliveryNote->load(['items', 'customer']);
         });
     }
 

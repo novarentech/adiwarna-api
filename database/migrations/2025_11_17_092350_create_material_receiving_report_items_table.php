@@ -20,7 +20,7 @@ return new class extends Migration
             $table->text('description');
             $table->decimal('order_qty', 10, 2);
             $table->decimal('received_qty', 10, 2);
-            $table->text('remarks')->nullable();
+            $table->enum('remarks', ['good', 'reject'])->nullable();
             $table->timestamps();
 
             // Indexes

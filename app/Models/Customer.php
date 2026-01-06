@@ -57,4 +57,12 @@ class Customer extends Model
     {
         return $this->hasMany(DailyActivity::class);
     }
+
+    /**
+     * Get customer delivery notes
+     */
+    public function deliveryNotes(): HasMany
+    {
+        return $this->hasMany(DeliveryNote::class);
+    }
 }

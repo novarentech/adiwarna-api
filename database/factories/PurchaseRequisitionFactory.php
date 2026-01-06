@@ -4,6 +4,7 @@ namespace Database\Factories;
 
 use App\Enums\PurchaseRequisitionRouting;
 use App\Enums\PurchaseRequisitionStatus;
+use App\Enums\PurchaseRequisitionSupplier;
 use App\Models\PurchaseRequisition;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
@@ -19,24 +20,25 @@ class PurchaseRequisitionFactory extends Factory
         $vatAmount = $subTotal * ($vatPercentage / 100);
         $totalAmount = $subTotal + $vatAmount;
 
+        // Ensure supplier and routing match
+        $routingValue = fake()->randomElement(['online', 'offline']);
+
         return [
             'pr_no' => 'PR-' . fake()->unique()->numberBetween(1000, 9999),
-            'rev_no' => fake()->optional()->numerify('REV-###'),
             'date' => fake()->dateTimeBetween($year . '-01-01', $year . '-12-31'),
-            'required_delivery' => fake()->dateTimeBetween($year . '-01-01', $year . '-12-31'),
             'po_no_cash' => fake()->optional()->numerify('PO-####'),
-            'supplier' => fake()->company(),
-            'place_of_delivery' => fake()->address(),
-            'routing' => fake()->randomElement(PurchaseRequisitionRouting::cases()),
+            'supplier' => $routingValue, // Same as routing
+            'routing' => $routingValue,
             'sub_total' => $subTotal,
             'vat_percentage' => $vatPercentage,
             'vat_amount' => $vatAmount,
             'total_amount' => $totalAmount,
             'requested_by' => fake()->name(),
+            'requested_position' => fake()->jobTitle(),
             'approved_by' => fake()->name(),
+            'approved_position' => fake()->jobTitle(),
             'authorized_by' => fake()->name(),
             'status' => fake()->randomElement(PurchaseRequisitionStatus::cases()),
-            'notes' => fake()->optional()->paragraph(),
         ];
     }
 }

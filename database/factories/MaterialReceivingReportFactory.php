@@ -16,8 +16,8 @@ class MaterialReceivingReportFactory extends Factory
         $year = fake()->year();
 
         return [
-            'po_inv_pr_no' => fake()->randomElement(['PO', 'PR', 'INV']) . '-' . fake()->numberBetween(1000, 9999),
-            'supplier' => fake()->company(),
+            'po_no' => fake()->randomElement(['PO', 'PR', 'INV']) . '-' . fake()->numberBetween(1000, 9999),
+            'supplier' => fake()->optional()->company(),
             'receiving_date' => fake()->dateTimeBetween($year . '-01-01', $year . '-12-31'),
             'order_by' => fake()->randomElement(MaterialReceivingReportOrderBy::cases()),
             'received_by' => fake()->name(),
@@ -25,7 +25,6 @@ class MaterialReceivingReportFactory extends Factory
             'acknowledge_by' => fake()->name(),
             'acknowledge_position' => fake()->randomElement(['Director', 'General Manager', 'Operations Manager', 'Department Head', 'Senior Manager']),
             'status' => fake()->randomElement(MaterialReceivingReportStatus::cases()),
-            'notes' => fake()->optional()->paragraph(),
         ];
     }
 }
