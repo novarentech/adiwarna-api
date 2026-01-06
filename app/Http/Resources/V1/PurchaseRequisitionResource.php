@@ -12,6 +12,7 @@ class PurchaseRequisitionResource extends JsonResource
         return [
             'id' => $this->id,
             'pr_no' => $this->pr_no,
+            'pr_date' => $this->pr_date,
             'date' => $this->date->format('Y-m-d'),
             'po_no_cash' => $this->po_no_cash,
             'supplier' => $this->supplier?->value,

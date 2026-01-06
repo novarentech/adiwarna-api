@@ -12,7 +12,7 @@ class MaterialReceivingReportListResource extends JsonResource
         return [
             'id' => $this->id,
             'po_no' => $this->po_no,
-            'po_year' => $this->po_year,
+            'po_date' => $this->po_date,
             'supplier' => $this->supplier,
             'receiving_date' => $this->receiving_date->format('d/m/Y'),
             'order_by' => $this->order_by?->label() ?? 'Offline',

@@ -15,7 +15,6 @@ class MaterialReceivingReport extends Model
 
     protected $fillable = [
         'po_no',
-        'po_year',
         'supplier',
         'receiving_date',
         'order_by',
@@ -38,5 +37,37 @@ class MaterialReceivingReport extends Model
     public function items(): HasMany
     {
         return $this->hasMany(MaterialReceivingReportItem::class);
+    }
+
+    /**
+     * Get formatted po_date with Roman numerals from receiving_date field
+     */
+    public function getPoDateAttribute(): string
+    {
+        if (!$this->receiving_date) {
+            return '';
+        }
+
+        $month = (int) $this->receiving_date->format('n'); // 1-12
+        $year = $this->receiving_date->format('Y');
+
+        $romanNumerals = [
+            1 => 'I',
+            2 => 'II',
+            3 => 'III',
+            4 => 'IV',
+            5 => 'V',
+            6 => 'VI',
+            7 => 'VII',
+            8 => 'VIII',
+            9 => 'IX',
+            10 => 'X',
+            11 => 'XI',
+            12 => 'XII'
+        ];
+
+        $romanMonth = $romanNumerals[$month] ?? $month;
+
+        return $romanMonth . '/' . $year;
     }
 }

@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('material_receiving_reports', function (Blueprint $table) {
             $table->id();
             $table->string('po_no', 50);
-            $table->string('po_year', 4);
             $table->string('supplier', 255)->nullable();
             $table->date('receiving_date');
             $table->enum('order_by', ['online', 'offline'])->nullable();
@@ -29,7 +28,6 @@ return new class extends Migration
             // Indexes
             $table->index('receiving_date');
             $table->index('po_no');
-            $table->index('po_year');
         });
     }
 

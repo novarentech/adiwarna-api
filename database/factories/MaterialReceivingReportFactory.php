@@ -17,7 +17,6 @@ class MaterialReceivingReportFactory extends Factory
 
         return [
             'po_no' => fake()->randomElement(['PO', 'PR', 'INV']) . '-' . fake()->numberBetween(1000, 9999),
-            'po_year' => (string) $year,
             'supplier' => fake()->optional()->company(),
             'receiving_date' => fake()->dateTimeBetween($year . '-01-01', $year . '-12-31'),
             'order_by' => fake()->randomElement(MaterialReceivingReportOrderBy::cases()),

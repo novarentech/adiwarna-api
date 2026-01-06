@@ -15,7 +15,6 @@ class UpdateMaterialReceivingReportRequest extends FormRequest
     {
         return [
             'po_no' => 'sometimes|required|string|max:50',
-            'po_year' => 'sometimes|required|string|size:4|regex:/^\d{4}$/',
             'supplier' => 'nullable|string|max:255',
             'receiving_date' => 'sometimes|required|date',
             'order_by' => 'nullable|string|in:online,offline',
@@ -37,9 +36,6 @@ class UpdateMaterialReceivingReportRequest extends FormRequest
     {
         return [
             'po_no.required' => 'PO number is required',
-            'po_year.required' => 'PO year is required',
-            'po_year.size' => 'PO year must be 4 digits',
-            'po_year.regex' => 'PO year must be a valid year format (YYYY)',
             'receiving_date.required' => 'Receiving date is required',
             'items.min' => 'At least one item is required',
             'items.max' => 'Maximum 10 items allowed',
