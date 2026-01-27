@@ -19,7 +19,7 @@ interface WorkOrderRepositoryInterface extends RepositoryInterface
     /**
      * Search work orders by workers, scope of work, customer, or work location
      */
-    public function search(string $keyword): self;
+    public function search(?string $keyword): self;
 
     /**
      * Get work orders by customer

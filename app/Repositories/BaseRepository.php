@@ -103,4 +103,10 @@ abstract class BaseRepository implements RepositoryInterface
         $this->query->where($column, $value);
         return $this;
     }
+
+    public function sortBy(string $sortOrder = 'desc'): self
+    {
+        $this->query->orderBy('id', $sortOrder);
+        return $this;
+    }
 }

@@ -36,15 +36,24 @@ class PurchaseOrderRepository extends BaseRepository implements PurchaseOrderRep
         return $this;
     }
 
-    public function search(string $keyword): self
+    public function search(?string $keyword): self
     {
-        $this->query->where(function ($query) use ($keyword) {
-            $query->whereHas('customer', function ($q) use ($keyword) {
-                $q->where('name', 'like', "%{$keyword}%");
-            })
-                ->orWhere('pic_name', 'like', "%{$keyword}%")
-                ->orWhere('pic_phone', 'like', "%{$keyword}%");
-        });
+        if ($keyword) {
+            $this->query->where(function ($query) use ($keyword) {
+                $query->whereHas('customer', function ($q) use ($keyword) {
+                    $q->where('name', 'like', "%{$keyword}%");
+                })
+                    ->orWhere('pic_name', 'like', "%{$keyword}%")
+                    ->orWhere('pic_phone', 'like', "%{$keyword}%");
+            });
+        }
+        return $this;
+    }
+
+    public function sortBy(string $sortOrder = 'desc'): self
+    {
+        $this->query->orderBy('po_year', $sortOrder)
+            ->orderBy('po_no', $sortOrder);
         return $this;
     }
 }

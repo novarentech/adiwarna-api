@@ -12,13 +12,15 @@ class PurchaseOrderService extends BaseService
         protected PurchaseOrderRepositoryInterface $purchaseOrderRepository
     ) {}
 
-    public function getPaginatedPurchaseOrders(int $perPage = 15, ?string $search = null): LengthAwarePaginator
+    public function getPaginatedPurchaseOrders(int $perPage = 15, ?string $search = null, string $sortOrder = 'desc'): LengthAwarePaginator
     {
         $query = $this->purchaseOrderRepository->withCustomerOnly();
 
         if ($search) {
             $query->search($search);
         }
+
+        $query->sortBy($sortOrder);
 
         return $query->paginate($perPage);
     }

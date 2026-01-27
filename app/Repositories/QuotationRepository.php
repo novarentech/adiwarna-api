@@ -49,4 +49,11 @@ class QuotationRepository extends BaseRepository implements QuotationRepositoryI
         $this->query->whereBetween('date', [$startDate, $endDate]);
         return $this;
     }
+
+    public function sortBy(string $sortOrder = 'desc'): self
+    {
+        $this->query->orderBy('ref_year', $sortOrder)
+            ->orderBy('ref_no', $sortOrder);
+        return $this;
+    }
 }

@@ -52,4 +52,9 @@ interface RepositoryInterface
      * Add where clause
      */
     public function where(string $column, mixed $value): self;
+
+    /**
+     * Add sorting
+     */
+    public function sortBy(string $sortOrder = 'desc'): self;
 }

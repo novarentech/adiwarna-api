@@ -26,7 +26,8 @@ class DocumentTransmittalController extends Controller
     {
         $transmittals = $this->documentTransmittalService->getPaginatedTransmittals(
             perPage: request('per_page', 15),
-            search: request('search')
+            search: request('search'),
+            sortOrder: request('sort_order', 'desc')
         );
 
         return response()->json([

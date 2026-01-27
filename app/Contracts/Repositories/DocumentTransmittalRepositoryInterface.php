@@ -19,7 +19,7 @@ interface DocumentTransmittalRepositoryInterface extends RepositoryInterface
     /**
      * Search transmittals by customer name or PIC name
      */
-    public function search(string $keyword): self;
+    public function search(?string $keyword): self;
 
     /**
      * Get transmittals by customer

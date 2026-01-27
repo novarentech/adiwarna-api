@@ -25,14 +25,16 @@ class DocumentTransmittalRepository extends BaseRepository implements DocumentTr
         return $this;
     }
 
-    public function search(string $keyword): self
+    public function search(?string $keyword): self
     {
-        $this->query->where(function ($query) use ($keyword) {
-            $query->whereHas('customer', function ($q) use ($keyword) {
-                $q->where('name', 'like', "%{$keyword}%");
-            })
-                ->orWhere('pic_name', 'like', "%{$keyword}%");
-        });
+        if ($keyword) {
+            $this->query->where(function ($query) use ($keyword) {
+                $query->whereHas('customer', function ($q) use ($keyword) {
+                    $q->where('name', 'like', "%{$keyword}%");
+                })
+                    ->orWhere('pic_name', 'like', "%{$keyword}%");
+            });
+        }
         return $this;
     }
 
@@ -47,5 +49,11 @@ class DocumentTransmittalRepository extends BaseRepository implements DocumentTr
             ->whereBetween('date', [$startDate, $endDate])
             ->orderBy('date', 'desc')
             ->get();
+    }
+
+    public function sortBy(string $sortOrder = 'desc'): self
+    {
+        $this->query->orderBy('ta_no', $sortOrder);
+        return $this;
     }
 }

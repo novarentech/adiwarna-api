@@ -14,11 +14,12 @@ class DeliveryNoteService extends BaseService
         protected DeliveryNoteItemRepositoryInterface $deliveryNoteItemRepository
     ) {}
 
-    public function getPaginatedDeliveryNotes(int $perPage = 15, ?string $search = null): LengthAwarePaginator
+    public function getPaginatedDeliveryNotes(int $perPage = 15, ?string $search = null, string $sortOrder = 'desc'): LengthAwarePaginator
     {
         return $this->deliveryNoteRepository
             ->withItemsCount()
             ->search($search)
+            ->sortBy($sortOrder)
             ->paginate($perPage);
     }
 

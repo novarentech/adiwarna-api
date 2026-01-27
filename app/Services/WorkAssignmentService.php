@@ -12,13 +12,15 @@ class WorkAssignmentService extends BaseService
         protected WorkAssignmentRepositoryInterface $workAssignmentRepository
     ) {}
 
-    public function getPaginatedWorkAssignments(int $perPage = 15, ?string $search = null): LengthAwarePaginator
+    public function getPaginatedWorkAssignments(int $perPage = 15, ?string $search = null, string $sortOrder = 'desc'): LengthAwarePaginator
     {
         $query = $this->workAssignmentRepository->withCustomerOnly();
 
         if ($search) {
             $query->search($search);
         }
+
+        $query->sortBy($sortOrder);
 
         return $query->paginate($perPage);
     }

@@ -23,7 +23,8 @@ class WorkAssignmentController extends Controller
     {
         $workAssignments = $this->workAssignmentService->getPaginatedWorkAssignments(
             perPage: request('per_page', 15),
-            search: request('search')
+            search: request('search'),
+            sortOrder: request('sort_order', 'desc')
         );
 
         return response()->json([

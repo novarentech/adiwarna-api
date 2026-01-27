@@ -44,4 +44,11 @@ class MaterialReceivingReportRepository extends BaseRepository implements Materi
             ->orderBy('receiving_date', 'desc')
             ->get();
     }
+
+    public function sortBy(string $sortOrder = 'desc'): self
+    {
+        $this->query->orderByRaw("YEAR(receiving_date) {$sortOrder}")
+            ->orderBy('po_no', $sortOrder);
+        return $this;
+    }
 }
