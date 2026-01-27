@@ -27,10 +27,6 @@ RUN echo "upload_max_filesize = 20M" >> /usr/local/etc/php/conf.d/uploads.ini \
 # Copy composer
 COPY --from=composer:latest /usr/bin/composer /usr/bin/composer
 
-# Composer Auth
-ARG GITHUB_TOKEN
-RUN composer config --global --auth github-oauth.github.com ${GITHUB_TOKEN}
-
 # Copy composer files
 COPY composer.json composer.lock ./
 
