@@ -12,13 +12,15 @@ class WorkOrderService extends BaseService
         protected WorkOrderRepositoryInterface $workOrderRepository
     ) {}
 
-    public function getPaginatedWorkOrders(int $perPage = 15, ?string $search = null): LengthAwarePaginator
+    public function getPaginatedWorkOrders(int $perPage = 15, ?string $search = null, string $sortOrder = 'desc'): LengthAwarePaginator
     {
         $query = $this->workOrderRepository->withCustomerAndLocation();
 
         if ($search) {
             $query->search($search);
         }
+
+        $query->sortBy($sortOrder);
 
         return $query->paginate($perPage);
     }

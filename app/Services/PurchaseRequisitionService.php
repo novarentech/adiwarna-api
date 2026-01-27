@@ -14,10 +14,11 @@ class PurchaseRequisitionService extends BaseService
         protected PurchaseRequisitionItemRepositoryInterface $prItemRepository
     ) {}
 
-    public function getPaginatedPRs(int $perPage = 15, ?string $search = null): LengthAwarePaginator
+    public function getPaginatedPRs(int $perPage = 15, ?string $search = null, string $sortOrder = 'desc'): LengthAwarePaginator
     {
         return $this->prRepository
             ->search($search)
+            ->sortBy($sortOrder)
             ->paginate($perPage);
     }
 

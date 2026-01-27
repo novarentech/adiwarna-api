@@ -47,4 +47,11 @@ class DeliveryNoteRepository extends BaseRepository implements DeliveryNoteRepos
             ->orderBy('date', 'desc')
             ->get();
     }
+
+    public function sortBy(string $sortOrder = 'desc'): self
+    {
+        $this->query->orderByRaw("YEAR(date) {$sortOrder}")
+            ->orderBy('dn_no', $sortOrder);
+        return $this;
+    }
 }

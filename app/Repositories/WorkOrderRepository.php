@@ -25,20 +25,22 @@ class WorkOrderRepository extends BaseRepository implements WorkOrderRepositoryI
         return $this;
     }
 
-    public function search(string $keyword): self
+    public function search(?string $keyword): self
     {
-        $this->query->where(function ($query) use ($keyword) {
-            $query->whereHas('employees', function ($q) use ($keyword) {
-                $q->where('name', 'like', "%{$keyword}%");
-            })
-                ->orWhereHas('customer', function ($q) use ($keyword) {
+        if ($keyword) {
+            $this->query->where(function ($query) use ($keyword) {
+                $query->whereHas('employees', function ($q) use ($keyword) {
                     $q->where('name', 'like', "%{$keyword}%");
                 })
-                ->orWhereHas('customerLocation', function ($q) use ($keyword) {
-                    $q->where('location_name', 'like', "%{$keyword}%");
-                })
-                ->orWhereRaw('JSON_SEARCH(LOWER(scope_of_work), "one", LOWER(?)) IS NOT NULL', ["%{$keyword}%"]);
-        });
+                    ->orWhereHas('customer', function ($q) use ($keyword) {
+                        $q->where('name', 'like', "%{$keyword}%");
+                    })
+                    ->orWhereHas('customerLocation', function ($q) use ($keyword) {
+                        $q->where('location_name', 'like', "%{$keyword}%");
+                    })
+                    ->orWhereRaw('JSON_SEARCH(LOWER(scope_of_work), "one", LOWER(?)) IS NOT NULL', ["%{$keyword}%"]);
+            });
+        }
         return $this;
     }
 
@@ -55,6 +57,13 @@ class WorkOrderRepository extends BaseRepository implements WorkOrderRepositoryI
     public function byDateRange(string $startDate, string $endDate): self
     {
         $this->query->whereBetween('date', [$startDate, $endDate]);
+        return $this;
+    }
+
+    public function sortBy(string $sortOrder = 'desc'): self
+    {
+        $this->query->orderBy('work_order_year', $sortOrder)
+            ->orderBy('work_order_no', $sortOrder);
         return $this;
     }
 }

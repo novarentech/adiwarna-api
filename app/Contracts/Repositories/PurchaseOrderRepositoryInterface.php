@@ -8,5 +8,5 @@ interface PurchaseOrderRepositoryInterface extends RepositoryInterface
     public function withCustomerOnly(): self;
     public function filterByCustomer(int $customerId): self;
     public function filterByDateRange(string $startDate, string $endDate): self;
-    public function search(string $keyword): self;
+    public function search(?string $keyword): self;
 }

@@ -12,13 +12,15 @@ class QuotationService extends BaseService
         protected QuotationRepositoryInterface $quotationRepository
     ) {}
 
-    public function getPaginatedQuotations(int $perPage = 15, ?string $search = null): LengthAwarePaginator
+    public function getPaginatedQuotations(int $perPage = 15, ?string $search = null, string $sortOrder = 'desc'): LengthAwarePaginator
     {
         $query = $this->quotationRepository->withCustomerOnly();
 
         if ($search) {
             $query->search($search);
         }
+
+        $query->sortBy($sortOrder);
 
         return $query->paginate($perPage);
     }

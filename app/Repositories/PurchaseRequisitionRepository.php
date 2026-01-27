@@ -37,4 +37,11 @@ class PurchaseRequisitionRepository extends BaseRepository implements PurchaseRe
             ->orderBy('date', 'desc')
             ->get();
     }
+
+    public function sortBy(string $sortOrder = 'desc'): self
+    {
+        $this->query->orderByRaw("YEAR(date) {$sortOrder}")
+            ->orderBy('pr_no', $sortOrder);
+        return $this;
+    }
 }

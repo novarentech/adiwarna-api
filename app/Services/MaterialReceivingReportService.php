@@ -14,11 +14,12 @@ class MaterialReceivingReportService extends BaseService
         protected MaterialReceivingReportItemRepositoryInterface $mrrItemRepository
     ) {}
 
-    public function getPaginatedMRRs(int $perPage = 15, ?string $search = null): LengthAwarePaginator
+    public function getPaginatedMRRs(int $perPage = 15, ?string $search = null, string $sortOrder = 'desc'): LengthAwarePaginator
     {
         return $this->mrrRepository
             ->withItemsCount()
             ->search($search)
+            ->sortBy($sortOrder)
             ->paginate($perPage);
     }
 

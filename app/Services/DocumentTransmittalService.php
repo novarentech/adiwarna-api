@@ -14,13 +14,15 @@ class DocumentTransmittalService extends BaseService
         protected TransmittalDocumentRepositoryInterface $documentRepository
     ) {}
 
-    public function getPaginatedTransmittals(int $perPage = 15, ?string $search = null): LengthAwarePaginator
+    public function getPaginatedTransmittals(int $perPage = 15, ?string $search = null, string $sortOrder = 'desc'): LengthAwarePaginator
     {
         $query = $this->transmittalRepository->withCustomerOnly();
 
         if ($search) {
             $query->search($search);
         }
+
+        $query->sortBy($sortOrder);
 
         return $query->paginate($perPage);
     }
