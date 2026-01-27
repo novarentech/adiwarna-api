@@ -32,9 +32,9 @@ use Illuminate\Support\Facades\Route;
 |--------------------------------------------------------------------------
 */
 
-Route::prefix('v1')->middleware('throttle:api')->group(function () {
+Route::prefix('v1')->group(function () {
     // Authentication routes (public)
-    Route::post('/auth/login', [AuthController::class, 'login'])->middleware('throttle:login');
+    Route::post('/auth/login', [AuthController::class, 'login']);
 
     // Protected routes
     Route::middleware('auth:sanctum')->group(function () {
