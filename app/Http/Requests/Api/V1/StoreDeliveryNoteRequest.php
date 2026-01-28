@@ -15,8 +15,12 @@ class StoreDeliveryNoteRequest extends FormRequest
     {
         return [
             'dn_no' => 'required|string|max:50',
+            'isOther' => 'nullable|boolean',
+            'name' => 'nullable|string|present_if:isOther,true',
+            'address' => 'nullable|string|present_if:isOther,true',
+            'phone' => 'nullable|string|present_if:isOther,true',
             'date' => 'required|date',
-            'customer_id' => 'required|integer|exists:customers,id',
+            'customer_id' => 'nullable|integer|exists:customers,id|present_if:isOther,false',
             'wo_no' => 'required|string|max:50',
             'delivered_with' => 'nullable|string|max:255',
             'vehicle_plate' => 'required|string|max:50',
@@ -25,7 +29,6 @@ class StoreDeliveryNoteRequest extends FormRequest
             'status' => 'nullable|string|in:pending,delivered,cancelled',
             'notes' => 'nullable|string',
             'items' => 'required|array|min:1|max:20',
-            'items.*.id' => 'nullable|integer|exists:delivery_note_items,id',
             'items.*.item_name' => 'required|string|max:255',
             'items.*.serial_number' => 'nullable|string|max:100',
             'items.*.qty' => 'required|integer|min:1',

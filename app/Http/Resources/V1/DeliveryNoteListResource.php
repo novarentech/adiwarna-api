@@ -14,7 +14,7 @@ class DeliveryNoteListResource extends JsonResource
             'dn_no' => $this->dn_no,
             'dn_date' => $this->dn_date,
             'date' => $this->date->format('d/m/Y'),
-            'customer' => $this->customer->name,
+            'customer' => $this->customer->name ?? $this->other['name'],
             'wo_no' => $this->wo_no,
             'vehicle_plate' => $this->vehicle_plate,
             'total_items' => $this->items_count ?? 0,

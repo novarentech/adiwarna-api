@@ -16,7 +16,12 @@ class UpdateDeliveryNoteRequest extends FormRequest
         return [
             'dn_no' => 'sometimes|required|string|max:50',
             'date' => 'sometimes|required|date',
-            'customer_id' => 'sometimes|required|integer|exists:customers,id',
+            'isOther' => 'nullable|boolean',
+            'name' => 'nullable|string|present_if:isOther,true',
+            'address' => 'nullable|string|present_if:isOther,true',
+            'phone' => 'nullable|string|present_if:isOther,true',
+            'date' => 'required|date',
+            'customer_id' => 'nullable|integer|exists:customers,id|present_if:isOther,false',
             'wo_no' => 'sometimes|required|string|max:50',
             'delivered_with' => 'nullable|string|max:255',
             'vehicle_plate' => 'sometimes|required|string|max:50',

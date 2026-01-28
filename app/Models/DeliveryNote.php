@@ -24,6 +24,8 @@ class DeliveryNote extends Model
         'received_by',
         'status',
         'notes',
+        'isOther',
+        'other',
     ];
 
     protected function casts(): array
@@ -31,12 +33,14 @@ class DeliveryNote extends Model
         return [
             'date' => 'date',
             'status' => DeliveryNoteStatus::class,
+            'isOther' => 'boolean',
+            'other' => 'array'
         ];
     }
 
     public function customer(): BelongsTo
     {
-        return $this->belongsTo(Customer::class);
+        return $this->belongsTo(Customer::class)->withDefault();
     }
 
     public function items(): HasMany

@@ -30,9 +30,21 @@ class DeliveryNoteService extends BaseService
 
     public function createDeliveryNoteWithItems(array $data): DeliveryNote
     {
+        if (!isset($data['isOther'])) {
+            $data['isOther'] = false;
+        }
         return $this->executeInTransaction(function () use ($data) {
-            $deliveryNoteData = array_diff_key($data, array_flip(['items']));
-            $deliveryNote = $this->deliveryNoteRepository->create($deliveryNoteData);
+            $deliveryNoteData = array_diff_key($data, array_flip(['items', 'name', 'phone', 'address']));
+            if ($data['isOther']) {
+                $deliveryNoteData['other'] = [
+                    'phone' => $data['phone'],
+                    'address' => $data['address'],
+                    'name' => $data['name'],
+                ];
+                $deliveryNote = $this->deliveryNoteRepository->create($deliveryNoteData);
+            } else {
+                $deliveryNote = $this->deliveryNoteRepository->create($deliveryNoteData);
+            }
 
             if (isset($data['items'])) {
                 foreach ($data['items'] as $item) {
