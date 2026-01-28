@@ -12,10 +12,6 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware): void {
-        // Enable API throttling with custom limits
-        $middleware->throttleApi();
-
-        // Configure CORS
         $middleware->validateCsrfTokens(except: [
             'api/*',
         ]);
