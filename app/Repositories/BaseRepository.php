@@ -109,4 +109,21 @@ abstract class BaseRepository implements RepositoryInterface
         $this->query->orderBy('id', $sortOrder);
         return $this;
     }
+
+    public function applySort(?string $sortBy = null): self
+    {
+        if (!$sortBy) {
+            return $this->sortBy('desc');
+        }
+
+        if (str_contains($sortBy, ':')) {
+            [$column, $direction] = explode(':', $sortBy);
+        } else {
+            $column = $sortBy;
+            $direction = 'asc';
+        }
+
+        $this->query->orderBy($column, $direction);
+        return $this;
+    }
 }

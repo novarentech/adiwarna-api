@@ -23,6 +23,7 @@ class TrackRecordController extends Controller
      * - end_date: Filter by end date (Y-m-d format)
      * - search: Search by worker name, scope of work, customer, or work location
      * - per_page: Number of items per page (default: 15)
+     * - sortBy: Sort by column (format: column:asc|desc, e.g., date:desc)
      */
     public function index(): JsonResponse
     {
@@ -32,7 +33,8 @@ class TrackRecordController extends Controller
             startDate: request('start_date'),
             endDate: request('end_date'),
             search: request('search'),
-            perPage: request('per_page', 15)
+            perPage: request('per_page', 15),
+            sortBy: request('sortBy')
         );
 
         return response()->json([

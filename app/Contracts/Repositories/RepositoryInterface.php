@@ -57,4 +57,9 @@ interface RepositoryInterface
      * Add sorting
      */
     public function sortBy(string $sortOrder = 'desc'): self;
+
+    /**
+     * Apply sorting by column and direction
+     */
+    public function applySort(?string $sortBy = null): self;
 }

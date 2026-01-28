@@ -18,7 +18,8 @@ class TrackRecordService extends BaseService
         ?string $startDate = null,
         ?string $endDate = null,
         ?string $search = null,
-        int $perPage = 15
+        int $perPage = 15,
+        ?string $sortBy = null
     ): LengthAwarePaginator {
         $query = $this->workOrderRepository->withRelations();
 
@@ -32,6 +33,6 @@ class TrackRecordService extends BaseService
             $query->search($search);
         }
 
-        return $query->paginate($perPage);
+        return $query->applySort($sortBy)->paginate($perPage);
     }
 }
