@@ -6,6 +6,7 @@ enum CalibrationAgency: string
 {
     case INTERNAL = 'internal';
     case EXTERNAL = 'external';
+    case EMPTY = '';
 
     /**
      * Get all values
@@ -23,6 +24,7 @@ enum CalibrationAgency: string
         return match ($this) {
             self::INTERNAL => 'Internal',
             self::EXTERNAL => 'External',
+            self::EMPTY => '',
         };
     }
 }
