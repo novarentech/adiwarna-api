@@ -12,6 +12,7 @@ class AppServiceProvider extends ServiceProvider
     public function register(): void
     {
         // Register repositories
+        Scramble::ignoreDefaultRoutes();
         $this->app->bind(
             \App\Contracts\Repositories\CustomerRepositoryInterface::class,
             \App\Repositories\CustomerRepository::class
@@ -133,13 +134,11 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        // Configure rate limiters
-        \Illuminate\Support\Facades\RateLimiter::for('api', function (\Illuminate\Http\Request $request) {
-            return \Illuminate\Cache\RateLimiting\Limit::perMinute(60)->by($request->user()?->id ?: $request->ip());
-        });
-
-        \Illuminate\Support\Facades\RateLimiter::for('login', function (\Illuminate\Http\Request $request) {
-            return \Illuminate\Cache\RateLimiting\Limit::perMinute(5)->by($request->ip());
-        });
+        Scramble::configure()
+            ->withDocumentTransformers(function (OpenApi $openApi) {
+                $openApi->secure(
+                    SecurityScheme::http('bearer')
+                );
+            });
     }
 }
