@@ -6,6 +6,7 @@ enum CalibrationDuration: int
 {
     case SIX_MONTHS = 6;
     case TWELVE_MONTHS = 12;
+    case ZERO = 0;
 
     /**
      * Get all values
@@ -23,6 +24,7 @@ enum CalibrationDuration: int
         return match ($this) {
             self::SIX_MONTHS => '6 Months',
             self::TWELVE_MONTHS => '12 Months',
+            self::ZERO => '0 Months',
         };
     }
 }
