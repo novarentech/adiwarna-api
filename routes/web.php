@@ -1,7 +1,8 @@
 <?php
 
+use Dedoc\Scramble\Scramble;
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return view('welcome');
-});
+Route::redirect('/', 'docs');
+Scramble::registerUiRoute('docs');
+Scramble::registerJsonSpecificationRoute('api/docs.json');

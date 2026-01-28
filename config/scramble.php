@@ -1,7 +1,5 @@
 <?php
 
-use Dedoc\Scramble\Http\Middleware\RestrictedDocsAccess;
-
 return [
     /*
      * Your API path. By default, all routes starting with this path will be added to the docs.
@@ -24,7 +22,7 @@ return [
         /*
          * API version.
          */
-        'version' => env('API_VERSION', '0.0.1'),
+        'version' => env('API_VERSION', '1.0.0'),
 
         /*
          * Description rendered on the home page of the API documentation (`/docs/api`).
@@ -39,10 +37,10 @@ return [
         /*
          * Define the title of the documentation's website. App name is used when this config is `null`.
          */
-        'title' => null,
+        'title' => 'API Documentation - ' . config('app.name'),
 
         /*
-         * Define the theme of the documentation. Available options are `light`, `dark`, and `system`.
+         * Define the theme of the documentation. Available options are `light` and `dark`.
          */
         'theme' => 'light',
 
@@ -89,7 +87,7 @@ return [
      * ],
      * ```
      */
-    'servers' => null,
+    'servers' => ['Live' => env('APP_URL') . '/api'],
 
     /**
      * Determines how Scramble stores the descriptions of enum cases.
@@ -102,34 +100,9 @@ return [
      */
     'enum_cases_description_strategy' => 'description',
 
-    /**
-     * Determines how Scramble stores the names of enum cases.
-     * Available options:
-     * - 'names' – Case names are stored in the `x-enumNames` enum schema extension.
-     * - 'varnames' - Case names are stored in the `x-enum-varnames` enum schema extension.
-     * - false - Case names are not stored.
-     */
-    'enum_cases_names_strategy' => false,
-
-    /**
-     * When Scramble encounters deep objects in query parameters, it flattens the parameters so the generated
-     * OpenAPI document correctly describes the API. Flattening deep query parameters is relevant until
-     * OpenAPI 3.2 is released and query string structure can be described properly.
-     *
-     * For example, this nested validation rule describes the object with `bar` property:
-     * `['foo.bar' => ['required', 'int']]`.
-     *
-     * When `flatten_deep_query_parameters` is `true`, Scramble will document the parameter like so:
-     * `{"name":"foo[bar]", "schema":{"type":"int"}, "required":true}`.
-     *
-     * When `flatten_deep_query_parameters` is `false`, Scramble will document the parameter like so:
-     *  `{"name":"foo", "schema": {"type":"object", "properties":{"bar":{"type": "int"}}, "required": ["bar"]}, "required":true}`.
-     */
-    'flatten_deep_query_parameters' => true,
-
     'middleware' => [
         'web',
-        RestrictedDocsAccess::class,
+        // RestrictedDocsAccess::class
     ],
 
     'extensions' => [],

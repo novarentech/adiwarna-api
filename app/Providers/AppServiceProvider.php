@@ -116,6 +116,16 @@ class AppServiceProvider extends ServiceProvider
             \App\Contracts\Repositories\PayrollEmployeeRepositoryInterface::class,
             \App\Repositories\PayrollEmployeeRepository::class
         );
+
+        $this->app->bind(
+            \App\Contracts\Repositories\AboutRepositoryInterface::class,
+            \App\Repositories\AboutRepository::class
+        );
+
+        $this->app->bind(
+            \App\Contracts\Repositories\OperationalRepositoryInterface::class,
+            \App\Repositories\OperationalRepository::class
+        );
     }
 
     /**
