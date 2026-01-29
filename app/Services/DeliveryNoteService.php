@@ -37,9 +37,9 @@ class DeliveryNoteService extends BaseService
             $deliveryNoteData = array_diff_key($data, array_flip(['items', 'name', 'phone', 'address']));
             if ($data['isOther']) {
                 $deliveryNoteData['other'] = [
-                    'phone' => $data['phone'],
-                    'address' => $data['address'],
-                    'name' => $data['name'],
+                    'phone' => $data['phone'] ?? '',
+                    'address' => $data['address'] ?? '',
+                    'name' => $data['name'] ?? '',
                 ];
                 $deliveryNote = $this->deliveryNoteRepository->create($deliveryNoteData);
             } else {
@@ -60,7 +60,7 @@ class DeliveryNoteService extends BaseService
     {
         return $this->executeInTransaction(function () use ($id, $data) {
             $deliveryNote = $this->deliveryNoteRepository->find($id);
-            $deliveryNoteData = array_diff_key($data, array_flip(['items']));
+            $deliveryNoteData = array_diff_key($data, array_flip(['items', 'name', 'phone', 'address']));
 
             if (isset($data['items'])) {
                 // Get existing item IDs BEFORE processing
@@ -96,7 +96,13 @@ class DeliveryNoteService extends BaseService
                     $deliveryNote->items()->whereIn('id', $itemsToDelete)->delete();
                 }
             }
-
+            if ($data['isOther']) {
+                $deliveryNoteData['other'] = [
+                    'phone' => $data['phone'] ?? '',
+                    'address' => $data['address'] ?? '',
+                    'name' => $data['name'] ?? '',
+                ];
+            }
             $deliveryNote = $this->deliveryNoteRepository->update($id, $deliveryNoteData);
             return $deliveryNote->load(['items', 'customer']);
         });
