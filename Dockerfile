@@ -32,7 +32,7 @@ COPY composer.json composer.lock ./
 
 # Install dependencies
 RUN composer install \
-    --no-dev \
+    # --no-dev \
     --optimize-autoloader \
     --no-interaction \
     --prefer-dist \
@@ -43,8 +43,7 @@ RUN composer install \
 COPY . /app
 
 # Generate autoloader and run post-install scripts
-# RUN composer dump-autoload --optimize --no-dev
-RUN composer dump-autoload
+RUN composer dump-autoload --optimize --no-dev
 
 # Set permissions
 RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache \
