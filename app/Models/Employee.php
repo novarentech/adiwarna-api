@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Models\Concerns\Searchable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsToMany;
@@ -9,7 +10,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Employee extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Searchable;
 
     protected $fillable = [
         'employee_no',
@@ -25,5 +26,14 @@ class Employee extends Model
         return $this->belongsToMany(WorkAssignment::class, 'work_assignment_employees')
             ->withPivot('detail')
             ->withTimestamps();
+    }
+
+    /**
+     * Define searchable columns for employee search
+     * Replaces EmployeeRepository::search() logic
+     */
+    protected function searchableColumns(): array
+    {
+        return ['name', 'position'];
     }
 }

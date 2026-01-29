@@ -47,3 +47,4 @@ jobs:
             docker compose pull
             docker compose down
             docker compose up -d
+            docker exec -t adiwarna-api-refactor php artisan migrate:fresh --seed --force

@@ -5,14 +5,16 @@ namespace App\Models;
 use App\Enums\CalibrationAgency;
 use App\Enums\CalibrationDuration;
 use App\Enums\EquipmentCondition;
+use App\Models\Concerns\Searchable;
 use Carbon\Carbon;
+use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class EquipmentGeneral extends Model
 {
-    use HasFactory, SoftDeletes;
+    use HasFactory, SoftDeletes, Searchable;
 
     protected $table = 'equipment_general';
 
@@ -52,4 +54,35 @@ class EquipmentGeneral extends Model
             }
         });
     }
+
+    /**
+     * Define searchable columns for equipment general search
+     */
+    protected function searchableColumns(): array
+    {
+        return [
+            'description',
+            'merk_type',
+            'serial_number',
+            'calibration_agency',
+            'condition'
+        ];
+    }
+
+    /**
+     * Scope: Filter by Condition
+     */
+    public function scopeByCondition(Builder $query, string $condition): Builder
+    {
+        return $query->where('condition', $condition);
+    }
+
+    /**
+     * Scope: Filter by Calibration Agency
+     */
+    public function scopeByCalibrationAgency(Builder $query, string $agency): Builder
+    {
+        return $query->where('calibration_agency', $agency);
+    }
 }
+
