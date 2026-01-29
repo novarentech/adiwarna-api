@@ -37,7 +37,6 @@ class PurchaseRequisition extends Model
         return [
             'date' => 'date',
             'sub_total' => 'decimal:2',
-            'vat_percentage' => 'decimal:2',
             'vat_amount' => 'decimal:2',
             'total_amount' => 'decimal:2',
             'supplier' => PurchaseRequisitionSupplier::class,
