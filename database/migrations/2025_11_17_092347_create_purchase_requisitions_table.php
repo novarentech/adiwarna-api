@@ -37,6 +37,20 @@ return new class extends Migration
             $table->index('supplier');
             $table->index('routing');
         });
+
+        Schema::create('purchase_requisition_items', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('purchase_requisition_id')->constrained()->onDelete('cascade');
+            $table->decimal('qty', 10, 2);
+            $table->string('unit', 50);
+            $table->text('description');
+            $table->decimal('unit_price', 15, 2);
+            $table->decimal('total_price', 15, 2);
+            $table->timestamps();
+
+            // Indexes
+            $table->index('purchase_requisition_id');
+        });
     }
 
     /**
@@ -45,5 +59,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('purchase_requisitions');
+        Schema::dropIfExists('purchase_requisition_items');
     }
 };

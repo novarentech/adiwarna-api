@@ -31,10 +31,22 @@ return new class extends Migration
             $table->index('date');
             $table->index(['assignment_year', 'assignment_no']);
         });
+
+        Schema::create('work_assignment_workers', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('work_assignment_id')->constrained()->onDelete('cascade');
+            $table->string('worker_name');
+            $table->string('position');
+            $table->timestamps();
+
+            // Indexes
+            $table->index('work_assignment_id');
+        });
     }
 
     public function down(): void
     {
         Schema::dropIfExists('work_assignments');
+        Schema::dropIfExists('work_assignment_workers');
     }
 };

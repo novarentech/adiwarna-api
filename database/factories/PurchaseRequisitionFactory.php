@@ -24,7 +24,7 @@ class PurchaseRequisitionFactory extends Factory
         $routingValue = fake()->randomElement(['online', 'offline']);
 
         return [
-            'pr_no' => 'PR-' . fake()->unique()->numberBetween(1000, 9999),
+            'pr_no' => fake()->unique()->numberBetween(1000, 9999),
             'date' => fake()->dateTimeBetween($year . '-01-01', $year . '-12-31'),
             'po_no_cash' => fake()->optional()->numerify('PO-####'),
             'supplier' => $routingValue, // Same as routing

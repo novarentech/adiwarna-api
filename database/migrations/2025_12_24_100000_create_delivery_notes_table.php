@@ -15,7 +15,9 @@ return new class extends Migration
             $table->id();
             $table->string('dn_no', 50);
             $table->date('date');
-            $table->foreignId('customer_id')->constrained()->onDelete('cascade');
+            $table->foreignId('customer_id')->nullable()->constrained()->onDelete('cascade');
+            $table->boolean('isOther')->default(false);
+            $table->json('other')->nullable();
             $table->string('wo_no', 50);
             $table->string('delivered_with', 255)->nullable();
             $table->string('vehicle_plate', 50);
@@ -33,6 +35,18 @@ return new class extends Migration
             $table->index('wo_no');
             $table->index('vehicle_plate');
         });
+
+        Schema::create('delivery_note_items', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('delivery_note_id')->constrained()->onDelete('cascade');
+            $table->string('item_name', 255);
+            $table->string('serial_number', 100)->nullable();
+            $table->integer('qty');
+            $table->timestamps();
+
+            // Indexes
+            $table->index('delivery_note_id');
+        });
     }
 
     /**
@@ -41,5 +55,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('delivery_notes');
+        Schema::dropIfExists('delivery_note_items');
     }
 };

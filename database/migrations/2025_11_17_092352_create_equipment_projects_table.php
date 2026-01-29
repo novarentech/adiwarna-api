@@ -26,6 +26,17 @@ return new class extends Migration
             $table->index('customer_location_id');
             $table->index('project_date');
         });
+
+        Schema::create('equipment_project_items', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('equipment_project_id')->constrained()->onDelete('cascade');
+            $table->foreignId('equipment_general_id')->constrained('equipment_general')->onDelete('cascade');
+            $table->timestamps();
+
+            // Indexes
+            $table->index('equipment_project_id');
+            $table->index('equipment_general_id');
+        });
     }
 
     /**
@@ -34,5 +45,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('equipment_projects');
+        Schema::dropIfExists('equipment_project_items');
     }
 };

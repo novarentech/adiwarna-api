@@ -22,17 +22,12 @@ class DatabaseSeeder extends Seeder
             CustomerSeeder::class,
             EmployeeSeeder::class,
 
-            // 3. Company Information (independent)
-            AboutSeeder::class,
-
             // 4. Sales Modules (depends on customers)
             QuotationSeeder::class,
             PurchaseOrderSeeder::class,
 
             // 5. Operations Modules (depends on customers and employees)
             WorkAssignmentSeeder::class,
-            DailyActivitySeeder::class,
-            ScheduleSeeder::class,
             WorkOrderSeeder::class,
 
             // 6. Document Modules (depends on customers)
@@ -42,8 +37,7 @@ class DatabaseSeeder extends Seeder
             DeliveryNoteSeeder::class,
 
             // 7. Equipment & System Modules
-            EquipmentSeeder::class,
-            OperationalSeeder::class,
+            EquipmentSeeder::class
         ]);
 
         $this->command->info('Database seeding completed successfully!');

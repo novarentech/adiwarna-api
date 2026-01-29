@@ -28,6 +28,18 @@ return new class extends Migration
             $table->index('date');
             $table->index('ta_no');
         });
+
+        Schema::create('transmittal_documents', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('transmittal_id')->constrained('transmittals')->onDelete('cascade');
+            $table->string('wo_number');
+            $table->integer('wo_year');
+            $table->string('location');
+            $table->timestamps();
+
+            // Indexes
+            $table->index('transmittal_id');
+        }); 
     }
 
     /**
@@ -36,5 +48,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('transmittals');
+        Schema::dropIfExists('transmittal_documents');
     }
 };

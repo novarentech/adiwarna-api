@@ -29,6 +29,22 @@ return new class extends Migration
             $table->index('receiving_date');
             $table->index('po_no');
         });
+
+        Schema::create('material_receiving_report_items', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('material_receiving_report_id')
+                ->constrained('material_receiving_reports')
+                ->onDelete('cascade')
+                ->name('mrr_items_mrr_id_fk'); // Shortened foreign key name
+            $table->text('description');
+            $table->decimal('order_qty', 10, 2);
+            $table->decimal('received_qty', 10, 2);
+            $table->enum('remarks', ['good', 'reject'])->nullable();
+            $table->timestamps();
+
+            // Indexes
+            $table->index('material_receiving_report_id', 'mrr_item_mrr_id_index');
+        });
     }
 
     /**
@@ -37,5 +53,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('material_receiving_reports');
+        Schema::dropIfExists('material_receiving_report_items');
     }
 };

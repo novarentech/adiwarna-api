@@ -28,6 +28,17 @@ return new class extends Migration
             $table->index('date');
             $table->index(['work_order_year', 'work_order_no']);
         });
+
+        Schema::create('work_order_employees', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('work_order_id')->constrained()->onDelete('cascade');
+            $table->foreignId('employee_id')->constrained()->onDelete('cascade');
+            $table->timestamps();
+
+            // Indexes
+            $table->index('work_order_id');
+            $table->index('employee_id');
+        });
     }
 
     /**
@@ -36,5 +47,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('work_orders');
+        Schema::dropIfExists('work_order_employees');
     }
 };

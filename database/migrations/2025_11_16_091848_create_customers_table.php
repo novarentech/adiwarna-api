@@ -24,6 +24,16 @@ return new class extends Migration
             $table->index('customer_no');
             $table->index('name');
         });
+
+        Schema::create('customer_locations', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('customer_id')->constrained()->onDelete('cascade');
+            $table->string('location_name');
+            $table->timestamps();
+
+            // Indexes
+            $table->index('customer_id');
+        });
     }
 
     /**
@@ -32,5 +42,6 @@ return new class extends Migration
     public function down(): void
     {
         Schema::dropIfExists('customers');
+        Schema::dropIfExists('customer_locations');
     }
 };

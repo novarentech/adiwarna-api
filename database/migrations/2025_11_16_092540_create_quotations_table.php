@@ -32,10 +32,46 @@ return new class extends Migration
             $table->index('date');
             $table->index(['ref_year', 'ref_no']);
         });
+
+        Schema::create('quotation_items', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('quotation_id')->constrained()->onDelete('cascade');
+            $table->text('description');
+            $table->string('quantity', 10);
+            $table->string('unit', 20);
+            $table->decimal('rate', 15, 2);
+            $table->timestamps();
+
+            // Indexes
+            $table->index('quotation_id');
+        });
+
+        Schema::create('quotation_adiwarnas', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('quotation_id')->constrained()->onDelete('cascade');
+            $table->string('adiwarna_description');
+            $table->timestamps();
+
+            // Indexes
+            $table->index('quotation_id');
+        });
+
+         Schema::create('quotation_clients', function (Blueprint $table) {
+            $table->id();
+            $table->foreignId('quotation_id')->constrained()->onDelete('cascade');
+            $table->string('client_description');
+            $table->timestamps();
+
+            // Indexes
+            $table->index('quotation_id');
+        });
     }
 
     public function down(): void
     {
         Schema::dropIfExists('quotations');
+        Schema::dropIfExists('quotation_items');
+        Schema::dropIfExists('quotation_adiwarnas');
+        Schema::dropIfExists('quotation_clients');
     }
 };
