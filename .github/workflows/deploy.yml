@@ -3,7 +3,7 @@ name: Build and Deploy Adiwarna API
 on:
   push:
     branches:
-      - ref
+      - main
 
 jobs:
   build:
@@ -28,7 +28,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:refactor
+          tags: ${{ secrets.DOCKER_USERNAME }}/${{ github.event.repository.name }}:latest
 
   deploy:
     runs-on: ubuntu-latest
@@ -43,8 +43,7 @@ jobs:
           password: ${{ secrets.VPS_1_HOST_PASSWORD }}
           port: ${{ secrets.VPS_1_HOST_PORT }}
           script: |
-            cd /media/${{github.event.repository.name}}-refactor
+            cd /media/${{github.event.repository.name}}
             docker compose pull
             docker compose down
             docker compose up -d
-            docker exec -t adiwarna-api-refactor php artisan migrate:fresh --seed --force
