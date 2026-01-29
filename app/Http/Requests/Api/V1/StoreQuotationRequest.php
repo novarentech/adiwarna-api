@@ -27,7 +27,7 @@ class StoreQuotationRequest extends FormRequest
             'workday' => 'nullable|string|max:255',
             'auth_name' => 'nullable|string|max:255',
             'auth_position' => 'nullable|string|max:255',
-            'discount' => 'nullable|numeric|min:0|max:100',
+            'discount' => 'nullable|integer|min:0|max:100',
             'items' => 'required|array|min:1',
             'items.*.description' => 'required|string',
             'items.*.quantity' => 'required|numeric|min:0',

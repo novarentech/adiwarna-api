@@ -27,7 +27,7 @@ class UpdateQuotationRequest extends FormRequest
             'workday' => 'nullable|string|max:255',
             'auth_name' => 'nullable|string|max:255',
             'auth_position' => 'nullable|string|max:255',
-            'discount' => 'nullable|numeric|min:0|max:100',
+            'discount' => 'nullable|integer|min:0|max:100',
             'items' => 'sometimes|array|min:1',
             'items.*.id' => 'nullable|exists:quotation_items,id',
             'items.*.description' => 'required_with:items|string',

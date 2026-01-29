@@ -32,8 +32,7 @@ class Quotation extends Model
     protected function casts(): array
     {
         return [
-            'date' => 'date',
-            'discount' => 'decimal:2',
+            'date' => 'date'
         ];
     }
 
