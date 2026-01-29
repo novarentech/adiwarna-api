@@ -43,7 +43,8 @@ RUN composer install \
 COPY . /app
 
 # Generate autoloader and run post-install scripts
-RUN composer dump-autoload --optimize --no-dev
+# RUN composer dump-autoload --optimize --no-dev
+RUN composer dump-autoload
 
 # Set permissions
 RUN chown -R www-data:www-data /app/storage /app/bootstrap/cache \
