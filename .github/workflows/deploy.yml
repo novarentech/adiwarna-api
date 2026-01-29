@@ -47,4 +47,3 @@ jobs:
             docker compose pull
             docker compose down
             docker compose up -d
-            docker compose exec -t php artisan migrate --force

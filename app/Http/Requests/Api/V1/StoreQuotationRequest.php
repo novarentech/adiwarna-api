@@ -22,7 +22,7 @@ class StoreQuotationRequest extends FormRequest
             'pic_phone' => 'nullable|string|max:20',
             'subject' => 'nullable|string',
             'top' => 'nullable|string|max:255',
-            'valid_until' => 'nullable|date',
+            'valid_until' => 'nullable|integer|min:1|max:1000',
             'clause' => 'nullable|string',
             'workday' => 'nullable|string|max:255',
             'auth_name' => 'nullable|string|max:255',
