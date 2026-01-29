@@ -18,7 +18,7 @@ class StoreDeliveryNoteRequest extends FormRequest
             'isOther' => 'nullable|boolean',
             'name' => 'nullable|string|present_if:isOther,true',
             'address' => 'nullable|string|present_if:isOther,true',
-            'phone' => 'nullable|string|present_if:isOther,true',
+            'phone' => 'nullable|string',
             'date' => 'required|date',
             'customer_id' => 'nullable|integer|exists:customers,id|present_if:isOther,false',
             'wo_no' => 'required|string|max:50',
