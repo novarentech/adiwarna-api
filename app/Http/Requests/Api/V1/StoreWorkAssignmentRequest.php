@@ -24,7 +24,7 @@ class StoreWorkAssignmentRequest extends FormRequest
             'ref_po_no_instruction' => 'nullable|string|max:255',
             'scope' => 'nullable|string',
             'estimation' => 'nullable|string|max:255',
-            'mobilization' => 'nullable|date',
+            'mobilization' => 'nullable|string|max:255',
             'auth_name' => 'nullable|string|max:255',
             'auth_pos' => 'nullable|string|max:255',
             'workers' => 'nullable|array',
