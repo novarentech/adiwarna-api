@@ -74,10 +74,19 @@ class DocumentTransmittal extends Model
         });
     }
 
-    public function scopeSortDefault(Builder $query, string $direction = 'desc'): Builder
+    public function scopeSortDefault(Builder $query, string $direction = 'asc'): Builder
     {
-        return $query->orderBy('ta_no', $direction);
+        return $query
+            // sort by year (2024)
+            ->orderByRaw(
+                "CAST(SUBSTRING_INDEX(ta_no, '/', -1) AS UNSIGNED) {$direction}"
+            )
+            // then sort by number (001)
+            ->orderByRaw(
+                "CAST(SUBSTRING_INDEX(ta_no, '/', 1) AS UNSIGNED) {$direction}"
+            );
     }
+
 
     public function scopeFilterByDateRange(Builder $query, string $startDate, string $endDate): Builder
     {
