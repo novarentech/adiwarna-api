@@ -76,6 +76,7 @@ class Quotation extends Model
         return [
             'pic_name',
             'subject',
+            'ref_no'
         ];
     }
 
@@ -88,6 +89,7 @@ class Quotation extends Model
         return $query->where(function ($q) use ($search) {
             $q->where('pic_name', 'like', "%{$search}%")
               ->orWhere('subject', 'like', "%{$search}%")
+              ->orWhere('ref_no', 'like', "%{$search}%")
               ->orWhereHas('customer', function ($subQ) use ($search) {
                   $subQ->where('name', 'like', "%{$search}%");
               });
