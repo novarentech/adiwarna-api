@@ -10,6 +10,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
+
 
 class PurchaseOrder extends Model
 {
@@ -113,7 +115,7 @@ class PurchaseOrder extends Model
     */
     public static function createWithItems(array $data): self
     {
-        return self::transactional(function () use ($data) {
+        return DB::transaction(function () use ($data) {
             $poData = array_diff_key($data, array_flip(['items']));
 
             $po = self::create($poData);
