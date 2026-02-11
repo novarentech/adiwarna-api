@@ -9,6 +9,23 @@ class PurchaseOrderResource extends JsonResource
 {
     public function toArray(Request $request): array
     {
+        $items = $this->whenLoaded('items');
+
+        $subtotal = $items
+            ? $items->sum(fn($item) => $item->rate * $item->quantity)
+            : 0;
+
+        $discountAmount = $this->discount
+            ? $subtotal * ($this->discount / 100)
+            : 0;
+
+        $afterDiscount = $subtotal - $discountAmount;
+
+        $taxAmount = $this->isTax
+            ? $afterDiscount * 0.11
+            : 0;
+
+        $total = $afterDiscount + $taxAmount;
         return [
             'id' => $this->id,
             'po_no' => $this->po_no,
@@ -30,7 +47,9 @@ class PurchaseOrderResource extends JsonResource
             'app_pos' => $this->app_pos,
             'auth_name' => $this->auth_name,
             'auth_pos' => $this->auth_pos,
-            'items' => PurchaseOrderItemResource::collection($this->whenLoaded('items')),
+            'isTax' => $this->isTax,
+            'total' => $total,
+            'items' => PurchaseOrderItemResource::collection($items),
             'created_at' => $this->created_at,
             'updated_at' => $this->updated_at,
         ];

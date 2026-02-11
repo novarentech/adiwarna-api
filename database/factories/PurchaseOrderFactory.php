@@ -38,6 +38,7 @@ class PurchaseOrderFactory extends Factory
             'app_pos' => fake()->optional()->jobTitle(),
             'auth_name' => fake()->name(),
             'auth_pos' => fake()->randomElement(['Director', 'Manager', 'Supervisor']),
+            'isTax' => fake()->boolean()
         ];
     }
 }

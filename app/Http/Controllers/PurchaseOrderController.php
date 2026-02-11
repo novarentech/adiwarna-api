@@ -12,7 +12,8 @@ use Illuminate\Http\JsonResponse;
 
 class PurchaseOrderController extends Controller
 {
-    public function __construct() {
+    public function __construct()
+    {
         //
     }
 

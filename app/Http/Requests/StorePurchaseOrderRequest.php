@@ -38,6 +38,7 @@ class StorePurchaseOrderRequest extends FormRequest
             'items.*.quantity' => 'required|numeric|min:0',
             'items.*.unit' => 'required|string|max:50',
             'items.*.rate' => 'required|numeric|min:0',
+            'isTax' => 'nullable|boolean'
         ];
     }
 

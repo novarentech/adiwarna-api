@@ -20,7 +20,7 @@ class PurchaseOrderItemFactory extends Factory
             'description' => fake()->sentence(),
             'quantity' => fake()->numberBetween(1, 100),
             'unit' => fake()->randomElement(['pcs', 'unit', 'set', 'lot', 'meter']),
-            'rate' => fake()->randomFloat(2, 100, 10000),
+            'rate' => fake()->numberBetween(1, 300) * 1000,
         ];
     }
 }

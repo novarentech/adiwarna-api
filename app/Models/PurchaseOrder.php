@@ -37,6 +37,7 @@ class PurchaseOrder extends Model
         'app_pos',
         'auth_name',
         'auth_pos',
+        'isTax'
     ];
 
     protected function casts(): array
@@ -45,6 +46,7 @@ class PurchaseOrder extends Model
             'date' => 'date',
             'required_date' => 'date',
             'discount' => 'decimal:2',
+            'isTax' => 'boolean'
         ];
     }
 
@@ -81,17 +83,17 @@ class PurchaseOrder extends Model
 
         return $query->where(function ($q) use ($search) {
             $q->where('pic_name', 'like', "%{$search}%")
-              ->orWhere('pic_phone', 'like', "%{$search}%")
-              ->orWhereHas('customer', function ($subQ) use ($search) {
-                  $subQ->where('name', 'like', "%{$search}%");
-              });
+                ->orWhere('pic_phone', 'like', "%{$search}%")
+                ->orWhereHas('customer', function ($subQ) use ($search) {
+                    $subQ->where('name', 'like', "%{$search}%");
+                });
         });
     }
 
     public function scopeSortDefault(Builder $query, string $direction = 'desc'): Builder
     {
         return $query->orderBy('po_year', $direction)
-                     ->orderBy('po_no', $direction);
+            ->orderBy('po_no', $direction);
     }
 
     public function scopeFilterByCustomer(Builder $query, int $customerId): Builder
@@ -113,7 +115,7 @@ class PurchaseOrder extends Model
     {
         return self::transactional(function () use ($data) {
             $poData = array_diff_key($data, array_flip(['items']));
-            
+
             $po = self::create($poData);
 
             if (isset($data['items'])) {
@@ -144,7 +146,7 @@ class PurchaseOrder extends Model
                         $existingIds[] = $newItem->id;
                     }
                 }
-                
+
                 // Delete removed
                 $this->items()->whereNotIn('id', $existingIds)->delete();
             }
