@@ -39,6 +39,7 @@ class UpdatePurchaseOrderRequest extends FormRequest
             'items.*.quantity' => 'required_with:items|numeric|min:0',
             'items.*.unit' => 'required_with:items|string|max:50',
             'items.*.rate' => 'required_with:items|numeric|min:0',
+            'isTax' => 'nullable|boolean'
         ];
     }
 }
