@@ -132,7 +132,7 @@ class PurchaseOrder extends Model
 
     public function updateWithItems(array $data): self
     {
-        return $this->transactional(function () use ($data) {
+        return DB::transaction(function () use ($data) {
             $poData = array_diff_key($data, array_flip(['items']));
 
             $this->update($poData);
