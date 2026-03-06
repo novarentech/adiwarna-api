@@ -107,7 +107,15 @@ class DeliveryNote extends Model
 
     public function scopeSortDefault(Builder $query, string $direction = 'desc'): Builder
     {
-        return $query->orderByRaw("YEAR(date) {$direction}")
+        $driver = \Illuminate\Support\Facades\DB::getDriverName();
+
+        $yearExpression = match ($driver) {
+            'sqlite' => "strftime('%Y', date)",
+            'pgsql'  => "EXTRACT(YEAR FROM date)",
+            default  => "YEAR(date)", // mysql / mariadb
+        };
+
+        return $query->orderByRaw("$yearExpression {$direction}")
                      ->orderBy('dn_no', $direction);
     }
 

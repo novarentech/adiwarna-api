@@ -13,7 +13,6 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class WorkOrder extends Model
 {
-    use HasFactory, SoftDeletes;
 
     use HasFactory, SoftDeletes, Searchable, Transactional;
 
@@ -87,7 +86,14 @@ class WorkOrder extends Model
                 ->orWhereHas('customerLocation', function ($subQ) use ($search) {
                     $subQ->where('location_name', 'like', "%{$search}%");
                 })
-                ->orWhereRaw('JSON_SEARCH(LOWER(scope_of_work), "one", LOWER(?)) IS NOT NULL', ["%{$search}%"]);
+                ->orWhere(function ($jsonQ) use ($search) {
+                    $driver = \Illuminate\Support\Facades\DB::getDriverName();
+                    if ($driver === 'sqlite') {
+                        $jsonQ->where('scope_of_work', 'like', "%{$search}%");
+                    } else {
+                        $jsonQ->whereRaw('JSON_SEARCH(LOWER(scope_of_work), "one", LOWER(?)) IS NOT NULL', ["%{$search}%"]);
+                    }
+                });
         });
     }
 

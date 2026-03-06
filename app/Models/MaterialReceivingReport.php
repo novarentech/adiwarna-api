@@ -96,7 +96,15 @@ class MaterialReceivingReport extends Model
 
     public function scopeSortDefault(Builder $query, string $direction = 'desc'): Builder
     {
-        return $query->orderByRaw("YEAR(receiving_date) {$direction}")
+        $driver = \Illuminate\Support\Facades\DB::getDriverName();
+
+        $yearExpression = match ($driver) {
+            'sqlite' => "strftime('%Y', receiving_date)",
+            'pgsql'  => "EXTRACT(YEAR FROM receiving_date)",
+            default  => "YEAR(receiving_date)", // mysql / mariadb
+        };
+
+        return $query->orderByRaw("$yearExpression {$direction}")
                      ->orderBy('po_no', $direction);
     }
 

@@ -80,4 +80,12 @@ trait Transactional
             throw $e;
         }
     }
+
+    /**
+     * Alias for executeInTransaction to support varied naming.
+     */
+    protected static function transactional(callable $callback): mixed
+    {
+        return static::executeInTransaction($callback);
+    }
 }

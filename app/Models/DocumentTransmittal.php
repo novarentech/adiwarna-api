@@ -76,6 +76,12 @@ class DocumentTransmittal extends Model
 
     public function scopeSortDefault(Builder $query, string $direction = 'asc'): Builder
     {
+        $driver = \Illuminate\Support\Facades\DB::getDriverName();
+
+        if ($driver === 'sqlite') {
+            return $query->orderBy('ta_no', $direction);
+        }
+
         return $query
             // sort by year (2024)
             ->orderByRaw(
